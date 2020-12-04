@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const productSch = new Schema({
+const productSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -25,23 +25,25 @@ const productSch = new Schema({
     },
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        rel: 'User',
         required: true
-    },
-    location: {
-        latitude:  {
-            type: Number,
-            required: true
-        },
-        longitude:  {
-            type: Number,
-            required: true
-        }
     }
 }, {
     timestamps: true
 });
 
-const Product = mongoose.model("Product", productSch)
+const Product = mongoose.model("Product", productSchema)
 
 module.exports = Product
+
+// ,
+//     location: {
+//         latitude:  {
+//             type: Number,
+//             required: true
+//         },
+//         longitude:  {
+//             type: Number,
+//             required: true
+//         }
+//     }
