@@ -1,0 +1,83 @@
+body {
+    font-weight: 200;
+}
+
+img  {
+    width: 100%;
+    object-fit: cover;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 200;
+}
+
+.navbar{
+    background-color: rgb(71, 45, 92);
+    box-shadow: 2px 2px 8px lightgray;
+}
+
+.navbar #basic-navbar-nav {
+    font-weight: 300;
+    font-size: .9rem;
+    text-transform: uppercase;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.btn {
+    font-weight: 200;
+    margin-top: 20px;
+}
+
+.home-btns {
+    display: flex;
+    justify-content: center;
+}
+
+.home-btns .btn {
+    margin: 20px;
+}
+
+.search-bar {
+    width: 100%;
+    border: none;
+}
+
+.loader {
+    margin-top: 50px;
+    margin-left: 100px;
+}
+
+.product-details img {
+    min-height: 300px;
+    max-height: 500px;
+}
+
+.product-card {
+    border: none;
+    box-shadow: 2px 2px 8px lightgray;
+}
+
+.card-title {
+    font-weight: 300;
+}
+
+.price {
+    font-style: italic;
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+.status {
+    text-transform: capitalize;
+}
+
+.profile img {
+    max-height: 250px;
+}
+
+.profile-info .btn {
+    margin-right: 20px;
+}
