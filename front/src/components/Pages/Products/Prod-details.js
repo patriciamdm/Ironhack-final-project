@@ -10,10 +10,7 @@ import ProductService from '../../../services/products.service'
 class ProductDetails extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            product: undefined,
-            ownerName: undefined
-        }
+        this.state = {}
         this.productsService = new ProductService()
     }
 

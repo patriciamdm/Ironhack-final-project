@@ -45,7 +45,7 @@ class App extends Component {
             <Route path='/signup' render={props => <Signup setUser={this.setUser} {...props} />} />
             <Route path='/login' render={props => <Login setUser={this.setUser} {...props} />} />
             <Route path='/profile' exact render={() => this.state.loggedInUser ? <Profile theUser={this.state.loggedInUser }/> : <Redirect to='/' />} />
-            <Route path='/profile/edit' render={() => this.state.loggedInUser ? <EditUser theUser={this.state.loggedInUser }/> : <Redirect to='/' />} />
+            <Route path='/editUser/:userId' render={() => this.state.loggedInUser ? <EditUser theUser={this.state.loggedInUser }/> : <Redirect to='/' />} />
             <Route path='/products' exact render={() => this.state.loggedInUser ? <ProductList theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             <Route path='/products/new' exact render={props => this.state.loggedInUser ? <NewProduct theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
             <Route path='/products/:product_id' render={props => this.state.loggedInUser ? <ProductDetails theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />

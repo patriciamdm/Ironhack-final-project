@@ -14,7 +14,7 @@ class EditProduct extends Component {
             image: '',
             price: 0,
             status: 'available',
-            owner: ''
+            owner: this.props.loggedUser ? this.props.loggedUser._id : ''
         }
 
         this.productService = new ProductService()
@@ -23,7 +23,7 @@ class EditProduct extends Component {
     componentDidMount = () => {
         this.productService
             .getOneProduct(this.props.productId)
-            .then(res => this.setState({ _id: res.data._id, name: res.data.name, description: res.data.description, image: res.data.image, price: res.data.price, status: 'available', owner: this.props.theUser._id}, () => console.log('MOUNTED', this.state)))
+            .then(res => this.setState({ _id: res.data._id, name: res.data.name, description: res.data.description, image: res.data.image, price: res.data.price, status: 'available', owner: this.props.theUser._id}))
             .catch(err => console.log('ERROR FINDING PROD', err))
     }
 
@@ -35,15 +35,14 @@ class EditProduct extends Component {
             name: this.state.name,
             description: this.state.description,
             image: this.state.image,
-            price: this.state.price
+            price: this.state.price,
+            owner: this.props.theUser._id
         }
-
         this.productService
-            .editProduct(this.state._id, editedProd)    // ARREGLAR PROBLEMA; NO SE MANDA NADA EN EL FORMULARIO!!!!!
+            .editProduct(this.state._id, editedProd)
             .then(res => {
-                console.log('EDITED PROD RES', res.data)
-                this.props.hideModal()
                 this.props.reloadProducts()
+                this.props.hideModal()
             })
             .catch(err => console.log('ERROR CREATING PRODUCT', err))
     }

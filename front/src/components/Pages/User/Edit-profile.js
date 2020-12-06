@@ -1,39 +1,47 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
+import UserService from '../../../services/user.service'
+
 class EditUser extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
+            _id: '',
             username: '',
             image: '',
             email: '',
             phone: undefined
         }
 
-        // USER SERVICE
+        this.userService = new UserService()
     }
 
     componentDidMount = () => {
-        this.setState({ username: this.props.theUser.username, image: this.props.theUser.image, email: this.props.theUser.email, phone: this.props.theUser.phone }, () => console.log('MOUNTED', this.state))
-
-        // this.userService
-        //     .findById(this.props.theUser._id)
-        //     .then(res => this.setState({ username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone }, () => console.log('MOUNTED', this.state)))
-        //     .catch(err => console.log('ERROR FINDING PROD', err))
+        this.userService
+            .getOneUser(this.props.theUser._id)
+            .then(res => this.setState({ _id: res.data._id, username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone}))
+            .catch(err => console.log('ERROR FINDING PROD', err))
     }
-
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {
         e.preventDefault()
+        const editedUser = {
+            username: this.state.username,
+            image: this.state.image,
+            email: this.state.email,
+            phone: this.state.phone,
+        }
 
         this.userService
-            .findOneAndUpdate(this.props.theUser._id, this.state)  // CUIDADO CON LO QUE MANDA EL FORMULARIO!!!!!
+            .editUser(this.state._id, editedUser)
             .then(loggedUser => {
-                this.props.setUser(loggedUser.data)
-                this.props.history.push('/profile')
+                //console.log(window)
+                //console.log(this)
+                // this.props.setUser(loggedUser.data)
+                this.props.history.push('/profile') // TO-DO: Redirigir al perfil (no lo consigo), el formulario se manda y actualiza el usuario
             })
             .catch(err => console.log('ERROR IN SIGN UP', err))
     }

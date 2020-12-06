@@ -43,6 +43,14 @@ router.put('/editProduct/:product_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-// TO-DO: Falta endpoint para DELETE
+// TO-DO: no se muy bien que hacer con el .then
+// router.delete('/delete/:product_id', (req, res) => {
+
+//     Product
+//         .findByIdAndDelete(req.params.product_id)
+//         .then(response => res.json(response))
+//         .catch(err => res.status(500).json(err))
+// })
+
 
 module.exports = router
