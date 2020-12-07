@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+//import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
 import React, { Component } from 'react'
@@ -16,6 +16,7 @@ import ProductList from './Pages/Products/Products-list';
 import NewProduct from './Pages/Products/New-product';
 import ProductDetails from './Pages/Products/Prod-details';
 import OthersProfile from './Pages/People/Others-profile';
+import UserList from './Pages/People/Users-list'
 
 class App extends Component {
   constructor() {
@@ -49,9 +50,10 @@ class App extends Component {
             <Route path='/editUser/:userId' render={props => this.state.loggedInUser ? <EditUser theUser={this.state.loggedInUser} {...props} setUser={this.setUser} /> : <Redirect to='/' />} />
             
             <Route path='/products' exact render={() => this.state.loggedInUser ? <ProductList theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
-            <Route path='/products/:product_id' render={props => this.state.loggedInUser ? <ProductDetails theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
             <Route path='/products/new' exact render={props => this.state.loggedInUser ? <NewProduct theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
+            <Route path='/products/:product_id' render={props => this.state.loggedInUser ? <ProductDetails theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
             
+            <Route path='/users' render={() => this.state.loggedInUser ? <UserList theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             <Route path='/profile/:userId' render={props => this.state.loggedInUser ? <OthersProfile theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
           </Switch>
         </main>

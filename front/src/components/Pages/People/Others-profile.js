@@ -3,7 +3,7 @@ import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import ProductCard from '../Products/Prod-card'
-import EditProduct from '../Products/Edit-product'
+import EmailForm from '../../Shared/Email-form'
 import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
@@ -14,7 +14,9 @@ class OthersProfile extends Component {
         super(props)
         this.state = {
             user: undefined,
-            products: undefined
+            products: undefined,
+            showEmailModal: false,
+            showWppModal: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -37,6 +39,11 @@ class OthersProfile extends Component {
             .catch(err => console.log('ERROR GETTING PRODS', err))
     }
 
+    handleEmailModal = visib => this.setState({ showEmailModal: visib })
+    
+    handleWppModal = visib => this.setState({showWppModal: visib})
+
+
     render() {
         return (
             <>
@@ -53,6 +60,8 @@ class OthersProfile extends Component {
                                     <hr/>
                                     <h6>Email: {this.state.user.email}</h6>
                                     <h6>Phone: {this.state.user.phone}</h6>
+                                    <Button onClick={() => this.handleEmailModal(true)} variant="secondary" size="sm">Contact via Email</Button>
+                                    <a className="btn btn-secondary btn-sm" target="_blank" href={`https://wa.me/+34${this.state.user.phone}?text=Mensaje automático de la Patriapp`}>Contact via WhatsApp</a>
                                 </Col>
                             </Row>
                             <br/>
@@ -67,21 +76,10 @@ class OthersProfile extends Component {
                                 }
                             </Row>
                         </Container>
-                        <Modal show={this.state.showEditProdModal} onHide={() => this.handleEditProdModal(false)}>
+                        <Modal  show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
                             <Modal.Body>
-                                <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                                <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user.email} fromUser={this.props.theUser.email} subject=""/>
                             </Modal.Body>
-                        </Modal>
-                        <Modal show={this.state.showDeleteModal} onHide={() => this.handleDeleteModal(false)}>
-                            <Modal.Body><b>Are you sure you want to delete you account? This action will be irreversible.</b></Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>
-                                    No, go back
-                                </Button>
-                                <Button variant="danger" onClick={() => this.handleDeleteModal(false)}>
-                                    Yes, delete
-                                </Button>
-                            </Modal.Footer>
                         </Modal>
                     </>
                     :
