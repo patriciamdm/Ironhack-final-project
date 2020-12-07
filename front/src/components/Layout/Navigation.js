@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom'
 
 import AuthService from '../../services/auth.service'
 
-
 class Navigation extends Component {
     constructor() {
         super()
         this.authService = new AuthService()
     }
-    
 
     logOut = () => {
         this.authService
@@ -18,7 +16,6 @@ class Navigation extends Component {
             .then(() => this.props.setUser(undefined))
             .catch(err => console.log('ERROR IN LOG OUT', err))
     }
-
 
     render() {
         return (

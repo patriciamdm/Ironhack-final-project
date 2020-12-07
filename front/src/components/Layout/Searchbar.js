@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Form } from 'react-bootstrap'
 
-
 class SearchBar extends Component {
     constructor(props) {
         super(props)

@@ -33,7 +33,6 @@ router.put('/editUser/:user_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-// TO-DO: no se muy bien que hacer con el .then
 router.delete('/deleteUser/:user_id', (req, res) => {
 
     User
