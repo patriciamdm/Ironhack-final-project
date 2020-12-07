@@ -17,6 +17,7 @@ import NewProduct from './Pages/Products/New-product';
 import ProductDetails from './Pages/Products/Prod-details';
 import OthersProfile from './Pages/People/Others-profile';
 import UserList from './Pages/People/Users-list'
+import Footer from './Layout/Footer';
 
 class App extends Component {
   constructor() {
@@ -57,6 +58,7 @@ class App extends Component {
             <Route path='/profile/:userId' render={props => this.state.loggedInUser ? <OthersProfile theUser={this.state.loggedInUser} {...props} /> : <Redirect to='/' />} />
           </Switch>
         </main>
+        <Footer theUser={this.state.loggedInUser } />
       </>
     )
   }

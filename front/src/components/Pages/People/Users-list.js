@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react'
-import { Container, Row, Modal } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Container, Row } from 'react-bootstrap'
 
 import UserCard from './User-card'
 import Loader from '../../Shared/Spinner'

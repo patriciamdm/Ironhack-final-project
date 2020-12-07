@@ -37,9 +37,10 @@ class EditProduct extends Component {
             price: this.state.price,
             owner: this.props.theUser._id
         }
+
         this.productService
             .editProduct(this.state._id, editedProd)
-            .then(res => {
+            .then(() => {
                 this.props.reloadProducts()
                 this.props.hideModal()
             })
