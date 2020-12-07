@@ -4,6 +4,14 @@ const mongoose = require('mongoose')
 
 const User = require('../models/user.model')
 
+router.get('/getAllUsers', (req, res) => {
+
+    User
+        .find()
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
 router.get('/getOneUser/:user_id', (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(req.params.user_id)) {
@@ -25,12 +33,13 @@ router.put('/editUser/:user_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-// router.delete('/delete/:user_id', (req, res) => {
+// TO-DO: no se muy bien que hacer con el .then
+router.delete('/deleteUser/:user_id', (req, res) => {
 
-//     User
-//         .findByIdAndDelete(req.params.user_id)
-//         .then(response => res.json(response))
-//         .catch(err => res.status(500).json(err))
-// })
+    User
+        .findByIdAndDelete(req.params.user_id)
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
 
 module.exports = router

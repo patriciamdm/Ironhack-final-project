@@ -3,7 +3,6 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 import AuthService from '../../../services/auth.service'
 
-
 class Signup extends Component {
     constructor() {
         super()
@@ -18,7 +17,7 @@ class Signup extends Component {
         this.authService = new AuthService()
     }
 
-
+    // ^([6-7]{1})([0-9]{8})$ Para móviles españoles
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {

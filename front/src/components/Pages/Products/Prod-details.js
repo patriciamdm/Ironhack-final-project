@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Col, Button, Container, Row } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
-
 
 class ProductDetails extends Component {
     constructor(props) {
@@ -40,7 +39,7 @@ class ProductDetails extends Component {
                                 ?
                                 <>
                                     <Button onClick={() => this.showThisModal()} variant="secondary" size="sm">Edit product</Button>
-                                    {/* <Button onClick={} variant="danger" size="sm">Delete product</Button> */}
+                                    <Link to="/" className="btn btn-danger btn-sm">Delete product</Link>
                                 </>
                                 :
                                 <Button variant="secondary" size="sm">Show interest</Button>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Card, ButtonGroup, Button } from 'react-bootstrap'
 
-
 class ProductCard extends Component {
     constructor(props) {
         super(props)
@@ -38,6 +37,5 @@ class ProductCard extends Component {
         )
     }
 }
-
 
 export default ProductCard

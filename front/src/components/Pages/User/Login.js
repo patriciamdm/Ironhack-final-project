@@ -3,7 +3,6 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 import AuthService from '../../../services/auth.service'
 
-
 class Login extends Component {
     constructor() {
         super()

@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 
 const Product = require('../models/product.model')
 
-
 router.get('/getAllProducts', (req, res) => {
 
     Product
@@ -12,7 +11,6 @@ router.get('/getAllProducts', (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-
 
 router.get('/getOneProduct/:product_id', (req, res) => {
 
@@ -44,13 +42,12 @@ router.put('/editProduct/:product_id', (req, res) => {
 })
 
 // TO-DO: no se muy bien que hacer con el .then
-// router.delete('/delete/:product_id', (req, res) => {
+router.delete('/deleteProduct/:product_id', (req, res) => {
 
-//     Product
-//         .findByIdAndDelete(req.params.product_id)
-//         .then(response => res.json(response))
-//         .catch(err => res.status(500).json(err))
-// })
-
+    Product
+        .findByIdAndDelete(req.params.product_id)
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
 
 module.exports = router

@@ -3,7 +3,6 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 import ProductService from '../../../services/products.service'
 
-
 class EditProduct extends Component {
     constructor(props) {
         super(props)
@@ -79,6 +78,5 @@ class EditProduct extends Component {
         )
     }
 }
-
 
 export default EditProduct

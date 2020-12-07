@@ -9,7 +9,6 @@ import Loader from '../../Shared/Spinner'
 import ProductService from '../../../services/products.service'
 import SearchBar from '../../Layout/Searchbar'
 
-
 class ProductList extends Component {
     constructor() {
         super()
@@ -37,7 +36,7 @@ class ProductList extends Component {
     
     searchFor = search => {
         const filterProds = this.state.products.filter(elm => elm.name.toLowerCase().includes(search.toLowerCase()))
-        this.setState({ filteredProds: filterProds }, () => console.log(this.state.filteredProds))
+        this.setState({ filteredProds: filterProds })
     }
 
     render() {
