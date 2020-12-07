@@ -43,14 +43,16 @@ class ProductList extends Component {
         return (
             <>
                 <Container>
+                    <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
                     <h1>All products</h1>
-                    {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{marginBottom: '20px'}}>Create new product</Link>}
+                    {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{marginBottom: '30px', marginTop: '10px'}}>Create new product</Link>}
+                    </article>
                     <SearchBar searchFor={value => this.searchFor(value)} />
                     <hr />
                     <Row>
                         {this.state.filteredProds
                             ?
-                            this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser }/>)
+                            this.state.filteredProds.reverse().map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser }/>)
                             :
                             <Loader />
                         }

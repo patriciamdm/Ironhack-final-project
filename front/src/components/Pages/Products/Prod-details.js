@@ -25,7 +25,9 @@ class ProductDetails extends Component {
         this.userService = new UserService()
     }
 
-    componentDidMount = () => {
+    componentDidMount = () => this.loadProducts()
+    
+    loadProducts = () => {
         this.productsService
             .getOneProduct(this.props.match.params.product_id)
             .then(res => this.setState({ product: res.data }, () => this.getOwner()))
@@ -89,7 +91,7 @@ class ProductDetails extends Component {
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>
-                                        <Button onClick={() => this.handleEditModal(true)} variant="secondary" size="sm">Edit product</Button>
+                                        <Button onClick={() => this.handleEditModal(true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Edit product</Button>
                                         <Button onClick={() => this.handleDeleteModal(true)} variant="danger" size="sm">Delete product</Button>
                                     </>
                                     :

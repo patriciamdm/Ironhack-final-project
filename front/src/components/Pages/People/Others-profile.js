@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 
 import ProductCard from '../Products/Prod-card'
 import EmailForm from '../../Shared/Email-form'
@@ -56,7 +55,7 @@ class OthersProfile extends Component {
                                     <img src={this.state.user.image} alt="User avatar" />
                                 </Col>
                                 <Col md={9}>
-                                    <h1>Welcome {this.state.user.username}</h1>
+                                    <h1>{this.state.user.username}'s profile</h1>
                                     <hr/>
                                     <h6>Email: {this.state.user.email}</h6>
                                     <h6>Phone: {this.state.user.phone}</h6>
@@ -70,7 +69,7 @@ class OthersProfile extends Component {
                             <Row>
                                 {this.state.products
                                     ?
-                                    this.state.products.map(elm => <ProductCard key={elm._id} showModal={visib => this.handleModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)
+                                    this.state.products.map(elm => <ProductCard key={elm._id} showModal={visib => this.handleModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser} />)
                                     :
                                     <Loader />
                                 }

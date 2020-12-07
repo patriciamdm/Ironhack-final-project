@@ -53,8 +53,11 @@ class UserProfile extends Component {
                             <Button onClick={() => this.handleDeleteUserModal(true)} variant="danger" size="sm">Delete account</Button>
                         </Col>
                     </Row>
-                    <br/>
-                    <h2>My products</h2>
+                    <br />
+                    <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
+                    <h2 style={{margin: '0px'}}>My products</h2>
+                    {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{margin: '0px'}}>Create new product</Link>}
+                    </article>
                     <hr/>
                     <Row>
                         {this.state.products

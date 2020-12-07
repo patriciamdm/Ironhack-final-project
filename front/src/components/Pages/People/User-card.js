@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Card, ButtonGroup, Button } from 'react-bootstrap'
+import { Col, Card, Button } from 'react-bootstrap'
 
 class UserCard extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class UserCard extends Component {
                     ?
                     <Link to={'/profile'}>
                         <Card className="user-card" style={{height: '100px', padding: '10px'}}>
-                            <img src={this.state.user.image} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
+                            <img src={this.state.user.image} alt={this.state.user.username} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
                             <article style={{height: '80px'}}>
                                 <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
                                 <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
@@ -27,7 +27,7 @@ class UserCard extends Component {
                     :
                     <Link to={`/profile/${this.state.user._id}`}>
                         <Card className="user-card" style={{height: '100px', padding: '10px'}}>
-                            <img src={this.state.user.image} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
+                            <img src={this.state.user.image} alt={this.state.user.username} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
                             <article style={{height: '80px'}}>
                                 <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
                                 <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
