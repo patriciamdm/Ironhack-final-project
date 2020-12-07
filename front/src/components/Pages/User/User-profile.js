@@ -37,7 +37,6 @@ class UserProfile extends Component {
     defineEditProd = prodId => this.setState({ prodToEdit: prodId})
 
     render() {
-        //console.log(this.state.user)
         return (
             <>
                 <Container className="profile">

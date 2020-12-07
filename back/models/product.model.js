@@ -36,6 +36,7 @@ const Product = mongoose.model("Product", productSchema)
 
 module.exports = Product
 
+// TO-DO
 // ,
 //     location: {
 //         latitude:  {

@@ -13,7 +13,6 @@ class Signup extends Component {
             email: '',
             phone: undefined
         }
-
         this.authService = new AuthService()
     }
 
@@ -31,7 +30,6 @@ class Signup extends Component {
             })
             .catch(err => console.log('ERROR IN SIGN UP', err))
     }
-
 
     render() {
         return (

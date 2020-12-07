@@ -10,10 +10,8 @@ class Login extends Component {
             username: '',
             password: ''
         }
-
         this.authService = new AuthService()
     }
-
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
     
@@ -28,7 +26,6 @@ class Login extends Component {
             })
             .catch(err => console.log('ERROR IN LOG IN', err))
     }
-
 
     render() {
         return (

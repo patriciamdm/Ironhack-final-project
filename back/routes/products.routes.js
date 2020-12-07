@@ -41,7 +41,6 @@ router.put('/editProduct/:product_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-// TO-DO: no se muy bien que hacer con el .then
 router.delete('/deleteProduct/:product_id', (req, res) => {
 
     Product

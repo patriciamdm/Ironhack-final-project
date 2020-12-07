@@ -37,10 +37,6 @@ router.post('/signup', (req, res) => {
         })
 })
 
-
-
-
-
 router.post('/login', (req, res, next) => {
 
     passport.authenticate('local', (err, theUser, failureDetails) => {
@@ -60,15 +56,11 @@ router.post('/login', (req, res, next) => {
     })(req, res, next)
 })
 
-
-
 router.post('/logout', (req, res) => {
     req.logout()
     res.status(200).json({ message: 'Log out success!' });
 })
 
-
 router.get('/loggedin', (req, res) => req.isAuthenticated() ? res.status(200).json(req.user) : res.status(403).json({ message: 'Unauthorized' }))
-
 
 module.exports = router
