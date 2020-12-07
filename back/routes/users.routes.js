@@ -25,4 +25,12 @@ router.put('/editUser/:user_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
+// router.delete('/delete/:user_id', (req, res) => {
+
+//     User
+//         .findByIdAndDelete(req.params.user_id)
+//         .then(response => res.json(response))
+//         .catch(err => res.status(500).json(err))
+// })
+
 module.exports = router

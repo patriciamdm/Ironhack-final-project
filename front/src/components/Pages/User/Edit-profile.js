@@ -26,6 +26,7 @@ class EditUser extends Component {
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
+    
     handleSubmit = e => {
         e.preventDefault()
         const editedUser = {
@@ -37,15 +38,13 @@ class EditUser extends Component {
 
         this.userService
             .editUser(this.state._id, editedUser)
-            .then(loggedUser => {
-                //console.log(window)
-                //console.log(this)
-                // this.props.setUser(loggedUser.data)
-                this.props.history.push('/profile') // TO-DO: Redirigir al perfil (no lo consigo), el formulario se manda y actualiza el usuario
+            .then(user => this.userService.getOneUser(user.data._id))
+            .then(user => {
+                this.props.setUser(user.data)
+                this.props.history.push('/profile')
             })
-            .catch(err => console.log('ERROR IN SIGN UP', err))
+            .catch(err => console.log('ERROR IN EDIT', err))
     }
-
 
     render() {
         return (

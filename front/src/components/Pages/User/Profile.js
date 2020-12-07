@@ -50,7 +50,7 @@ class Profile extends Component {
                             <h6>Email: {this.state.user.email}</h6>
                             <h6>Phone: {this.state.user.phone}</h6>
                             <Link to={`/editUser/${this.state.user._id}`} className="btn btn-secondary btn-sm">Edit profile</Link>
-                            <Link to="/" className="btn btn-secondary btn-sm">Delete profile</Link>
+                            <Link to="/" className="btn btn-danger btn-sm">Delete profile</Link>
                         </Col>
                     </Row>
                     <br/>
