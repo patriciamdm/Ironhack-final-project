@@ -8,7 +8,7 @@ import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
 
-class Profile extends Component {
+class UserProfile extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -87,4 +87,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+export default UserProfile

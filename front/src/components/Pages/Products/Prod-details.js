@@ -29,14 +29,18 @@ class ProductDetails extends Component {
     getOwner = () => {
         this.userService
             .getOneUser(this.state.product.owner)
-            .then(user => {
-                console.log(user)
-                this.setState({ owner: user.data })
-            })
+            .then(user => this.setState({ owner: user.data }))
             .catch(err => console.log('ERROR WITH PRODUCT OWNER', err))
     }
 
     handleModal = visibility => this.setState({ showDeleteModal: visibility })
+
+    deleteProduct = () => {
+        this.productsService
+            .deleteProduct(this.state.product._id)
+            .then(() => this.props.history.push('/products'))
+            .catch(err => console.log('ERROR DELETIN PRODUCT', err))
+    }
 
     render() {
         return (
@@ -53,7 +57,12 @@ class ProductDetails extends Component {
                                 <hr />
                                 {this.state.owner
                                     ?
-                                        <h6>Sold by: <Link to={`/profile/${this.state.owner._id}`}>{this.state.owner.username}</Link></h6>
+                                    this.state.owner._id === this.props.theUser._id
+                                            ?
+                                            <h6>Sold by: <Link to={`/profile`}>{this.state.owner.username}</Link></h6>
+                                            :
+                                            <h6>Sold by: <Link to={`/profile/${this.state.owner._id}`}>{this.state.owner.username}</Link></h6>
+                                    
                                     :
                                     <>
                                         <h6>Sold by: Unknown</h6>
@@ -79,13 +88,12 @@ class ProductDetails extends Component {
                     }
                 </Container>
                 <Modal show={this.state.showDeleteModal} onHide={() => this.handleModal(false)}>
-                    {/* <EditProduct hideModal={() => this.handleModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} /> */}
                     <Modal.Body><b>Are you sure you want to delete this product?</b></Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.handleModal(false)}>
                             No, go back
                         </Button>
-                        <Button variant="danger" onClick={() => this.handleModal(false)}>
+                        <Button variant="danger" onClick={() => this.deleteProduct()}>
                             Yes, delete
                         </Button>
                     </Modal.Footer>
