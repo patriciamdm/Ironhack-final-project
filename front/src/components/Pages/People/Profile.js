@@ -6,7 +6,6 @@ import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
 
-
 class Profile extends Component {
     constructor(props) {
         super(props)

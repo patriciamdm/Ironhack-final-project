@@ -16,7 +16,6 @@ import ProductList from './Pages/Products/Products-list';
 import NewProduct from './Pages/Products/New-product';
 import ProductDetails from './Pages/Products/Prod-details';
 
-
 class App extends Component {
   constructor() {
     super()

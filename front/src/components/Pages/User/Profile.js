@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-
 import ProductCard from '../Products/Prod-card'
 import EditProduct from '../Products/Edit-product'
 import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
-
 
 class Profile extends Component {
     constructor(props) {

@@ -12,7 +12,6 @@ class AuthService {
     login = creds => this.apiHandler.post('/login', creds)
     logout = () => this.apiHandler.post('/logout')
     loggedin = () => this.apiHandler.get('/loggedin')
-
 }
     
 export default AuthService

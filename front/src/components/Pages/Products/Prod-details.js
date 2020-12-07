@@ -7,7 +7,6 @@ import Loader from '../../Shared/Spinner'
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 
-
 class ProductDetails extends Component {
     constructor(props) {
         super(props)
