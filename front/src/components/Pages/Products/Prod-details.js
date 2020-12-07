@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Col, Button, Container, Row, Modal } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
+import EditProduct from './Edit-product'
+import EmailForm from '../../Shared/Email-form'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
@@ -13,7 +15,11 @@ class ProductDetails extends Component {
         this.state = {
             product: undefined,
             owner: undefined,
-            showDeleteModal: false
+            showDeleteModal: false,
+            showEditModal: false,
+            showContactModal: false,
+            showEmailModal: false,
+            showWppModal: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -33,7 +39,9 @@ class ProductDetails extends Component {
             .catch(err => console.log('ERROR WITH PRODUCT OWNER', err))
     }
 
-    handleModal = visibility => this.setState({ showDeleteModal: visibility })
+    handleEditModal = visibility => this.setState({ showEditModal: visibility })
+
+    handleDeleteModal = visibility => this.setState({ showDeleteModal: visibility })
 
     deleteProduct = () => {
         this.productsService
@@ -41,6 +49,12 @@ class ProductDetails extends Component {
             .then(() => this.props.history.push('/products'))
             .catch(err => console.log('ERROR DELETIN PRODUCT', err))
     }
+
+    handleContactModal = visibility => this.setState({ showContactModal: visibility })
+    
+    handleEmailModal = visib => this.setState({ showEmailModal: visib })
+    
+    handleWppModal = visib => this.setState({showWppModal: visib})
 
     render() {
         return (
@@ -75,11 +89,11 @@ class ProductDetails extends Component {
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>
-                                        <Button onClick={() => this.showThisModal()} variant="secondary" size="sm">Edit product</Button>
-                                        <Button onClick={() => this.handleModal(true)} variant="danger" size="sm">Delete product</Button>
+                                        <Button onClick={() => this.handleEditModal(true)} variant="secondary" size="sm">Edit product</Button>
+                                        <Button onClick={() => this.handleDeleteModal(true)} variant="danger" size="sm">Delete product</Button>
                                     </>
                                     :
-                                    <Button variant="secondary" size="sm">Show interest</Button>
+                                    <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm">Show interest</Button>
                                 }
                             </Col>
                         </Row>
@@ -87,17 +101,46 @@ class ProductDetails extends Component {
                         <Loader />
                     }
                 </Container>
-                <Modal show={this.state.showDeleteModal} onHide={() => this.handleModal(false)}>
-                    <Modal.Body><b>Are you sure you want to delete this product?</b></Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => this.handleModal(false)}>
-                            No, go back
-                        </Button>
-                        <Button variant="danger" onClick={() => this.deleteProduct()}>
-                            Yes, delete
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                {this.state.product
+                    &&
+                    <>
+                    <Modal show={this.state.showEditModal} onHide={() => this.handleEditModal(false)}>
+                        <Modal.Body>
+                            <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                        </Modal.Body>
+                    </Modal>
+                    <Modal show={this.state.showDeleteModal} onHide={() => this.handleDeleteModal(false)}>
+                        <Modal.Body><b>Are you sure you want to delete this product?</b></Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>
+                                No, go back
+                            </Button>
+                            <Button variant="danger" onClick={() => this.deleteProduct()}>
+                                Yes, delete
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                    </>
+                }
+                {this.state.owner
+                    &&
+                    <>
+                    <Modal show={this.state.showContactModal} onHide={() => this.handleContactModal(false)}>
+                        <Modal.Body><b>How would you like to contact this seller?</b></Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>
+                                Via Email
+                            </Button>
+                            <a className="btn btn-secondary" target="_blank" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a>
+                        </Modal.Footer>
+                    </Modal>
+                    <Modal show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
+                        <Modal.Body>
+                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner.email} fromUser={this.props.theUser.email} subject={this.state.product.name}/>
+                        </Modal.Body>
+                    </Modal>
+                    </>
+                }
             </>
         )
     }

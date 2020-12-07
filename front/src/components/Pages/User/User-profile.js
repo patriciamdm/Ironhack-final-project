@@ -32,7 +32,7 @@ class UserProfile extends Component {
 
     handleEditProdModal = visibility => this.setState({ showEditProdModal: visibility })
 
-    handleDeleteModal = visibility => this.setState({ showDeleteModal: visibility })
+    handleDeleteUserModal = visibility => this.setState({ showDeleteModal: visibility })
 
     defineEditProd = prodId => this.setState({ prodToEdit: prodId})
 
@@ -50,7 +50,7 @@ class UserProfile extends Component {
                             <h6>Email: {this.state.user.email}</h6>
                             <h6>Phone: {this.state.user.phone}</h6>
                             <Link to={`/editUser/${this.state.user._id}`} className="btn btn-secondary btn-sm">Edit profile</Link>
-                            <Button onClick={() => this.handleModal(true)} variant="danger" size="sm">Delete product</Button>
+                            <Button onClick={() => this.handleDeleteUserModal(true)} variant="danger" size="sm">Delete account</Button>
                         </Col>
                     </Row>
                     <br/>
@@ -59,7 +59,7 @@ class UserProfile extends Component {
                     <Row>
                         {this.state.products
                             ?
-                            this.state.products.map(elm => <ProductCard key={elm._id} showModal={visib => this.handleModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)
+                            this.state.products.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)
                             :
                             <Loader />
                         }
@@ -70,7 +70,7 @@ class UserProfile extends Component {
                         <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.state.user} />
                     </Modal.Body>
                 </Modal>
-                <Modal show={this.state.showDeleteModal} onHide={() => this.handleDeleteModal(false)}>
+                <Modal show={this.state.showDeleteUserModal} onHide={() => this.handleDeleteUserModal(false)}>
                     <Modal.Body><b>Are you sure you want to delete you account? This action will be irreversible.</b></Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>

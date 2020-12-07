@@ -32,6 +32,9 @@ class Navigation extends Component {
                                 <Link to="/products">
                                     <Nav.Link as="div">Products</Nav.Link>
                                 </Link>
+                                <Link to="/users">
+                                    <Nav.Link as="div">Users</Nav.Link>
+                                </Link>
                                 <Link to="/profile">
                                     <Nav.Link as="div">Profile</Nav.Link>
                                 </Link>

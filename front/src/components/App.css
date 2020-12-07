@@ -81,3 +81,12 @@ h1, h2, h3, h4 {
 .profile-info .btn {
     margin-right: 20px;
 }
+
+.user-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.user-card article {
+}

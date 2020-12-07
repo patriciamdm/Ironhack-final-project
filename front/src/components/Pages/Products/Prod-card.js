@@ -8,7 +8,7 @@ class ProductCard extends Component {
         this.state = {}
     }
 
-    showThisModal = () => {
+    showModal = () => {
         this.props.productToEdit(this.props.product._id)
         this.props.showModal(true)
     }
@@ -25,7 +25,7 @@ class ProductCard extends Component {
                         {this.props.product.owner === this.props.theUser._id
                             ?
                             <ButtonGroup size="sm" className="btn-block">
-                                <Button onClick={() => this.showThisModal()} variant="secondary" size="sm">Edit product</Button>
+                                <Button onClick={() => this.showModal()} variant="secondary" size="sm">Edit product</Button>
                                 <Link to={`/products/${this.props.product._id}`} className="btn btn-secondary btn-sm">View details</Link>
                             </ButtonGroup>
                             :

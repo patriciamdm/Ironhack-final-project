@@ -30,7 +30,7 @@ class ProductList extends Component {
             .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
 
-    handleModal = visibility => this.setState({ showModal: visibility })
+    handleEditProdModal = visibility => this.setState({ showModal: visibility })
 
     defineEditProd = prodId => this.setState({ prodToEdit: prodId })
     
@@ -50,15 +50,15 @@ class ProductList extends Component {
                     <Row>
                         {this.state.filteredProds
                             ?
-                            this.state.filteredProds.map(elm => <ProductCard key={elm._id} showModal={visib => this.handleModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser }/>)
+                            this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser }/>)
                             :
                             <Loader />
                         }
                     </Row>
                 </Container>
-                <Modal show={this.state.showModal} onHide={() => this.handleModal(false)}>
+                <Modal show={this.state.showModal} onHide={() => this.handleEditProdModal(false)}>
                     <Modal.Body>
-                        <EditProduct hideModal={() => this.handleModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                        <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
                     </Modal.Body>
                 </Modal>
             </>
