@@ -6,18 +6,25 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import AuthService from '../services/auth.service';
 
+
 import Navigation from './Layout/Navigation';
-import Home from './Pages/Home';
+import Footer from './Layout/Footer';
+
+import Home from './Pages/Home/Home';
 import Signup from './Pages/User/Signup';
 import Login from './Pages/User/Login';
+
 import UserProfile from './Pages/User/User-profile';
 import EditUser from './Pages/User/Edit-profile';
+
 import ProductList from './Pages/Products/Products-list';
-import NewProduct from './Pages/Products/New-product';
 import ProductDetails from './Pages/Products/Prod-details';
-import OthersProfile from './Pages/People/Others-profile';
+import NewProduct from './Pages/Products/New-product';
+
 import UserList from './Pages/People/Users-list'
-import Footer from './Layout/Footer';
+import OthersProfile from './Pages/People/Others-profile';
+import ScrollToTop from './Layout/Scroll-top';
+
 
 class App extends Component {
   constructor() {
@@ -36,11 +43,15 @@ class App extends Component {
       .then(res => this.setUser(res.data))
       .catch(err => console.log('ERROR IN COMP MOUNT AUTH', err))
   }
+
+  scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
   
   render() {
     return (
       <>
-        <Navigation setUser={this.setUser} theUser={this.state.loggedInUser }/>
+        <Navigation setUser={this.setUser} theUser={this.state.loggedInUser} />
         <main>
           <Switch>
             <Route path='/' exact render={() => <Home theUser={this.state.loggedInUser} />} />
@@ -59,6 +70,7 @@ class App extends Component {
           </Switch>
         </main>
         <Footer theUser={this.state.loggedInUser } />
+        <ScrollToTop scrollToTop={this.scrollToTop}/>
       </>
     )
   }

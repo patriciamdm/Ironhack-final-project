@@ -3,7 +3,7 @@ body {
 }
 
 main {
-    min-height: 80vh;
+    min-height: 75vh;
 }
 
 img  {
@@ -11,7 +11,7 @@ img  {
     object-fit: cover;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3 {
     font-weight: 200;
 }
 
@@ -33,6 +33,9 @@ h1, h2, h3, h4 {
 .footer a {
     text-decoration: none;
     color: white
+}
+.footer {
+    color: white;
 }
 
 .btn {

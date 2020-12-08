@@ -77,7 +77,7 @@ class OthersProfile extends Component {
                         </Container>
                         <Modal  show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
                             <Modal.Body>
-                                <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user.email} fromUser={this.props.theUser.email} subject=""/>
+                                <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
                             </Modal.Body>
                         </Modal>
                     </>
