@@ -13,32 +13,57 @@ class Footer extends Component {
 
     render() {
         return (
-            <Navbar className="footer" variant="dark" expand="md" style={{ marginTop: '70px', padding: '30px' }}>
-                <Container className="justify-content-start">
+            <Navbar className="footer" variant="dark" style={{ marginTop: '70px', padding: '30px 0', position: 'relative' }}>
+                <Container>
                     <Row>
-                        <Col xs={6} sm={6}>
-                            <Link to="/">
-                                <Nav.Link as="div">Home</Nav.Link>
-                            </Link>
-                            <Link to="/products">
-                                <Nav.Link as="div">Products</Nav.Link>
-                            </Link>
-                            <Link to="/users">
-                                <Nav.Link as="div">Users</Nav.Link>
-                            </Link>
-                            <Link to="/profile">
-                                <Nav.Link as="div">Profile</Nav.Link>
-                            </Link>
+                        <Col sm={12} md={5} lg={4} style={{paddingRight: '30px'}}>
+                            <h4>Ironhack Final Project</h4>
+                            <p>Copyright © 2020 Patriapp</p>
+                            <p>Developed by Manuel Barreda and Patricia Muñoz</p>
                         </Col>
-                        <Col xs={6} sm={6}>
-                            <Link to='/signup'>
-                                <Nav.Link as="div">Sign up</Nav.Link>
-                            </Link>
-                            <Link to='/login'>
-                                <Nav.Link as="div">Log in</Nav.Link>
-                            </Link>
+                        {/* <Col> */}
+                        <Col sm={12} md={7} lg={8}>
+                        {/* <Col sm={12} style={{flexBasis: '0', flexGrow: '1'}}> */}
+                            <Row style={{padding: '10px'}}>
+                            {/* <Row style={{display: 'flex', flexWrap: 'wrap'}}> */}
+                                <Col sm={6} md={3}>
+                                    <h6>Patriapp</h6>
+                                    <ul style={{listStyle: 'none', padding: '0px'}}>
+                                        <li><Link to="/"><Nav.Link as="div" style={{padding: '10px 0px'}}>Home</Nav.Link></Link></li>
+                                        <li><Link to="/products"><Nav.Link as="div" style={{padding: '10px 0px'}}>Products</Nav.Link></Link></li>
+                                        <li><Link to="/users"><Nav.Link as="div" style={{padding: '10px 0px'}}>Users</Nav.Link></Link></li>
+                                        <li><Link to="/profile"><Nav.Link as="div" style={{padding: '10px 0px'}}>Profile</Nav.Link></Link></li>
+                                    </ul>
+                                </Col>
+                                <Col  sm={6} md={3}>
+                                    <h6>Patriapp</h6>
+                                    <ul style={{listStyle: 'none', padding: '0px'}}>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>About Us</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Contact</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Careers</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Press</Nav.Link></li>
+                                    </ul>
+                                </Col>
+                                <Col  sm={6} md={3}>
+                                    <h6>Support</h6>
+                                    <ul style={{listStyle: 'none', padding: '0px'}}>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>FAQs</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Security advice</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Publishing rules</Nav.Link></li>
+                                    </ul>
+                                </Col>
+                                <Col  sm={6} md={3}>
+                                    <h6>Legal</h6>
+                                    <ul style={{listStyle: 'none', padding: '0px'}}>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Terms & Conditions</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Privacy Policy</Nav.Link></li>
+                                        <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Cookies</Nav.Link></li>
+                                    </ul>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
+                    
                 </Container>
             </Navbar>
         )

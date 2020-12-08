@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap'
 
 import UserCard from './User-card'
 import Loader from '../../Shared/Spinner'
-import SearchBar from '../../Layout/Searchbar'
+import SearchBar from '../../Shared/Searchbar'
 
 import UserService from '../../../services/user.service'
 
