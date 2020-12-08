@@ -60,7 +60,7 @@ class OthersProfile extends Component {
                                     <h6>Email: {this.state.user.email}</h6>
                                     <h6>Phone: {this.state.user.phone}</h6>
                                     <Button onClick={() => this.handleEmailModal(true)} variant="secondary" size="sm">Contact via Email</Button>
-                                    <a className="btn btn-secondary btn-sm" target="_blank" href={`https://wa.me/+34${this.state.user.phone}?text=Mensaje automático de la Patriapp`}>Contact via WhatsApp</a>
+                                    <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Mensaje automático de la Patriapp`}>Contact via WhatsApp</a>
                                 </Col>
                             </Row>
                             <br/>

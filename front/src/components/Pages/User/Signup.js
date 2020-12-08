@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
+import Spinner from '../../Shared/Spinner'
+
 import AuthService from '../../../services/auth.service'
+import FilesService from '../../../services/upload.service'
 
 class Signup extends Component {
     constructor() {
@@ -11,9 +14,11 @@ class Signup extends Component {
             password: '',
             image: '',
             email: '',
-            phone: undefined
+            phone: undefined,
+            uploadingActive: false
         }
         this.authService = new AuthService()
+        this.filesService = new FilesService()
     }
 
     // ^([6-7]{1})([0-9]{8})$ Para móviles españoles
@@ -29,6 +34,21 @@ class Signup extends Component {
                 this.props.history.push('/products')
             })
             .catch(err => console.log('ERROR IN SIGN UP', err))
+    }
+
+    handleImageUpload = e => {
+
+        const uploadData = new FormData()
+        uploadData.append('image', e.target.files[0])
+
+        this.setState({ uploadingActive: true })
+
+        this.filesService
+            .uploadImage(uploadData)
+            .then(response => {
+                this.setState({ image: response.data.secure_url, uploadingActive: false })
+            })
+            .catch(err => console.log('ERRORRR!', err))
     }
 
     render() {
@@ -48,8 +68,8 @@ class Signup extends Component {
                                 <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleInput} />
                             </Form.Group>
                             <Form.Group controlId="image">
-                                <Form.Label>Image (URL)</Form.Label>
-                                <Form.Control type="text" name="image" value={this.state.image} onChange={this.handleInput} />
+                                <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
+                                <Form.Control type="file" onChange={this.handleImageUpload} />
                             </Form.Group>
                             <Form.Group controlId="email">
                                 <Form.Label>Email</Form.Label>

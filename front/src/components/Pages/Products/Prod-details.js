@@ -133,7 +133,7 @@ class ProductDetails extends Component {
                             <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>
                                 Via Email
                             </Button>
-                            <a className="btn btn-secondary" target="_blank" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a>
+                            <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a>
                         </Modal.Footer>
                     </Modal>
                     <Modal show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
