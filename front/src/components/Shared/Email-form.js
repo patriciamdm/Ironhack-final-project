@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 import EmailService from '../../services/mailing.service'
 
@@ -34,33 +34,25 @@ class EmailForm extends Component {
 
     render() {
         return (
-            <Container>
-                <Row className="justify-content-center">
-                    <Col>
-                        <h1>Send an email</h1>
-                        <br />
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="from">
-                                <Form.Label>From</Form.Label>
-                                <Form.Control type="email" name="from" value={`${this.state.fromName} <${this.state.fromEmail}>`} disabled />
-                            </Form.Group>
-                            <Form.Group controlId="to">
-                                <Form.Label>To</Form.Label>
-                                <Form.Control type="email" name="to" value={`${this.state.toName} <${this.state.toEmail}>`} disabled />
-                            </Form.Group>
-                            <Form.Group controlId="subject">
-                                <Form.Label>Subject</Form.Label>
-                                <Form.Control type="text" name="subject" value={this.state.subject} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="message">
-                                <Form.Label>Message</Form.Label>
-                                <Form.Control type="text" as="textarea" name="message" value={this.state.message} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Button variant="secondary" type="submit">Submit</Button>
-                        </Form>
-                    </Col>
-                </Row>
-            </Container>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="from">
+                    <Form.Label>From</Form.Label>
+                    <Form.Control type="email" name="from" value={`${this.state.fromName} <${this.state.fromEmail}>`} disabled />
+                </Form.Group>
+                <Form.Group controlId="to">
+                    <Form.Label>To</Form.Label>
+                    <Form.Control type="email" name="to" value={`${this.state.toName} <${this.state.toEmail}>`} disabled />
+                </Form.Group>
+                <Form.Group controlId="subject">
+                    <Form.Label>Subject</Form.Label>
+                    <Form.Control type="text" name="subject" value={this.state.subject} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="message">
+                    <Form.Label>Message</Form.Label>
+                    <Form.Control type="text" as="textarea" name="message" value={this.state.message} onChange={this.handleInput} />
+                </Form.Group>
+                <Button variant="secondary" type="submit" block>Submit</Button>
+            </Form>
         )
     }
 }

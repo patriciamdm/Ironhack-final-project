@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Col, Button, Container, Row, Modal } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
+import PopUp from '../../Shared/Pop-up-modal'
+import PopUpButtons from '../../Shared/Pop-up-buttons'
 import EditProduct from './Edit-product'
 import EmailForm from '../../Shared/Email-form'
 
@@ -49,7 +51,7 @@ class ProductDetails extends Component {
         this.productsService
             .deleteProduct(this.state.product._id)
             .then(() => this.props.history.push('/products'))
-            .catch(err => console.log('ERROR DELETIN PRODUCT', err))
+            .catch(err => console.log('ERROR DELETING PRODUCT', err))
     }
 
     handleContactModal = visibility => this.setState({ showContactModal: visibility })
@@ -106,12 +108,11 @@ class ProductDetails extends Component {
                 {this.state.product
                     &&
                     <>
-                    <Modal show={this.state.showEditModal} onHide={() => this.handleEditModal(false)}>
-                        <Modal.Body>
-                            <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
-                        </Modal.Body>
-                    </Modal>
-                    <Modal show={this.state.showDeleteModal} onHide={() => this.handleDeleteModal(false)}>
+                    <PopUp show={this.state.showEditModal} hide={() => this.handleEditModal(false)} title="Edit product">
+                        <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                    </PopUp>
+
+                    <PopUpButtons show={this.state.showDeleteModal} hide={() => this.handleDeleteModal(false)} title="Wait!">
                         <Modal.Body><b>Are you sure you want to delete this product?</b></Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>
@@ -121,26 +122,23 @@ class ProductDetails extends Component {
                                 Yes, delete
                             </Button>
                         </Modal.Footer>
-                    </Modal>
+                    </PopUpButtons>
                     </>
                 }
                 {this.state.owner
                     &&
                     <>
-                    <Modal show={this.state.showContactModal} onHide={() => this.handleContactModal(false)}>
+                    <PopUpButtons show={this.state.showContactModal} hide={() => this.handleContactModal(false)} title="Contact seller">
                         <Modal.Body><b>How would you like to contact this seller?</b></Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>
-                                Via Email
-                            </Button>
+                            <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>Via Email</Button>
                             <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a>
                         </Modal.Footer>
-                    </Modal>
-                    <Modal show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
-                        <Modal.Body>
-                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name}/>
-                        </Modal.Body>
-                    </Modal>
+                    </PopUpButtons>
+                    
+                    <PopUp show={this.state.showEmailModal} hide={() => this.handleEmailModal(false)} title="Send an email">
+                        <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />
+                    </PopUp>
                     </>
                 }
             </>

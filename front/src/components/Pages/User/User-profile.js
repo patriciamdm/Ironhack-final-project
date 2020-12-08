@@ -2,11 +2,15 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import ProductCard from '../Products/Prod-card'
-import EditProduct from '../Products/Edit-product'
 import Loader from '../../Shared/Spinner'
+import ProductCard from '../Products/Prod-card'
+import PopUp from '../../Shared/Pop-up-modal'
+import EditProduct from '../Products/Edit-product'
+import PopUpButtons from '../../Shared/Pop-up-buttons'
 
 import ProductService from '../../../services/products.service'
+import UserService from '../../../services/user.service'
+
 
 class UserProfile extends Component {
     constructor(props) {
@@ -16,9 +20,10 @@ class UserProfile extends Component {
             products: undefined,
             showEditProdModal: false,
             prodToEdit: undefined,
-            showDeleteModal: false
+            showDeleteUserModal: false
         }
         this.productsService = new ProductService()
+        this.userService = new UserService()
     }
 
     componentDidMount = () => this.loadProducts()
@@ -32,9 +37,16 @@ class UserProfile extends Component {
 
     handleEditProdModal = visibility => this.setState({ showEditProdModal: visibility })
 
-    handleDeleteUserModal = visibility => this.setState({ showDeleteModal: visibility })
+    handleDeleteUserModal = visibility => this.setState({ showDeleteUserModal: visibility })
 
-    defineEditProd = prodId => this.setState({ prodToEdit: prodId})
+    defineEditProd = prodId => this.setState({ prodToEdit: prodId })
+    
+    deleteUser = () => {
+        this.userService
+            .deleteUser(this.state.user._id)
+            .then(() => this.props.history.push('/'))
+            .catch(err => console.log('ERROR DELETING USER', err))
+    }
 
     render() {
         return (
@@ -68,22 +80,22 @@ class UserProfile extends Component {
                         }
                     </Row>
                 </Container>
-                <Modal show={this.state.showEditProdModal} onHide={() => this.handleEditProdModal(false)}>
-                    <Modal.Body>
-                        <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.state.user} />
-                    </Modal.Body>
-                </Modal>
-                <Modal show={this.state.showDeleteUserModal} onHide={() => this.handleDeleteUserModal(false)}>
+                
+                <PopUp show={this.state.showEditProdModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.state.user} />
+                </PopUp>
+
+                <PopUpButtons show={this.state.showDeleteUserModal} hide={() => this.handleDeleteUserModal(false)} title="Caution!">
                     <Modal.Body><b>Are you sure you want to delete you account? This action will be irreversible.</b></Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>
+                        <Button variant="secondary" onClick={() => this.handleDeleteUserModal(false)}>
                             No, go back
                         </Button>
-                        <Button variant="danger" onClick={() => this.handleDeleteModal(false)}>
+                        <Button variant="danger" onClick={() => this.deleteUser()}>
                             Yes, delete
                         </Button>
                     </Modal.Footer>
-                </Modal>
+                </PopUpButtons>
             </>
         )
     }
