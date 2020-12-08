@@ -7,7 +7,7 @@ import EditProduct from './Edit-product'
 import Loader from '../../Shared/Spinner'
 
 import ProductService from '../../../services/products.service'
-import SearchBar from '../../Layout/Searchbar'
+import SearchBar from '../../Shared/Searchbar'
 
 class ProductList extends Component {
     constructor() {

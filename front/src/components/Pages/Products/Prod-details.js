@@ -138,7 +138,7 @@ class ProductDetails extends Component {
                     </Modal>
                     <Modal show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
                         <Modal.Body>
-                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner.email} fromUser={this.props.theUser.email} subject={this.state.product.name}/>
+                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name}/>
                         </Modal.Body>
                     </Modal>
                     </>

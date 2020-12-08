@@ -1,25 +1,35 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
+import EmailService from '../../services/mailing.service'
+
 class EmailForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            from: this.props.fromUser,
-            to: this.props.toUser,
+            fromEmail: this.props.fromUser.email,
+            fromName: this.props.fromUser.username,
+            toEmail: this.props.toUser.email,
+            toName: this.props.toUser.username,
             subject: this.props.subject,
             message: ''
         }
-
+        this.emailService = new EmailService()
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {
         e.preventDefault()
-
-        this.setState({ from: this.props.fromUser, to: this.props.toUser, subject: this.props.subject, message: '' })
+        this.sendEmail()
         this.props.hideModal()
+    }
+
+    sendEmail = () => {
+        this.emailService
+            .sendEmail(this.state)
+            .then(res => console.log('EMAIL SENT', res))
+            .catch(err => console.log('ERROR SENDING EMAIL', err))
     }
 
     render() {
@@ -32,11 +42,11 @@ class EmailForm extends Component {
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="from">
                                 <Form.Label>From</Form.Label>
-                                <Form.Control type="email" name="from" value={this.state.from} onChange={this.handleInput} disabled />
+                                <Form.Control type="email" name="from" value={`${this.state.fromName} <${this.state.fromEmail}>`} disabled />
                             </Form.Group>
                             <Form.Group controlId="to">
                                 <Form.Label>To</Form.Label>
-                                <Form.Control type="email" name="to" value={this.state.to} onChange={this.handleInput} disabled />
+                                <Form.Control type="email" name="to" value={`${this.state.toName} <${this.state.toEmail}>`} disabled />
                             </Form.Group>
                             <Form.Group controlId="subject">
                                 <Form.Label>Subject</Form.Label>
