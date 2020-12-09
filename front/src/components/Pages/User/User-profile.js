@@ -11,7 +11,6 @@ import PopUpButtons from '../../Shared/Pop-up-buttons'
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 
-
 class UserProfile extends Component {
     constructor(props) {
         super(props)
@@ -40,11 +39,14 @@ class UserProfile extends Component {
     handleDeleteUserModal = visibility => this.setState({ showDeleteUserModal: visibility })
 
     defineEditProd = prodId => this.setState({ prodToEdit: prodId })
-    
+
     deleteUser = () => {
         this.userService
             .deleteUser(this.state.user._id)
-            .then(() => this.props.history.push('/'))
+            .then(() => {
+                console.log(window)
+                // window.window.history.push('/')
+            })
             .catch(err => console.log('ERROR DELETING USER', err))
     }
 

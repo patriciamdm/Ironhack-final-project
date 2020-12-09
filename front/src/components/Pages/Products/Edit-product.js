@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
 import ProductService from '../../../services/products.service'
-import Loader from '../../Shared/Spinner'
+import FilesService from '../../../services/upload.service'
+
+import Spinner from '../../Shared/Spinner'
 
 class EditProduct extends Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class EditProduct extends Component {
         }
 
         this.productService = new ProductService()
+        this.filesService = new FilesService()
     }
 
     componentDidMount = () => {
@@ -48,6 +51,21 @@ class EditProduct extends Component {
             .catch(err => console.log('ERROR CREATING PRODUCT', err))
     }
 
+    handleImageUpload = e => {
+
+        const uploadData = new FormData()
+        uploadData.append('image', e.target.files[0])
+
+        this.setState({ uploadingActive: true })
+
+        this.filesService
+            .uploadImage(uploadData)
+            .then(response => {
+                this.setState({ image: response.data.secure_url, uploadingActive: false })
+            })
+            .catch(err => console.log('ERRORRR!', err))
+    }
+
     render() {
         return (
         <>
@@ -63,8 +81,8 @@ class EditProduct extends Component {
                         <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
                     </Form.Group>
                     <Form.Group controlId="image">
-                        <Form.Label>Image (URL)</Form.Label>
-                        <Form.Control type="text" name="image" value={this.state.image} onChange={this.handleInput} />
+                        <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
+                        <Form.Control type="file" onChange={this.handleImageUpload} />
                     </Form.Group>
                     <Form.Group controlId="price">
                         <Form.Label>Price</Form.Label>
@@ -73,7 +91,7 @@ class EditProduct extends Component {
                     <Button variant="secondary" type="submit">Submit</Button>
                 </Form>
                 :
-                <Loader />
+                <Spinner />
                 }
             </>
         )
