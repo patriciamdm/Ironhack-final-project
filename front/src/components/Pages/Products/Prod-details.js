@@ -91,7 +91,7 @@ class ProductDetails extends Component {
                                 }
                                 <p>{this.state.product.description}</p>
                                 <h6 className="price">Price: {this.state.product.price}€</h6>
-                                <h6 className="status">{this.state.product.status}</h6>
+                                <h6 className="status">{this.state.product.status}</h6>                
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>

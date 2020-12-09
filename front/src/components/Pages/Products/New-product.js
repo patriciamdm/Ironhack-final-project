@@ -75,7 +75,7 @@ class NewProduct extends Component {
                             <Form.Group controlId="category">
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control as="select" name="category" value={this.state.category} onChange={this.handleInput} >
-                                    <option value='' selected disabled hidden>Select category</option>
+                                    <option value='' disabled hidden>Select category</option>
                                     <option value='motor'>Motor</option>
                                     <option value='fashion'>Fashion</option>
                                     <option value='electronics'>Electronics</option>
@@ -92,8 +92,8 @@ class NewProduct extends Component {
                             <Form.Group controlId="location">
                                 <Form.Label>Location</Form.Label>
                                 <Form.Control as="select" name="location" value={this.state.location} onChange={this.handleInput}>
-                                    <option value='' selected disabled hidden>Select location</option>
-                                    {this.state.locationList.map(elm => <option value={elm.toLowerCase()}>{elm}</option>)}
+                                    <option value='' disabled hidden>Select location</option>
+                                    {this.state.locationList.map((elm, idx) => <option key={idx} value={elm.toLowerCase()}>{elm}</option>)}
                                 </Form.Control>
                             </Form.Group>
                             <Button variant="secondary" type="submit">Submit</Button>

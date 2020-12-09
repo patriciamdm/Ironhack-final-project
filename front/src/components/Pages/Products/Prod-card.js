@@ -21,8 +21,9 @@ class ProductCard extends Component {
                         <Card.Img variant="top" src={this.props.product.image} style={{height: '200px'}}/>
                         <Card.Body>
                             <Card.Title>{this.props.product.name}</Card.Title>
+                            <Card.Subtitle style={{fontStyle: 'italic', fontSize: '0.9rem', fontWeight: '300', marginBottom: '10px'}}>Price: {this.props.product.price}€</Card.Subtitle>
                             <Card.Text style={{height: '50px', overflow: 'hidden'}}>{this.props.product.description}</Card.Text>
-                            <Card.Subtitle  className="price">Price: {this.props.product.price}€</Card.Subtitle>
+                            <Card.Subtitle style={{textTransform: 'capitalize'}}>{this.props.product.location}</Card.Subtitle>
                             {this.props.product.owner === this.props.theUser._id
                                 ?
                                 <ButtonGroup size="sm" className="btn-block">

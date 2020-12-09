@@ -16,9 +16,9 @@ class UserCard extends Component {
                 {this.state.user._id === this.props.loggedUser._id
                     ?
                     <Link to={'/profile'}>
-                        <Card className="user-card" style={{height: '100px', padding: '10px'}}>
-                            <img src={this.state.user.image} alt={this.state.user.username} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
-                            <article style={{height: '80px'}}>
+                        <Card className="user-card" >
+                            <img src={this.state.user.image} alt={this.state.user.username}/>
+                            <article >
                                 <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
                                 <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
                             </article>
@@ -26,11 +26,11 @@ class UserCard extends Component {
                     </Link>
                     :
                     <Link to={`/profile/${this.state.user._id}`}>
-                        <Card className="user-card" style={{height: '100px', padding: '10px'}}>
-                            <img src={this.state.user.image} alt={this.state.user.username} style={{ width: '80px', height: '80px', objectFit: 'cover', marginRight: '10px'}}/>
-                            <article style={{height: '80px'}}>
+                        <Card className="user-card">
+                            <img src={this.state.user.image} alt={this.state.user.username}/>
+                            <article style={{}}>
                                 <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
-                                <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
+                                <Button variant="secondary" size="sm" style={{margin: '0px'}}>See more</Button>
                             </article>
                         </Card>
                     </Link>
