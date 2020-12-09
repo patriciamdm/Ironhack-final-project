@@ -5,6 +5,7 @@ import { Col, Card, ButtonGroup, Button } from 'react-bootstrap'
 class ProductCard extends Component {
     constructor(props) {
         super(props)
+        this.state={}
     }
 
     showModal = () => {
