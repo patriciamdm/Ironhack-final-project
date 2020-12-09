@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import Carousel from './Carousel'
+import Carousel from './Carousel/Carousel'
 
 const Home = ({theUser}) => {
     return (

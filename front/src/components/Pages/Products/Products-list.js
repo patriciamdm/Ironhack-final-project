@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { Dropdown } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
@@ -18,21 +19,7 @@ class ProductList extends Component {
             products: undefined,
             filteredProds: undefined,
             showModal: false,
-            prodToEdit: undefined,
-            sortActions: [{
-                name: "Newest",
-                method(arr) {
-                    console.log('SORT NEWEST', arr)
-                    arr.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
-                    //this.setState({filteredProds: arr})
-                }
-            }, {
-                name: "Price, low to high",
-                method() { console.log('SORT LOW TO HIGH PRICE') }
-            }, {
-                name: "Price, high to low",
-                method() { console.log('SORT HIGH TO LOW PRICE') }
-            }]
+            prodToEdit: undefined
         }
         this.productsService = new ProductService()
     }
@@ -49,18 +36,30 @@ class ProductList extends Component {
     handleEditProdModal = visibility => this.setState({ showModal: visibility })
 
     defineEditProd = prodId => this.setState({ prodToEdit: prodId })
-    
+
     searchFor = search => {
         const filterProds = this.state.products.filter(elm => elm.name.toLowerCase().includes(search.toLowerCase()))
         this.setState({ filteredProds: filterProds })
     }
 
-    sortByLastAdded = () => console.log('SORT NEWEST', this.state.filteredProds.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1))
-    //sortByLastAdded = () => this.state.filteredProds.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1)
 
-    sortByLowerPrice = () => this.state.filteredProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
+    sortByNewest = () => {
+        const filterProds = [...this.state.products]
+        filterProds.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
+        this.setState({ filteredProds: filterProds })
+    }
     
-    sortByHigherPrice = () => this.state.filteredProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
+    sortByLowPrice = () => {
+        const filterProds = [...this.state.products]
+        filterProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
+        this.setState({ filteredProds: filterProds })
+    }
+
+    sortByHighPrice = () => {
+        const filterProds = [...this.state.products]
+        filterProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
+        this.setState({ filteredProds: filterProds })
+    }
 
 
     render() {
@@ -76,7 +75,11 @@ class ProductList extends Component {
                     {this.state.filteredProds
                         ?
                         <>
-                            <DropdownButton title="Sort" actions={this.state.sortActions} products={this.state.filteredProds} />
+                            <DropdownButton title="Sort" products={this.state.filteredProds}>
+                                <Dropdown.Item as="button" onClick={() => this.sortByNewest()}>Newest</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => this.sortByLowPrice()}>Price, low to high</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => this.sortByHighPrice()}>Price, high to low</Dropdown.Item>
+                            </DropdownButton>
                             <br />
                             <Row>
                                 {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser} />)}
