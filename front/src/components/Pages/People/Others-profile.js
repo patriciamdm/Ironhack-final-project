@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
-import ProductCard from '../Products/Prod-card'
-import EmailForm from '../../Shared/Email-form'
 import Loader from '../../Shared/Spinner'
+import ProductCard from '../Products/Prod-card'
+import PopUp from '../../Shared/Pop-up-modal'
+import EmailForm from '../../Shared/Email-form'
+
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
@@ -75,11 +77,10 @@ class OthersProfile extends Component {
                                 }
                             </Row>
                         </Container>
-                        <Modal  show={this.state.showEmailModal} onHide={() => this.handleEmailModal(false)}>
-                            <Modal.Body>
-                                <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
-                            </Modal.Body>
-                        </Modal>
+                        
+                        <PopUp show={this.state.showEmailModal} hide={() => this.handleEmailModal(false)} title="Send an email">
+                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
+                        </PopUp>
                     </>
                     :
                     <Loader />

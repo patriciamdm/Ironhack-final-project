@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Container, Row, Modal } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import ProductCard from './Prod-card'
-import EditProduct from './Edit-product'
 import Loader from '../../Shared/Spinner'
+import SearchBar from '../../Shared/Searchbar'
+import DropdownButton from '../../Shared/Dropdown-button'
+import ProductCard from './Prod-card'
+import PopUp from '../../Shared/Pop-up-modal'
+import EditProduct from './Edit-product'
 
 import ProductService from '../../../services/products.service'
-import SearchBar from '../../Shared/Searchbar'
 
 class ProductList extends Component {
     constructor() {
@@ -16,7 +18,21 @@ class ProductList extends Component {
             products: undefined,
             filteredProds: undefined,
             showModal: false,
-            prodToEdit: undefined
+            prodToEdit: undefined,
+            sortActions: [{
+                name: "Newest",
+                method(arr) {
+                    console.log('SORT NEWEST', arr)
+                    arr.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
+                    //this.setState({filteredProds: arr})
+                }
+            }, {
+                name: "Price, low to high",
+                method() { console.log('SORT LOW TO HIGH PRICE') }
+            }, {
+                name: "Price, high to low",
+                method() { console.log('SORT HIGH TO LOW PRICE') }
+            }]
         }
         this.productsService = new ProductService()
     }
@@ -39,6 +55,14 @@ class ProductList extends Component {
         this.setState({ filteredProds: filterProds })
     }
 
+    sortByLastAdded = () => console.log('SORT NEWEST', this.state.filteredProds.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1))
+    //sortByLastAdded = () => this.state.filteredProds.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1)
+
+    sortByLowerPrice = () => this.state.filteredProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
+    
+    sortByHigherPrice = () => this.state.filteredProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
+
+
     render() {
         return (
             <>
@@ -49,20 +73,22 @@ class ProductList extends Component {
                     </article>
                     <SearchBar searchFor={value => this.searchFor(value)} />
                     <hr />
-                    <Row>
-                        {this.state.filteredProds
-                            ?
-                            this.state.filteredProds.reverse().map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser }/>)
-                            :
-                            <Loader />
-                        }
-                    </Row>
+                    {this.state.filteredProds
+                        ?
+                        <>
+                            <DropdownButton title="Sort" actions={this.state.sortActions} products={this.state.filteredProds} />
+                            <br />
+                            <Row>
+                                {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser} />)}
+                            </Row>
+                        </>
+                        :
+                            <Row><Loader /></Row>
+                    }
                 </Container>
-                <Modal show={this.state.showModal} onHide={() => this.handleEditProdModal(false)}>
-                    <Modal.Body>
-                        <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
-                    </Modal.Body>
-                </Modal>
+                <PopUp show={this.state.showModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                </PopUp>
             </>
         )
     }

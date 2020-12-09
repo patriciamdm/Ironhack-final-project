@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 import ProductService from '../../../services/products.service'
 import Loader from '../../Shared/Spinner'
@@ -50,38 +50,32 @@ class EditProduct extends Component {
 
     render() {
         return (
-            <Container>
-                <Row className="justify-content-center">
-                    <Col>
-                        <h1>Edit product</h1>
-                        <br />
-                        {this.state.name
-                            ?
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Group controlId="name">
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" name="name" value={this.state.name} onChange={this.handleInput} />
-                                </Form.Group>
-                                <Form.Group controlId="description">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
-                                </Form.Group>
-                                <Form.Group controlId="image">
-                                    <Form.Label>Image (URL)</Form.Label>
-                                    <Form.Control type="text" name="image" value={this.state.image} onChange={this.handleInput} />
-                                </Form.Group>
-                                <Form.Group controlId="price">
-                                    <Form.Label>Price</Form.Label>
-                                    <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
-                                </Form.Group>
-                                <Button variant="secondary" type="submit">Submit</Button>
-                            </Form>
-                            :
-                            <Loader />
-                        }
-                    </Col>
-                </Row>
-            </Container>
+        <>
+            {this.state.name
+                ?
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="name">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" name="name" value={this.state.name} onChange={this.handleInput} />
+                    </Form.Group>
+                    <Form.Group controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
+                    </Form.Group>
+                    <Form.Group controlId="image">
+                        <Form.Label>Image (URL)</Form.Label>
+                        <Form.Control type="text" name="image" value={this.state.image} onChange={this.handleInput} />
+                    </Form.Group>
+                    <Form.Group controlId="price">
+                        <Form.Label>Price</Form.Label>
+                        <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
+                    </Form.Group>
+                    <Button variant="secondary" type="submit">Submit</Button>
+                </Form>
+                :
+                <Loader />
+                }
+            </>
         )
     }
 }
