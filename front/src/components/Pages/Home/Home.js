@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import Carousel from './Carousel/Carousel'
+import BtsCarousel from './Carousel/Carousel-bts'
 
 const Home = ({theUser}) => {
     return (
         <Container>
             <Row className="justify-content-center">
-                <h4>Here goes a carousel because why not (:</h4>
-                <Carousel />
+                <BtsCarousel />
             </Row>
             <Row className="justify-content-center">
                 <Col xs={8} md={6} className="home-btns">

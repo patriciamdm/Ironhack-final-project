@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Glide from '@glidejs/glide'
+import Glide from '@glidejs/glide'
 
 import ProductService from '../../../../services/products.service'
 import Loader from '../../../Shared/Spinner'
@@ -7,7 +7,7 @@ import Loader from '../../../Shared/Spinner'
 
 
 
-class Carousel extends Component {
+class GlideCarousel extends Component {
     constructor() {
         super()
         this.state = {
@@ -23,22 +23,22 @@ class Carousel extends Component {
         this.productsService = new ProductService()
     }
 
-//     componentDidMount = () => {
-//         this.initializeGlider()
-//         this.loadProducts()
-//     }
+    componentDidMount = () => {
+        this.initializeGlider()
+        this.loadProducts()
+    }
 
-//     initializeGlider = () => {
-//         this.slider = new Glide('.glide-products', this.state.options)
-//         this.slider.mount()
-//     } 
+    initializeGlider = () => {
+        this.slider = new Glide('.glide-products', this.state.options)
+        this.slider.mount()
+    } 
 
-//     loadProducts = () => {
-//         this.productsService
-//             .getAllProducts()
-//             .then(myProds => this.setState({ products: myProds.data}))
-//             .catch(err => console.log('ERROR GET ALL PRODS', err))
-//     }
+    loadProducts = () => {
+        this.productsService
+            .getAllProducts()
+            .then(myProds => this.setState({ products: myProds.data}))
+            .catch(err => console.log('ERROR GET ALL PRODS', err))
+    }
 
     render() {
         return (
@@ -65,4 +65,4 @@ class Carousel extends Component {
     }
 }
 
-export default Carousel
+export default GlideCarousel

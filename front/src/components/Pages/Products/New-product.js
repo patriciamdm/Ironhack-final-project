@@ -12,11 +12,14 @@ class NewProduct extends Component {
         this.state = {
             name: '',
             description: '',
+            category: '',
             image: '',
             price: 0,
             status: 'available',
+            location: '',
             owner: this.props.theUser._id,
-            uploadingActive: false
+            uploadingActive: false,
+            locationList: ['Alava','Albacete','Alicante','Almería','Asturias','Avila','Badajoz','Barcelona','Burgos','Cáceres', 'Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara', 'Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra', 'Orense','Palencia','Las Palmas','Pontevedra','La Rioja','Salamanca','Segovia','Sevilla','Soria','Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
         }
 
         this.productService = new ProductService()
@@ -65,13 +68,33 @@ class NewProduct extends Component {
                                 <Form.Label>Description</Form.Label>
                                 <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
                             </Form.Group>
+                            <Form.Group controlId="price">
+                                <Form.Label>Price</Form.Label>
+                                <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
+                            </Form.Group>
+                            <Form.Group controlId="category">
+                                <Form.Label>Category</Form.Label>
+                                <Form.Control as="select" name="category" value={this.state.category} onChange={this.handleInput} >
+                                    <option value='' selected disabled hidden>Select category</option>
+                                    <option value='motor'>Motor</option>
+                                    <option value='fashion'>Fashion</option>
+                                    <option value='electronics'>Electronics</option>
+                                    <option value='sports'>Sports</option>
+                                    <option value='home'>Home</option>
+                                    <option value='culture'>Culture</option>
+                                    <option value='others'>Others</option>
+                                </Form.Control>
+                            </Form.Group>
                             <Form.Group controlId="image">
                                 <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
                                 <Form.Control type="file" onChange={this.handleImageUpload} />
                             </Form.Group>
-                            <Form.Group controlId="price">
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
+                            <Form.Group controlId="location">
+                                <Form.Label>Location</Form.Label>
+                                <Form.Control as="select" name="location" value={this.state.location} onChange={this.handleInput}>
+                                    <option value='' selected disabled hidden>Select location</option>
+                                    {this.state.locationList.map(elm => <option value={elm.toLowerCase()}>{elm}</option>)}
+                                </Form.Control>
                             </Form.Group>
                             <Button variant="secondary" type="submit">Submit</Button>
                         </Form>

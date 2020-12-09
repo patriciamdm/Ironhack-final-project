@@ -18,10 +18,19 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
+    category: {
+        type: String,
+        required: true,
+        enum: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others']
+    },
     status: {
         type: String,
         enum: ['available', 'reserved', 'sold'],
         required: true
+    },
+    location: {
+        type: String,
+        required: false
     },
     owner: {
         type: Schema.Types.ObjectId,
