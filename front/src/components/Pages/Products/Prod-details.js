@@ -50,7 +50,9 @@ class ProductDetails extends Component {
     deleteProduct = () => {
         this.productsService
             .deleteProduct(this.state.product._id)
-            .then(() => this.props.history.push('/products'))
+            .then(() => {
+                this.props.history.push('/products')
+            })
             .catch(err => console.log('ERROR DELETING PRODUCT', err))
     }
 
