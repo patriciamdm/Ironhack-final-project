@@ -22,7 +22,12 @@ const userSchema = new Schema({
     phone: {
         type: Number,
         required: true
-    }
+    },
+    likedProducts: [{
+        type: Schema.Types.ObjectId,
+        rel: 'Product',
+        required: false
+    }]
 }, {
     timestamps: true
 });

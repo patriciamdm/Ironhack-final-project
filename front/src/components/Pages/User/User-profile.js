@@ -3,7 +3,7 @@ import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import Loader from '../../Shared/Spinner'
-import ProductCard from '../Products/Prod-card'
+import ProductCardProfile from '../Products/Prod-card-profile'
 import PopUp from '../../Shared/Pop-up-modal'
 import EditProduct from '../Products/Edit-product'
 import PopUpButtons from '../../Shared/Pop-up-buttons'
@@ -17,6 +17,7 @@ class UserProfile extends Component {
         this.state = {
             user: this.props.theUser,
             products: undefined,
+            favorites: undefined,
             showEditProdModal: false,
             prodToEdit: undefined,
             showDeleteUserModal: false
@@ -25,13 +26,25 @@ class UserProfile extends Component {
         this.userService = new UserService()
     }
 
-    componentDidMount = () => this.loadProducts()
+    componentDidMount = () => {
+        this.loadProducts()
+        this.loadFavorites()
+    }
 
     loadProducts = () => {
         this.productsService
             .getAllProducts()
-            .then(myProds => this.setState({ products: myProds.data.filter(elm => elm.owner === this.state.user._id) }))
+            .then(allProds => this.setState({ products: allProds.data.filter(elm => elm.owner === this.state.user._id) }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
+    }
+
+    loadFavorites = () => {
+        //const userFavs = this.state.user.likedProducts
+
+        this.productsService
+            .getAllProducts()
+            .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.state.user.likedProducts.includes(elm._id)) }))
+            .catch(err => console.log('ERROR GET FAVS', err))
     }
 
     handleEditProdModal = visibility => this.setState({ showEditProdModal: visibility })
@@ -68,18 +81,36 @@ class UserProfile extends Component {
                         </Col>
                     </Row>
                     <br />
-                    <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
-                    <h2 style={{margin: '0px'}}>My products</h2>
-                    {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{margin: '0px'}}>Create new product</Link>}
-                    </article>
-                    <hr/>
                     <Row>
-                        {this.state.products
+                        {this.state.favorites
                             ?
-                            this.state.products.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)
+                            <Col >
+                                <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
+                                <h2 style={{margin: '0px'}}>My favorites</h2>
+                                </article>
+                                <hr />
+                                <Row>
+                                {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)}
+                                </Row>
+                            </Col>
                             :
                             <Loader />
                         }
+                        {this.state.products
+                            ?
+                            <Col>
+                                <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
+                                <h2 style={{margin: '0px'}}>My products</h2>
+                                {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{margin: '0px'}}>Create new product</Link>}
+                                </article>
+                                <hr />
+                                <Row>
+                                {this.state.products.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)}
+                                </Row>
+                            </Col>
+                            :
+                            <Loader />
+                        } 
                     </Row>
                 </Container>
                 
