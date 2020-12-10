@@ -43,10 +43,8 @@ class UserProfile extends Component {
     deleteUser = () => {
         this.userService
             .deleteUser(this.state.user._id)
-            .then(() => {
-                console.log(window)
-                // window.window.history.push('/')
-            })
+            .then(() => this.props.setUser(undefined))
+            .then(() => this.props.history.push('/'))
             .catch(err => console.log('ERROR DELETING USER', err))
     }
 

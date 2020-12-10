@@ -44,16 +44,3 @@ const productSchema = new Schema({
 const Product = mongoose.model("Product", productSchema)
 
 module.exports = Product
-
-// TO-DO
-// ,
-//     location: {
-//         latitude:  {
-//             type: Number,
-//             required: true
-//         },
-//         longitude:  {
-//             type: Number,
-//             required: true
-//         }
-//     }

@@ -22,7 +22,18 @@ const userSchema = new Schema({
     phone: {
         type: Number,
         required: true
-    }
+    },
+    rating: [{
+        ratingValue: {
+            type: Number,
+            required: true
+        },
+        userRating: {
+        type: Schema.Types.ObjectId,
+        rel: 'User',
+        required: true
+        }
+    }]
 }, {
     timestamps: true
 });

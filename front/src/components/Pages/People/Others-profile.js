@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
+import Rating from '@material-ui/lab/Rating'
 
 import Loader from '../../Shared/Spinner'
 import ProductCard from '../Products/Prod-card'
@@ -61,6 +62,9 @@ class OthersProfile extends Component {
                                     <hr/>
                                     <h6>Email: {this.state.user.email}</h6>
                                     <h6>Phone: {this.state.user.phone}</h6>
+                                    <p>Average <Rating name="size-small" defaultValue={2} size="small" precision={0.5} readOnly/></p>
+                                    <p>Your rating <Rating name="size-small" defaultValue={2} size="small" precision={0.5} /></p>
+                                    <br/>
                                     <Button onClick={() => this.handleEmailModal(true)} variant="secondary" size="sm">Contact via Email</Button>
                                     <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Mensaje automático de la Patriapp`}>Contact via WhatsApp</a>
                                 </Col>
