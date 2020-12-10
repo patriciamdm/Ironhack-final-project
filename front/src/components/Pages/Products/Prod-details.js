@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Col, Button, Container, Row, Modal } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
-import PopUp from '../../Shared/Pop-up-modal'
-import PopUpButtons from '../../Shared/Pop-up-buttons'
+import PopUp from '../../Shared/PopUps/Pop-up-modal'
+import PopUpButtons from '../../Shared/PopUps/Pop-up-buttons'
 import EditProduct from './Edit-product'
 import EmailForm from '../../Shared/Email-form'
 
@@ -64,7 +64,7 @@ class ProductDetails extends Component {
     
     addToFavorites = () => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, this.state.product] }
-        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm._id !== this.state.product._id)}
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== this.state.product._id)}
 
         this.props.theUser.likedProducts.includes(this.state.product._id)
             ?
@@ -119,8 +119,13 @@ class ProductDetails extends Component {
                                     </>
                                     :
                                     <>
-                                        <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Show interest</Button>
-                                        <Button onClick={() => this.addToFavorites()} variant="secondary" size="sm">Add to favs</Button>
+                                        <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm" style={{ marginRight: '20px' }}>Show interest</Button>
+                                        {this.props.theUser.likedProducts.includes(this.state.product._id)
+                                            ?
+                                            <Button onClick={() => this.addToFavorites()} variant="secondary" size="sm">Remove from favs</Button>
+                                            :
+                                            <Button onClick={() => this.addToFavorites()} variant="secondary" size="sm">Add to favs</Button>
+                                        }
                                     </>
                                 }
                             </Col>

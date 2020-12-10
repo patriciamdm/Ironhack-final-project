@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 
 import Loader from '../../Shared/Spinner'
 import ProductCardProfile from '../Products/Prod-card-profile'
-import PopUp from '../../Shared/Pop-up-modal'
+import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from '../Products/Edit-product'
-import PopUpButtons from '../../Shared/Pop-up-buttons'
+import PopUpButtons from '../../Shared/PopUps/Pop-up-buttons'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
@@ -15,11 +15,10 @@ class UserProfile extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: this.props.theUser,
             products: undefined,
             favorites: undefined,
+            prodToTarget: undefined,
             showEditProdModal: false,
-            prodToEdit: undefined,
             showDeleteUserModal: false
         }
         this.productsService = new ProductService()
@@ -34,16 +33,14 @@ class UserProfile extends Component {
     loadProducts = () => {
         this.productsService
             .getAllProducts()
-            .then(allProds => this.setState({ products: allProds.data.filter(elm => elm.owner === this.state.user._id) }))
+            .then(allProds => this.setState({ products: allProds.data.filter(elm => elm.owner === this.props.theUser._id) }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
 
     loadFavorites = () => {
-        //const userFavs = this.state.user.likedProducts
-
         this.productsService
             .getAllProducts()
-            .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.state.user.likedProducts.includes(elm._id)) }))
+            .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
             .catch(err => console.log('ERROR GET FAVS', err))
     }
 
@@ -51,14 +48,30 @@ class UserProfile extends Component {
 
     handleDeleteUserModal = visibility => this.setState({ showDeleteUserModal: visibility })
 
-    defineEditProd = prodId => this.setState({ prodToEdit: prodId })
+    defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
 
     deleteUser = () => {
         this.userService
-            .deleteUser(this.state.user._id)
+            .deleteUser(this.props.theUser._id)
             .then(() => this.props.setUser(undefined))
             .then(() => this.props.history.push('/'))
             .catch(err => console.log('ERROR DELETING USER', err))
+    }
+
+    removeFavorite = prod => {
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== prod._id)}
+
+        this.props.theUser.likedProducts.includes(prod._id)
+            &&
+            this.userService
+            .editUser(this.props.theUser._id, removeFav)
+            .then(user => this.userService.getOneUser(user.data._id))
+            .then(user => this.props.setUser(user.data))
+            .then(() => {
+                this.props.history.push('/')
+                this.props.history.push('/profile')
+            })
+            .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
     }
 
     render() {
@@ -67,53 +80,53 @@ class UserProfile extends Component {
                 <Container className="profile">
                     <Row className="profile-info">
                         <Col md={3}>
-                            <img src={this.state.user.image} alt="User avatar" />
+                            <img src={this.props.theUser.image} alt="User avatar" />
                         </Col>
                         <Col md={9}>
-                            <h1>Welcome {this.state.user.username}</h1>
+                            <h1>Welcome {this.props.theUser.username}</h1>
                             <hr/>
-                            <h6>Email: {this.state.user.email}</h6>
-                            <h6>Phone: {this.state.user.phone}</h6>
-                            <Link to={`/editUser/${this.state.user._id}`} className="btn btn-secondary btn-sm">Edit profile</Link>
+                            <h6>Email: {this.props.theUser.email}</h6>
+                            <h6>Phone: {this.props.theUser.phone}</h6>
+                            <Link to={`/editUser/${this.props.theUser._id}`} className="btn btn-secondary btn-sm">Edit profile</Link>
                             <Button onClick={() => this.handleDeleteUserModal(true)} variant="danger" size="sm">Delete account</Button>
                         </Col>
                     </Row>
                     <br />
                     <Row>
-                        {this.state.favorites
-                            ?
-                            <Col >
-                                <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
-                                <h2 style={{margin: '0px'}}>My favorites</h2>
-                                </article>
-                                <hr />
+                        <Col>
+                            <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
+                            <h2 style={{margin: '0px'}}>My favorites</h2>
+                            </article>
+                            <hr />
+                            {this.state.favorites
+                                ?
                                 <Row>
-                                {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)}
+                                    {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} productToTarget={id => this.defineTargetProd(id)} removeFromFavs={prod => this.removeFavorite(prod)} product={elm} theUser={this.props.theUser} />)}
                                 </Row>
-                            </Col>
-                            :
-                            <Loader />
-                        }
-                        {this.state.products
-                            ?
-                            <Col>
-                                <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
-                                <h2 style={{margin: '0px'}}>My products</h2>
-                                {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{margin: '0px'}}>Create new product</Link>}
-                                </article>
-                                <hr />
+                                :
+                                <Loader style={{ display: 'flex', justifyContent: 'center' }} /> 
+                            }
+                        </Col>
+                        <Col>
+                            <article style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'flex-start'}}>
+                            <h2 style={{margin: '0px'}}>My products</h2>
+                            {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{margin: '0px'}}>Create new product</Link>}
+                            </article>
+                            <hr />
+                            {this.state.products
+                                ?
                                 <Row>
-                                {this.state.products.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.state.user} />)}
+                                    {this.state.products.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToTarget={id => this.defineTargetProd(id)} product={elm} theUser={this.props.theUser} />)}
                                 </Row>
-                            </Col>
-                            :
-                            <Loader />
-                        } 
+                                :
+                                <Loader style={{ display: 'flex', justifyContent: 'center' }} />
+                            }
+                        </Col>
                     </Row>
                 </Container>
                 
                 <PopUp show={this.state.showEditProdModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.state.user} />
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
                 </PopUp>
 
                 <PopUpButtons show={this.state.showDeleteUserModal} hide={() => this.handleDeleteUserModal(false)} title="Caution!">

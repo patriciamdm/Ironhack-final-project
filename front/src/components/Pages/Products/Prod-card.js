@@ -8,7 +8,6 @@ class ProductCard extends Component {
         this.state={}
     }
 
-
     showModal = () => {
         this.props.productToTarget(this.props.product._id)
         this.props.showEditProdModal(true)
@@ -21,7 +20,7 @@ class ProductCard extends Component {
                     <Card className="product-card">
                         <Card.Img variant="top" src={this.props.product.image} style={{height: '200px'}}/>
                         <Card.Body>
-                            <Card.Title style={{height: '28px', overflow: 'scroll', marginBottom: '15px'}}>{this.props.product.name}</Card.Title>
+                            <Card.Title style={{height: '28px', overflow: 'hidden', marginBottom: '15px'}}>{this.props.product.name}</Card.Title>
                             <Card.Subtitle style={{fontStyle: 'italic', fontSize: '0.9rem', fontWeight: '300', marginBottom: '10px'}}>Price: {this.props.product.price}€</Card.Subtitle>
                             <Card.Text style={{height: '48px', overflow: 'hidden'}}>{this.props.product.description}</Card.Text>
                             <Card.Subtitle style={{ textTransform: 'capitalize' }}>{this.props.product.location}</Card.Subtitle>

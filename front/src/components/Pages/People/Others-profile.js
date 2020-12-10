@@ -4,7 +4,7 @@ import Rating from '@material-ui/lab/Rating'
 
 import Loader from '../../Shared/Spinner'
 import ProductCard from '../Products/Prod-card'
-import PopUp from '../../Shared/Pop-up-modal'
+import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EmailForm from '../../Shared/Email-form'
 
 

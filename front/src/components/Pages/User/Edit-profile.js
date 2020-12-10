@@ -32,12 +32,7 @@ class EditUser extends Component {
     
     handleSubmit = e => {
         e.preventDefault()
-        const editedUser = {
-            username: this.state.username,
-            image: this.state.image,
-            email: this.state.email,
-            phone: this.state.phone,
-        }
+        const editedUser = { username: this.state.username, image: this.state.image, email: this.state.email, phone: this.state.phone, }
 
         this.userService
             .editUser(this.state._id, editedUser)

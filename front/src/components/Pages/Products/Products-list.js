@@ -7,7 +7,7 @@ import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
 import DropdownButton from '../../Shared/Dropdown-button'
 import ProductCard from './Prod-card'
-import PopUp from '../../Shared/Pop-up-modal'
+import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from './Edit-product'
 
 import ProductService from '../../../services/products.service'
@@ -62,9 +62,17 @@ class ProductList extends Component {
         this.setState({ filteredProds: filterProds })
     }
 
+    filterByStatus = stat => {
+        const filterProds = this.state.products.filter(elm => elm.status.toLowerCase().includes(stat.toLowerCase()))
+        this.setState({ filteredProds: filterProds })
+    }
+
     unfilterBy = () => {
         this.setState({ filteredProds: this.state.products })
     }
+
+    
+    // SORTING
 
     sortByNewest = () => {
         const filterProds = [...this.state.products]
@@ -95,7 +103,7 @@ class ProductList extends Component {
 
     addToFavorites = product => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
-        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm._id !== product._id)}
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== product._id)}
 
         this.props.theUser.likedProducts.includes(product._id)
             ?
@@ -144,6 +152,13 @@ class ProductList extends Component {
                                 <DropdownButton title="Location" products={this.state.filteredProds} style={{height: '100px', overflow: 'scroll'}}>
                                     <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
                                     {this.state.prodLocations.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.filterByLocation(elm)}><span style={{ textTransform: 'capitalize'}}>{elm}</span></Dropdown.Item>)}
+                                </DropdownButton>
+                                
+                                <DropdownButton title="Availability" products={this.state.filteredProds} style={{ height: '100px', overflow: 'scroll' }}>
+                                    <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('available')}>Available</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('reserved')}>Reserved</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('sold')}>Sold</Dropdown.Item>
                                 </DropdownButton>
                             </Row>
                             <Row>

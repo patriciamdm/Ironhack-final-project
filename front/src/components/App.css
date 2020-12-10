@@ -15,8 +15,14 @@ h1, h2, h3 {
     font-weight: 200;
 }
 
+.btn-secondary {
+    color: #fff;
+    background-color: #3e78ac;
+    border-color: #3e78ac;
+}
+
 .navbar{
-    background-color: rgb(71, 45, 92);
+    background-color: #1f4f79;
     box-shadow: 2px 2px 8px lightgray;
 }
 
