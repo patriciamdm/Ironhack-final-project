@@ -21,7 +21,7 @@ class Navigation extends Component {
         return (
             <Navbar className="navbar" variant="dark" expand="md" style={{ marginBottom: '50px' }}>
                 <Link to='/'>
-                    <Navbar.Brand>Ironhack Final Project</Navbar.Brand>
+                    <Navbar.Brand>Dealz_</Navbar.Brand>
                 </Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">

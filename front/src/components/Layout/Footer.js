@@ -17,8 +17,8 @@ class Footer extends Component {
                 <Container>
                     <Row>
                         <Col sm={12} md={5} lg={4} style={{paddingRight: '30px'}}>
-                            <h4>Ironhack Final Project</h4>
-                            <p>Copyright © 2020 Patriapp</p>
+                            <h4>Dealz_</h4>
+                            <p>Copyright © 2020 Dealz_</p>
                             <p>Developed by Manuel Barreda and Patricia Muñoz</p>
                         </Col>
                         {/* <Col> */}
@@ -27,7 +27,7 @@ class Footer extends Component {
                             <Row style={{padding: '10px'}}>
                             {/* <Row style={{display: 'flex', flexWrap: 'wrap'}}> */}
                                 <Col sm={6} md={3}>
-                                    <h6>Patriapp</h6>
+                                    <h6>Dealz_</h6>
                                     <ul style={{listStyle: 'none', padding: '0px'}}>
                                         <li><Link to="/"><Nav.Link as="div" style={{padding: '10px 0px'}}>Home</Nav.Link></Link></li>
                                         <li><Link to="/products"><Nav.Link as="div" style={{padding: '10px 0px'}}>Products</Nav.Link></Link></li>
@@ -36,7 +36,7 @@ class Footer extends Component {
                                     </ul>
                                 </Col>
                                 <Col  sm={6} md={3}>
-                                    <h6>Patriapp</h6>
+                                    <h6>Dealz_</h6>
                                     <ul style={{listStyle: 'none', padding: '0px'}}>
                                         <li><Nav.Link as="div" style={{padding: '10px 0px'}}>About Us</Nav.Link></li>
                                         <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Contact</Nav.Link></li>

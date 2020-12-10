@@ -74,8 +74,6 @@ class EditUser extends Component {
                             <Form.Group controlId="image">
                                 <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
                                 <Form.Control type="file" onChange={this.handleImageUpload} />
-                                {/* <Form.Label>Image (URL)</Form.Label>
-                                <Form.Control type="text" name="image" value={this.state.image} onChange={this.handleInput} /> */}
                             </Form.Group>
                             <Form.Group controlId="email">
                                 <Form.Label>Email</Form.Label>
