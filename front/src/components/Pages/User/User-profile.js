@@ -7,9 +7,11 @@ import ProductCardProfile from '../Products/Prod-card-profile'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from '../Products/Edit-product'
 import PopUpButtons from '../../Shared/PopUps/Pop-up-buttons'
+import Toastie from '../../Shared/PopUps/Toastie'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
+import EditUser from './Edit-profile'
 
 class UserProfile extends Component {
     constructor(props) {
@@ -19,7 +21,16 @@ class UserProfile extends Component {
             favorites: undefined,
             prodToTarget: undefined,
             showEditProdModal: false,
-            showDeleteUserModal: false
+            showDeleteUserModal: false,
+            showProdToast: false,
+            prodToastType: 'success',
+            prodToastTitle: 'SUCCESS!',
+            prodToastText: "Product updated successfully.",
+            showEditUserModal: false,
+            showUserToast: false,
+            userToastType: 'success',
+            userToastTitle: 'SUCCESS!',
+            userToastText: "Profile updated successfully."
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -54,7 +65,10 @@ class UserProfile extends Component {
         this.userService
             .deleteUser(this.props.theUser._id)
             .then(() => this.props.setUser(undefined))
-            .then(() => this.props.history.push('/'))
+            .then(() => {
+                this.props.history.push('/')
+                this.props.handleToast()
+            })
             .catch(err => console.log('ERROR DELETING USER', err))
     }
 
@@ -74,6 +88,17 @@ class UserProfile extends Component {
             .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
     }
 
+    handleProdToast = visib => this.setState({ showProdToast: visib })
+
+    handleCloseUserModal = () => {
+        this.handleEditUserModal(false)
+        this.handleUserToast(true)
+    }
+
+    handleEditUserModal = visibility => this.setState({ showEditUserModal: visibility })
+    
+    handleUserToast = visib => this.setState({showUserToast: visib})
+
     render() {
         return (
             <>
@@ -87,7 +112,8 @@ class UserProfile extends Component {
                             <hr/>
                             <h6>Email: {this.props.theUser.email}</h6>
                             <h6>Phone: {this.props.theUser.phone}</h6>
-                            <Link to={`/editUser/${this.props.theUser._id}`} className="btn btn-secondary btn-sm">Edit profile</Link>
+                            {/* <Link to={`/editUser/${this.props.theUser._id}`} className="btn btn-secondary btn-sm">Edit profile</Link> */}
+                            <Button onClick={() => this.handleEditUserModal(true)} variant="secondary" size="sm">Edit profile</Button>
                             <Button onClick={() => this.handleDeleteUserModal(true)} variant="danger" size="sm">Delete account</Button>
                         </Col>
                     </Row>
@@ -123,10 +149,16 @@ class UserProfile extends Component {
                             }
                         </Col>
                     </Row>
+                    <Toastie show={this.state.showUserToast} handleToast={this.handleUserToast} toastType={this.state.userToastType} toastText={this.state.userToastText} toastTitle={this.state.userToastTitle} />
+                    <Toastie show={this.state.showProdToast} handleToast={this.handleProdToast} toastType={this.state.prodToastType} toastText={this.state.prodToastText} toastTitle={this.state.prodToastTitle} />
                 </Container>
                 
+                <PopUp show={this.state.showEditUserModal} hide={() => this.handleEditUserModal(false)} title="Edit profile">
+                    <EditUser hideModal={() => this.handleEditUserModal(false)} theUser={this.props.theUser} setUser={this.props.setUser} handleModal={this.handleCloseUserModal} />
+                </PopUp>
+
                 <PopUp show={this.state.showEditProdModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleProdToast} />
                 </PopUp>
 
                 <PopUpButtons show={this.state.showDeleteUserModal} hide={() => this.handleDeleteUserModal(false)} title="Caution!">

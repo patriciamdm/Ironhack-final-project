@@ -7,6 +7,7 @@ import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import PopUpButtons from '../../Shared/PopUps/Pop-up-buttons'
 import EditProduct from './Edit-product'
 import EmailForm from '../../Shared/Email-form'
+import Toastie from '../../Shared/PopUps/Toastie'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
@@ -21,7 +22,12 @@ class ProductDetails extends Component {
             showEditModal: false,
             showContactModal: false,
             showEmailModal: false,
-            showWppModal: false
+            showWppModal: false,
+            showToast: false,
+            toastType: 'success',
+            toastTitle: 'SUCCESS!',
+            toastText: "Product updated successfully."
+
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -81,10 +87,13 @@ class ProductDetails extends Component {
                 .catch(err => console.log('ERROR ADDING TO FAVS', err))
     }
 
+    handleToast = visib => this.setState({ showToast: visib })
+
     render() {
         return (
             <>
                 <Container className="product-details">
+                    <Toastie show={this.state.showToast} handleToast={this.handleToast} toastType={this.state.toastType} toastText={this.state.toastText} toastTitle={this.state.toastTitle} />
                     {this.state.product
                         ?
                         <Row className="justify-content-center">
@@ -138,7 +147,7 @@ class ProductDetails extends Component {
                     &&
                     <>
                     <PopUp show={this.state.showEditModal} hide={() => this.handleEditModal(false)} title="Edit product">
-                        <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                        <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleToast}/>
                     </PopUp>
 
                     <PopUpButtons show={this.state.showDeleteModal} hide={() => this.handleDeleteModal(false)} title="Wait!">

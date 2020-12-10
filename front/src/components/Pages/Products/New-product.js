@@ -33,7 +33,12 @@ class NewProduct extends Component {
 
         this.productService
             .newProduct(this.state)
-            .then(() => this.props.history.push('/products') )
+            .then(() => {
+                //this.props.history.push('/products')
+                this.props.reloadProducts()
+                this.props.hideModal()
+                this.props.handleToast(true)
+            })
             .catch(err => console.log('ERROR CREATING PRODUCT', err))
     }
 
@@ -54,11 +59,11 @@ class NewProduct extends Component {
 
     render() {
         return (
-            <Container>
-                <Row className="justify-content-center">
-                    <Col md={6}>
-                        <h1>Create new product</h1>
-                        <br />
+            // <Container>
+            //     <Row className="justify-content-center">
+            //         <Col md={6}>
+            //             <h1>Create new product</h1>
+            //             <br />
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="name">
                                 <Form.Label>Name</Form.Label>
@@ -98,9 +103,9 @@ class NewProduct extends Component {
                             </Form.Group>
                             <Button variant="secondary" type="submit">Submit</Button>
                         </Form>
-                    </Col>
-                </Row>
-            </Container>
+            //         </Col>
+            //     </Row>
+            // </Container>
         )
     }
 }
