@@ -37,10 +37,12 @@ class EditUser extends Component {
         this.userService
             .editUser(this.state._id, editedUser)
             .then(user => this.userService.getOneUser(user.data._id))
-            .then(user => {
-                this.props.setUser(user.data)
-                this.props.history.push('/profile')
-            })
+            // .then(user => {
+            //     this.props.setUser(user.data)
+            //     this.props.history.push('/profile')
+            // })
+            .then(user => this.props.setUser(user.data))
+            .then(() => this.props.handleModal())
             .catch(err => console.log('ERROR IN EDIT', err))
     }
 
@@ -61,11 +63,11 @@ class EditUser extends Component {
 
     render() {
         return (
-            <Container>
-                <Row className="justify-content-center">
-                    <Col md={6}>
-                        <h1>Edit profile</h1>
-                        <br />
+            // <Container>
+            //     <Row className="justify-content-center">
+            //         <Col md={6}>
+            //             <h1>Edit profile</h1>
+            //             <br />
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="username">
                                 <Form.Label>Username</Form.Label>
@@ -85,9 +87,9 @@ class EditUser extends Component {
                             </Form.Group>
                             <Button variant="secondary" type="submit">Submit</Button>
                         </Form>
-                    </Col>
-                </Row>
-            </Container>
+        //             </Col>
+        //         </Row>
+        //     </Container>
         )
     }
 }

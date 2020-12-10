@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { Dropdown } from 'react-bootstrap'
+import { Container, Row, Button, Dropdown } from 'react-bootstrap'
+//import { Link } from 'react-router-dom'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
@@ -9,20 +8,25 @@ import DropdownButton from '../../Shared/Dropdown-button'
 import ProductCard from './Prod-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from './Edit-product'
+import Toastie from '../../Shared/PopUps/Toastie'
+import NewProduct from './New-product'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 
 class ProductList extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             products: undefined,
             filteredProds: undefined,
-            showModal: false,
+            showNewProdModal: false,
+            showEditProdModal: false,
             prodToTarget: undefined,
             prodCategories: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others'],
-            prodLocations: ['Alava','Albacete','Alicante','Almería','Asturias','Avila','Badajoz','Barcelona','Burgos','Cáceres', 'Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara', 'Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra', 'Orense','Palencia','Las Palmas','Pontevedra','La Rioja','Salamanca','Segovia','Sevilla','Soria','Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
+            prodLocations: ['Alava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Avila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'],
+            showEditToast: false,
+            showNewToast: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -38,9 +42,11 @@ class ProductList extends Component {
     }
 
 
-    //EDITING PRODUCTS
+    // CREATING & EDITING PRODUCTS
+    
+    handleNewProdModal = visibility => this.setState({ showNewProdModal: visibility })
 
-    handleEditProdModal = visibility => this.setState({ showModal: visibility })
+    handleEditProdModal = visibility => this.setState({ showEditProdModal: visibility })
 
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
 
@@ -120,6 +126,9 @@ class ProductList extends Component {
                 .catch(err => console.log('ERROR ADDING TO FAVS', err))
     }
 
+    handleEditToast = visib => this.setState({ showEditToast: visib })
+    
+    handleNewToast = visib => this.setState({showNewToast: visib})
 
     render() {
         return (
@@ -128,7 +137,11 @@ class ProductList extends Component {
                     <Row>
                         <article className="first-row">
                             <h1>All products</h1>
-                            {this.state.products && <Link to='/products/new' className="btn btn-secondary" style={{marginBottom: '30px', marginTop: '10px'}}>Create new product</Link>}
+                            {this.state.products
+                                &&
+                                //<Link to='/products/new' className="btn btn-secondary" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Link>
+                                <Button onClick={() => this.handleNewProdModal(true)} variant="secondary" size="sm" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Button>
+                            }
                         </article>
                         <SearchBar searchFor={value => this.searchFor(value)} />
                         <hr/>
@@ -168,9 +181,16 @@ class ProductList extends Component {
                         :
                             <Row><Loader /></Row>
                     }
+                    <Toastie show={this.state.showNewToast} handleToast={this.handleNewToast} toastType='success' toastText="Product created successfully." toastTitle='SUCCESS!' />
+                    <Toastie show={this.state.showEditToast} handleToast={this.handleEditToast} toastType='success' toastText="Product updated successfully." toastTitle='SUCCESS!' />
                 </Container>
-                <PopUp show={this.state.showModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+
+                <PopUp show={this.state.showNewProdModal} hide={() => this.handleNewProdModal(false)} title="Create a product">
+                    <NewProduct hideModal={() => this.handleNewProdModal(false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleNewToast} />
+                </PopUp>
+
+                <PopUp show={this.state.showEditProdModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleEditToast} />
                 </PopUp>
             </>
         )

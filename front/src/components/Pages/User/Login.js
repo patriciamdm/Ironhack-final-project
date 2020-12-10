@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
+import Toastie from '../../Shared/PopUps/Toastie'
+
 import AuthService from '../../../services/auth.service'
 
 class Login extends Component {
@@ -8,7 +10,11 @@ class Login extends Component {
         super()
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            showToast: false,
+            toastType: 'alert',
+            toastTitle: 'ERROR!',
+            toastText: "Wrong username or password!"
         }
         this.authService = new AuthService()
     }
@@ -24,8 +30,13 @@ class Login extends Component {
                 this.props.setUser(loggedUser.data)
                 this.props.history.push('/products')
             })
-            .catch(err => console.log('ERROR IN LOG IN', err))
+            .catch(err => {
+                this.setState({showToast: true})
+                console.log('ERROR IN LOG IN', err)
+            })
     }
+
+    handleToast = visib => this.setState({ showToast: visib })
 
     render() {
         return (
@@ -35,18 +46,19 @@ class Login extends Component {
                         <h1>Log In</h1>
                         <br />
                         <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="username">
+                            <Form.Group controlId="username" >
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleInput} />
+                                <Form.Control required type="text" name="username" value={this.state.username} onChange={this.handleInput} />
                             </Form.Group>
-                            <Form.Group controlId="password">
+                            <Form.Group controlId="password" >
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleInput} />
+                                <Form.Control required type="password" name="password" value={this.state.password} onChange={this.handleInput} />
                             </Form.Group>
                             <Button variant="secondary" type="submit">Submit</Button>
                         </Form>
                     </Col>
                 </Row>
+                <Toastie show={this.state.showToast} handleToast={this.handleToast} toastType={this.state.toastType} toastText={this.state.toastText} toastTitle={this.state.toastTitle} />
             </Container>
         )
     }

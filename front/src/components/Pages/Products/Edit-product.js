@@ -53,6 +53,7 @@ class EditProduct extends Component {
             .then(() => {
                 this.props.reloadProducts()
                 this.props.hideModal()
+                this.props.handleToast(true)
             })
             .catch(err => console.log('ERROR CREATING PRODUCT', err))
     }

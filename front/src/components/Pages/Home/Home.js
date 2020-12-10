@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import BtsCarousel from './Carousel/Carousel-bts'
+import Toastie from '../../Shared/PopUps/Toastie'
 
-const Home = ({theUser}) => {
+const Home = ({theUser, toastieInfo, handleToast, showToast}) => {
     return (
         <Container>
             <Row className="justify-content-center">
@@ -25,6 +26,7 @@ const Home = ({theUser}) => {
                     }
                 </Col>
             </Row>
+            <Toastie show={showToast} handleToast={handleToast} toastType={toastieInfo.toastType} toastText={toastieInfo.toastText} toastTitle={toastieInfo.toastTitle} />
         </Container>
     )
 }
