@@ -29,10 +29,15 @@ const userSchema = new Schema({
             required: true
         },
         userRating: {
-        type: Schema.Types.ObjectId,
-        rel: 'User',
-        required: true
+            type: Schema.Types.ObjectId,
+            rel: 'User',
+            required: true
         }
+    }],
+    likedProducts: [{
+        type: Schema.Types.ObjectId,
+        rel: 'Product',
+        required: false
     }]
 }, {
     timestamps: true

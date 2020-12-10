@@ -11,6 +11,7 @@ import PopUp from '../../Shared/Pop-up-modal'
 import EditProduct from './Edit-product'
 
 import ProductService from '../../../services/products.service'
+import UserService from '../../../services/user.service'
 
 class ProductList extends Component {
     constructor() {
@@ -19,11 +20,12 @@ class ProductList extends Component {
             products: undefined,
             filteredProds: undefined,
             showModal: false,
-            prodToEdit: undefined,
+            prodToTarget: undefined,
             prodCategories: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others'],
             prodLocations: ['Alava','Albacete','Alicante','Almería','Asturias','Avila','Badajoz','Barcelona','Burgos','Cáceres', 'Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara', 'Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra', 'Orense','Palencia','Las Palmas','Pontevedra','La Rioja','Salamanca','Segovia','Sevilla','Soria','Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
         }
         this.productsService = new ProductService()
+        this.userService = new UserService()
     }
 
     componentDidMount = () => this.loadProducts()
@@ -35,9 +37,15 @@ class ProductList extends Component {
             .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
 
+
+    //EDITING PRODUCTS
+
     handleEditProdModal = visibility => this.setState({ showModal: visibility })
 
-    defineEditProd = prodId => this.setState({ prodToEdit: prodId })
+    defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
+
+
+    // SEARCH BAR AND FILTERS
 
     searchFor = search => {
         const filterProds = this.state.products.filter(elm => elm.name.toLowerCase().includes(search.toLowerCase()))
@@ -64,6 +72,12 @@ class ProductList extends Component {
         this.setState({ filteredProds: filterProds })
     }
     
+    sortByAvailable = () => {
+        const filterProds = [...this.state.products]
+        filterProds.sort((a, b) => (a.status < b.status) ? -1 : 1)
+        this.setState({ filteredProds: filterProds })
+    }
+    
     sortByLowPrice = () => {
         const filterProds = [...this.state.products]
         filterProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
@@ -74,6 +88,28 @@ class ProductList extends Component {
         const filterProds = [...this.state.products]
         filterProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
         this.setState({ filteredProds: filterProds })
+    }
+
+
+    // ADD FAVORITES
+
+    addToFavorites = product => {
+        const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm._id !== product._id)}
+
+        this.props.theUser.likedProducts.includes(product._id)
+            ?
+            this.userService
+                .editUser(this.props.theUser._id, removeFav)
+                .then(user => this.userService.getOneUser(user.data._id))
+                .then(user => this.props.setUser(user.data))
+                .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
+            :
+            this.userService
+                .editUser(this.props.theUser._id, addFav)
+                .then(user => this.userService.getOneUser(user.data._id))
+                .then(user => this.props.setUser(user.data))
+                .catch(err => console.log('ERROR ADDING TO FAVS', err))
     }
 
 
@@ -95,6 +131,7 @@ class ProductList extends Component {
                             <Row style={{ marginBottom: '20px'}}>
                                 <DropdownButton title="Sort" products={this.state.filteredProds}>
                                     <Dropdown.Item as="button" onClick={() => this.sortByNewest()}>Newest</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => this.sortByAvailable()}>Availability</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.sortByLowPrice()}>Price, low to high</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.sortByHighPrice()}>Price, high to low</Dropdown.Item>
                                 </DropdownButton>
@@ -110,7 +147,7 @@ class ProductList extends Component {
                                 </DropdownButton>
                             </Row>
                             <Row>
-                                {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser} />)}
+                                {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToTarget={id => this.defineTargetProd(id)} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
                             </Row>
                         </>
                         :
@@ -118,7 +155,7 @@ class ProductList extends Component {
                     }
                 </Container>
                 <PopUp show={this.state.showModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToEdit} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
+                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} />
                 </PopUp>
             </>
         )

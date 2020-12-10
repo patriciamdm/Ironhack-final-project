@@ -60,7 +60,26 @@ class ProductDetails extends Component {
     
     handleEmailModal = visib => this.setState({ showEmailModal: visib })
     
-    handleWppModal = visib => this.setState({showWppModal: visib})
+    handleWppModal = visib => this.setState({ showWppModal: visib })
+    
+    addToFavorites = () => {
+        const addFav = { likedProducts: [...this.props.theUser.likedProducts, this.state.product] }
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm._id !== this.state.product._id)}
+
+        this.props.theUser.likedProducts.includes(this.state.product._id)
+            ?
+            this.userService
+                .editUser(this.props.theUser._id, removeFav)
+                .then(user => this.userService.getOneUser(user.data._id))
+                .then(user => this.props.setUser(user.data))
+                .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
+            :
+            this.userService
+                .editUser(this.props.theUser._id, addFav)
+                .then(user => this.userService.getOneUser(user.data._id))
+                .then(user => this.props.setUser(user.data))
+                .catch(err => console.log('ERROR ADDING TO FAVS', err))
+    }
 
     render() {
         return (
@@ -99,7 +118,10 @@ class ProductDetails extends Component {
                                         <Button onClick={() => this.handleDeleteModal(true)} variant="danger" size="sm">Delete product</Button>
                                     </>
                                     :
-                                    <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm">Show interest</Button>
+                                    <>
+                                        <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Show interest</Button>
+                                        <Button onClick={() => this.addToFavorites()} variant="secondary" size="sm">Add to favs</Button>
+                                    </>
                                 }
                             </Col>
                         </Row>
