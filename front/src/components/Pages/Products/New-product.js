@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 import Spinner from '../../Shared/Spinner'
 
@@ -34,7 +34,6 @@ class NewProduct extends Component {
         this.productService
             .newProduct(this.state)
             .then(() => {
-                //this.props.history.push('/products')
                 this.props.reloadProducts()
                 this.props.hideModal()
                 this.props.handleToast(true)
@@ -59,53 +58,45 @@ class NewProduct extends Component {
 
     render() {
         return (
-            // <Container>
-            //     <Row className="justify-content-center">
-            //         <Col md={6}>
-            //             <h1>Create new product</h1>
-            //             <br />
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="name">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type="text" name="name" value={this.state.name} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="description">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="price">
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="category">
-                                <Form.Label>Category</Form.Label>
-                                <Form.Control as="select" name="category" value={this.state.category} onChange={this.handleInput} >
-                                    <option value='' disabled hidden>Select category</option>
-                                    <option value='motor'>Motor</option>
-                                    <option value='fashion'>Fashion</option>
-                                    <option value='electronics'>Electronics</option>
-                                    <option value='sports'>Sports</option>
-                                    <option value='home'>Home</option>
-                                    <option value='culture'>Culture</option>
-                                    <option value='others'>Others</option>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId="image">
-                                <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
-                                <Form.Control type="file" onChange={this.handleImageUpload} />
-                            </Form.Group>
-                            <Form.Group controlId="location">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control as="select" name="location" value={this.state.location} onChange={this.handleInput}>
-                                    <option value='' disabled hidden>Select location</option>
-                                    {this.state.locationList.map((elm, idx) => <option key={idx} value={elm.toLowerCase()}>{elm}</option>)}
-                                </Form.Control>
-                            </Form.Group>
-                            <Button variant="secondary" type="submit">Submit</Button>
-                        </Form>
-            //         </Col>
-            //     </Row>
-            // </Container>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" name="name" value={this.state.name} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control type="text" name="description" value={this.state.description} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="price">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control type="number" name="price" value={this.state.price} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="category">
+                    <Form.Label>Category</Form.Label>
+                    <Form.Control as="select" name="category" value={this.state.category} onChange={this.handleInput} >
+                        <option value='' disabled hidden>Select category</option>
+                        <option value='motor'>Motor</option>
+                        <option value='fashion'>Fashion</option>
+                        <option value='electronics'>Electronics</option>
+                        <option value='sports'>Sports</option>
+                        <option value='home'>Home</option>
+                        <option value='culture'>Culture</option>
+                        <option value='others'>Others</option>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="image">
+                    <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
+                    <Form.Control type="file" onChange={this.handleImageUpload} />
+                </Form.Group>
+                <Form.Group controlId="location">
+                    <Form.Label>Location</Form.Label>
+                    <Form.Control as="select" name="location" value={this.state.location} onChange={this.handleInput}>
+                        <option value='' disabled hidden>Select location</option>
+                        {this.state.locationList.map((elm, idx) => <option key={idx} value={elm.toLowerCase()}>{elm}</option>)}
+                    </Form.Control>
+                </Form.Group>
+                <Button variant="secondary" type="submit">Submit</Button>
+            </Form>
         )
     }
 }

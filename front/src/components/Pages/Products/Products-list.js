@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Dropdown, ButtonGroup } from 'react-bootstrap'
+import { Container, Row, Button, Dropdown } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'

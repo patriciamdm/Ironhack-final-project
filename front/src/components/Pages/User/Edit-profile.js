@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 import Spinner from '../../Shared/Spinner'
 
@@ -37,10 +37,6 @@ class EditUser extends Component {
         this.userService
             .editUser(this.state._id, editedUser)
             .then(user => this.userService.getOneUser(user.data._id))
-            // .then(user => {
-            //     this.props.setUser(user.data)
-            //     this.props.history.push('/profile')
-            // })
             .then(user => this.props.setUser(user.data))
             .then(() => this.props.handleModal())
             .catch(err => console.log('ERROR IN EDIT', err))
@@ -63,33 +59,25 @@ class EditUser extends Component {
 
     render() {
         return (
-            // <Container>
-            //     <Row className="justify-content-center">
-            //         <Col md={6}>
-            //             <h1>Edit profile</h1>
-            //             <br />
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="username">
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="image">
-                                <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
-                                <Form.Control type="file" onChange={this.handleImageUpload} />
-                            </Form.Group>
-                            <Form.Group controlId="email">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Form.Group controlId="phone">
-                                <Form.Label>Phone number</Form.Label>
-                                <Form.Control type="text" name="phone" value={this.state.phone} onChange={this.handleInput} />
-                            </Form.Group>
-                            <Button variant="secondary" type="submit">Submit</Button>
-                        </Form>
-        //             </Col>
-        //         </Row>
-        //     </Container>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="username">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" name="username" value={this.state.username} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="image">
+                    <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
+                    <Form.Control type="file" onChange={this.handleImageUpload} />
+                </Form.Group>
+                <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleInput} />
+                </Form.Group>
+                <Form.Group controlId="phone">
+                    <Form.Label>Phone number</Form.Label>
+                    <Form.Control type="text" name="phone" value={this.state.phone} onChange={this.handleInput} />
+                </Form.Group>
+                <Button variant="secondary" type="submit">Submit</Button>
+            </Form>
         )
     }
 }
