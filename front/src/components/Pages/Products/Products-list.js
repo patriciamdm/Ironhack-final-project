@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Dropdown } from 'react-bootstrap'
-//import { Link } from 'react-router-dom'
+import { Container, Row, Button, Dropdown, ButtonGroup } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
@@ -20,13 +19,13 @@ class ProductList extends Component {
         this.state = {
             products: undefined,
             filteredProds: undefined,
-            showNewProdModal: false,
-            showEditProdModal: false,
             prodToTarget: undefined,
+            showNewProdModal: false,
+            showNewProdToast: false,
+            showEditProdModal: false,
+            showEditProdToast: false,
             prodCategories: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others'],
-            prodLocations: ['Alava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Avila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'],
-            showEditToast: false,
-            showNewToast: false
+            prodLocations: ['Alava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Avila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -44,11 +43,13 @@ class ProductList extends Component {
 
     // CREATING & EDITING PRODUCTS
     
-    handleNewProdModal = visibility => this.setState({ showNewProdModal: visibility })
-
-    handleEditProdModal = visibility => this.setState({ showEditProdModal: visibility })
-
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
+    
+    handleNewProdModal = visib => this.setState({ showNewProdModal: visib })
+    handleNewProdToast = visib => this.setState({showNewProdToast: visib})
+    
+    handleEditProdModal = visib => this.setState({ showEditProdModal: visib })
+    handleEditProdToast = visib => this.setState({ showEditProdToast: visib })
 
 
     // SEARCH BAR AND FILTERS
@@ -126,10 +127,6 @@ class ProductList extends Component {
                 .catch(err => console.log('ERROR ADDING TO FAVS', err))
     }
 
-    handleEditToast = visib => this.setState({ showEditToast: visib })
-    
-    handleNewToast = visib => this.setState({showNewToast: visib})
-
     render() {
         return (
             <>
@@ -139,8 +136,7 @@ class ProductList extends Component {
                             <h1>All products</h1>
                             {this.state.products
                                 &&
-                                //<Link to='/products/new' className="btn btn-secondary" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Link>
-                                <Button onClick={() => this.handleNewProdModal(true)} variant="secondary" size="sm" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Button>
+                                <Button onClick={() => this.handleNewProdModal(true)} variant="secondary" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Button>
                             }
                         </article>
                         <SearchBar searchFor={value => this.searchFor(value)} />
@@ -150,25 +146,28 @@ class ProductList extends Component {
                         ?
                         <>
                             <Row style={{ marginBottom: '20px'}}>
-                                <DropdownButton title="Sort" products={this.state.filteredProds}>
+                                <DropdownButton title="Sort">
                                     <Dropdown.Item as="button" onClick={() => this.sortByNewest()}>Newest</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.sortByAvailable()}>Availability</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.sortByLowPrice()}>Price, low to high</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.sortByHighPrice()}>Price, high to low</Dropdown.Item>
                                 </DropdownButton>
 
-                                <DropdownButton title="Category" products={this.state.filteredProds}>
+                                <DropdownButton title="Category">
                                     <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
+                                    <Dropdown.Divider/>
                                     {this.state.prodCategories.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.filterByCategory(elm)}><span style={{ textTransform: 'capitalize'}}>{elm}</span></Dropdown.Item>)}
                                 </DropdownButton>
 
-                                <DropdownButton title="Location" products={this.state.filteredProds} style={{height: '100px', overflow: 'scroll'}}>
+                                <DropdownButton title="Location" style={{ height: '100px', overflow: 'scroll' }}>
                                     <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
+                                    <Dropdown.Divider />
                                     {this.state.prodLocations.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.filterByLocation(elm)}><span style={{ textTransform: 'capitalize'}}>{elm}</span></Dropdown.Item>)}
                                 </DropdownButton>
                                 
-                                <DropdownButton title="Availability" products={this.state.filteredProds} style={{ height: '100px', overflow: 'scroll' }}>
+                                <DropdownButton title="Availability" style={{ height: '100px', overflow: 'scroll' }}>
                                     <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
+                                    <Dropdown.Divider />
                                     <Dropdown.Item as="button" onClick={() => this.filterByStatus('available')}>Available</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.filterByStatus('reserved')}>Reserved</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => this.filterByStatus('sold')}>Sold</Dropdown.Item>
@@ -181,8 +180,8 @@ class ProductList extends Component {
                         :
                             <Row><Loader /></Row>
                     }
-                    <Toastie show={this.state.showNewToast} handleToast={this.handleNewToast} toastType='success' toastText="Product created successfully." toastTitle='SUCCESS!' />
-                    <Toastie show={this.state.showEditToast} handleToast={this.handleEditToast} toastType='success' toastText="Product updated successfully." toastTitle='SUCCESS!' />
+                    <Toastie show={this.state.showNewProdToast} handleToast={this.handleNewProdToast} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully."  />
+                    <Toastie show={this.state.showEditProdToast} handleToast={this.handleEditProdToast} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
                 </Container>
 
                 <PopUp show={this.state.showNewProdModal} hide={() => this.handleNewProdModal(false)} title="Create a product">
