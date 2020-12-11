@@ -27,8 +27,6 @@ class UserList extends Component {
             .then(allUsers => this.setState({ users: allUsers.data, filteredUsers: allUsers.data }))
             .catch(err => console.log('ERROR GET ALL USERS', err))
     }
-
-    // handleEditProdModal = visibility => this.setState({ showModal: visibility })
     
     searchFor = search => {
         const filterUsers = this.state.users.filter(elm => elm.username.toLowerCase().includes(search.toLowerCase()))
@@ -39,9 +37,13 @@ class UserList extends Component {
         return (
             <>
                 <Container>
-                    <h1>All users</h1>
-                    <SearchBar searchFor={value => this.searchFor(value)} />
-                    <hr />
+                    <Row>
+                        <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding:' 0px 15px'}}>
+                            <h1>All users</h1>
+                        </article>
+                        <SearchBar searchFor={value => this.searchFor(value)} style={{padding: '0px 15px'}}/>
+                    </Row>
+                    <hr style={{margin: '1.2rem 0rem'}}/>
                     <Row>
                         {this.state.filteredUsers
                             ?

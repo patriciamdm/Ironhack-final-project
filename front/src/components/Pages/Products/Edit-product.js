@@ -76,7 +76,7 @@ class EditProduct extends Component {
     render() {
         return (
         <>
-            {this.state.name
+            {this.state._id
                 ?
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="name">

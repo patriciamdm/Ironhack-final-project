@@ -51,9 +51,7 @@ class EditUser extends Component {
 
         this.filesService
             .uploadImage(uploadData)
-            .then(response => {
-                this.setState({ image: response.data.secure_url, uploadingActive: false })
-            })
+            .then(response => this.setState({ image: response.data.secure_url, uploadingActive: false }))
             .catch(err => console.log('ERRORRR!', err))
     }
 
