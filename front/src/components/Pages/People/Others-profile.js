@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
-import Rating from '@material-ui/lab/Rating'
+//import Rating from '@material-ui/lab/Rating'
 
 import Loader from '../../Shared/Spinner'
 import ProductCard from '../Products/Prod-card'
@@ -25,7 +25,7 @@ class OthersProfile extends Component {
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
-        this.ratingService = new RatingService()
+        //this.ratingService = new RatingService()
     }
 
     componentDidMount = () => this.getUser()

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
+
+const {checkUserId} = require('../middlewares/middleware')
 
 const User = require('../models/user.model')
 
@@ -12,12 +13,7 @@ router.get('/getAllUsers', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getOneUser/:user_id', (req, res) => {
-
-    if (!mongoose.Types.ObjectId.isValid(req.params.user_id)) {
-        res.status(404).json({ message: 'Invalid ID' })
-        return
-    }
+router.get('/getOneUser/:user_id', checkUserId, (req, res) => {
 
     User
         .findById(req.params.user_id)
@@ -25,7 +21,7 @@ router.get('/getOneUser/:user_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.put('/editUser/:user_id', (req, res) => {
+router.put('/editUser/:user_id', checkUserId, (req, res) => {
 
     User
         .findByIdAndUpdate(req.params.user_id, req.body)
@@ -33,7 +29,7 @@ router.put('/editUser/:user_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.delete('/deleteUser/:user_id', (req, res) => {
+router.delete('/deleteUser/:user_id', checkUserId, (req, res) => {
 
     User
         .findByIdAndDelete(req.params.user_id)

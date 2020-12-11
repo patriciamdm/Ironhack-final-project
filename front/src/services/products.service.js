@@ -9,6 +9,7 @@ class ProductService {
     }
 
     getAllProducts = () => this.apiHandler.get('/getAllProducts')
+    getProductsByOwner = ownerId => this.apiHandler.get(`/getProductsByOwner/'${ownerId}`)
     getOneProduct = prodId => this.apiHandler.get(`/getOneProduct/${prodId}`)
     editProduct = (prodId, prodInfo) => this.apiHandler.put(`/editProduct/${prodId}`, prodInfo)
     newProduct = prodInfo => this.apiHandler.post('/newProduct', prodInfo)
