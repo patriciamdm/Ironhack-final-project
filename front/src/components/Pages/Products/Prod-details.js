@@ -119,7 +119,11 @@ class ProductDetails extends Component {
                                 }
                                 <p>{this.state.product.description}</p>
                                 <h6 className="price">Price: {this.state.product.price}€</h6>
-                                <h6 className="status">{this.state.product.status}</h6>                
+                                <h6 className="status" style={{ textTransform: 'capitalize' }}>Where: <a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${this.state.product.location.replace(/\s/g, '+')}`}>
+                                    {this.state.product.location}</a></h6>
+                                <h6 className="status">
+                                    <span style={this.state.product.status === 'available' ? { color: 'green' } : (this.state.product.status === 'sold' ? { color: 'red' } : { color: 'orange' })}>
+                                    {this.state.product.status}</span></h6>
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>

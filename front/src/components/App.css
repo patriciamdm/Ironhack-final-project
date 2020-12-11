@@ -82,10 +82,18 @@ h1, h2, h3 {
     max-height: 500px;
 }
 
+.product-details a {
+   color: black
+}
+
 .product-card {
     border: none;
     box-shadow: 2px 2px 8px lightgray;
     margin-bottom: 30px;
+}
+
+.product-card .maps{
+    color: black
 }
 
 .card-title {
