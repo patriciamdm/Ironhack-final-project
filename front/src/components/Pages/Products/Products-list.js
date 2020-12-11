@@ -12,6 +12,7 @@ import NewProduct from './New-product'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
+import FilterBtns from '../../Shared/Filter-btns'
 
 class ProductList extends Component {
     constructor(props) {
@@ -20,10 +21,10 @@ class ProductList extends Component {
             products: undefined,
             filteredProds: undefined,
             prodToTarget: undefined,
-            showNewProdModal: false,
-            showNewProdToast: false,
-            showEditProdModal: false,
-            showEditProdToast: false,
+            newProdModal: false,
+            newProdToast: false,
+            editProdModal: false,
+            editProdToast: false,
             prodCategories: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others'],
             prodLocations: ['Alava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Avila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
         }
@@ -39,69 +40,30 @@ class ProductList extends Component {
             .then(allProds => this.setState({ products: allProds.data, filteredProds: allProds.data }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
-
-
-    // CREATING & EDITING PRODUCTS
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
+
+    handlePopups = (target, visib) => this.setState({[target]: visib})
     
-    handleNewProdModal = visib => this.setState({ showNewProdModal: visib })
-    handleNewProdToast = visib => this.setState({showNewProdToast: visib})
-    
-    handleEditProdModal = visib => this.setState({ showEditProdModal: visib })
-    handleEditProdToast = visib => this.setState({ showEditProdToast: visib })
 
 
-    // SEARCH BAR AND FILTERS
+    // SEARCH BAR, FILTERS & SORTING
 
-    searchFor = search => {
-        const filterProds = this.state.products.filter(elm => elm.name.toLowerCase().includes(search.toLowerCase()))
+    filterBy = (filter, value) => {
+        const filterProds = this.state.products.filter(elm => elm.[filter].toLowerCase().includes(value.toLowerCase()))
         this.setState({ filteredProds: filterProds })
     }
 
-    filterByCategory = categ => {
-        const filterProds = this.state.products.filter(elm => elm.category.toLowerCase().includes(categ.toLowerCase()))
-        this.setState({ filteredProds: filterProds })
-    }
-
-    filterByLocation = loc => {
-        const filterProds = this.state.products.filter(elm => elm.location.toLowerCase().includes(loc.toLowerCase()))
-        this.setState({ filteredProds: filterProds })
-    }
-
-    filterByStatus = stat => {
-        const filterProds = this.state.products.filter(elm => elm.status.toLowerCase().includes(stat.toLowerCase()))
-        this.setState({ filteredProds: filterProds })
-    }
-
-    unfilterBy = () => {
+    unfilter = () => {
         this.setState({ filteredProds: this.state.products })
     }
 
-    
-    // SORTING
-
-    sortByNewest = () => {
+    sortBy = rule => {
         const filterProds = [...this.state.products]
-        filterProds.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
-        this.setState({ filteredProds: filterProds })
-    }
-    
-    sortByAvailable = () => {
-        const filterProds = [...this.state.products]
-        filterProds.sort((a, b) => (a.status < b.status) ? -1 : 1)
-        this.setState({ filteredProds: filterProds })
-    }
-    
-    sortByLowPrice = () => {
-        const filterProds = [...this.state.products]
-        filterProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
-        this.setState({ filteredProds: filterProds })
-    }
-
-    sortByHighPrice = () => {
-        const filterProds = [...this.state.products]
-        filterProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
+        rule === 'newest' && filterProds.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
+        rule === 'available' && filterProds.sort((a, b) => (a.status < b.status) ? -1 : 1)
+        rule === 'low price' && filterProds.sort((a, b) => (a.price > b.price) ? 1 : -1)
+        rule === 'high price' && filterProds.sort((a, b) => (a.price > b.price) ? -1 : 1)
         this.setState({ filteredProds: filterProds })
     }
 
@@ -110,21 +72,13 @@ class ProductList extends Component {
 
     addToFavorites = product => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
-        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== product._id)}
-
-        this.props.theUser.likedProducts.includes(product._id)
-            ?
-            this.userService
-                .editUser(this.props.theUser._id, removeFav)
-                .then(user => this.userService.getOneUser(user.data._id))
-                .then(user => this.props.setUser(user.data))
-                .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
-            :
-            this.userService
-                .editUser(this.props.theUser._id, addFav)
-                .then(user => this.userService.getOneUser(user.data._id))
-                .then(user => this.props.setUser(user.data))
-                .catch(err => console.log('ERROR ADDING TO FAVS', err))
+        const removeFav = { likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== product._id) }
+ 
+        this.userService
+            .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(product._id) ? removeFav : addFav)
+            .then(user => this.userService.getOneUser(user.data._id))
+            .then(user => this.props.setUser(user.data))
+            .catch(err => console.log('ERROR ADDING/REMOVING FROM FAVS', err))
     }
 
     render() {
@@ -132,64 +86,31 @@ class ProductList extends Component {
             <>
                 <Container className="products-list">
                     <Row>
-                        <article className="first-row">
+                        <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding:' 0px 15px'}}>
                             <h1>All products</h1>
-                            {this.state.products
-                                &&
-                                <Button onClick={() => this.handleNewProdModal(true)} variant="secondary" style={{ marginBottom: '30px', marginTop: '10px' }}>Create new product</Button>
-                            }
+                            {this.state.products && <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" >Create new product</Button>}
                         </article>
-                        <SearchBar searchFor={value => this.searchFor(value)} />
-                        <hr/>
+                        <SearchBar searchFor={value => this.filterBy('name', value)} style={{padding: '0px 15px'}}/>
                     </Row>
+                    <FilterBtns filterBy={this.filterBy} unfilter={this.unfilter} sortBy={this.sortBy} categories={this.state.prodCategories} locations={this.state.prodLocations} />
                     {this.state.filteredProds
                         ?
-                        <>
-                            <Row style={{ marginBottom: '20px'}}>
-                                <DropdownButton title="Sort">
-                                    <Dropdown.Item as="button" onClick={() => this.sortByNewest()}>Newest</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => this.sortByAvailable()}>Availability</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => this.sortByLowPrice()}>Price, low to high</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => this.sortByHighPrice()}>Price, high to low</Dropdown.Item>
-                                </DropdownButton>
-
-                                <DropdownButton title="Category">
-                                    <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
-                                    <Dropdown.Divider/>
-                                    {this.state.prodCategories.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.filterByCategory(elm)}><span style={{ textTransform: 'capitalize'}}>{elm}</span></Dropdown.Item>)}
-                                </DropdownButton>
-
-                                <DropdownButton title="Location" style={{ height: '100px', overflow: 'scroll' }}>
-                                    <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    {this.state.prodLocations.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.filterByLocation(elm)}><span style={{ textTransform: 'capitalize'}}>{elm}</span></Dropdown.Item>)}
-                                </DropdownButton>
-                                
-                                <DropdownButton title="Availability" style={{ height: '100px', overflow: 'scroll' }}>
-                                    <Dropdown.Item as="button" onClick={() => this.unfilterBy()}>All</Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('available')}>Available</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('reserved')}>Reserved</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => this.filterByStatus('sold')}>Sold</Dropdown.Item>
-                                </DropdownButton>
-                            </Row>
-                            <Row>
-                                {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handleEditProdModal(visib)} productToTarget={id => this.defineTargetProd(id)} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
-                            </Row>
-                        </>
+                        <Row>
+                            {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handlePopups('editProdModal', visib)} productToTarget={id => this.defineTargetProd(id)} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
+                        </Row>
                         :
-                            <Row><Loader /></Row>
+                        <Row><Loader /></Row>
                     }
-                    <Toastie show={this.state.showNewProdToast} handleToast={this.handleNewProdToast} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully."  />
-                    <Toastie show={this.state.showEditProdToast} handleToast={this.handleEditProdToast} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
+                    <Toastie show={this.state.newProdToast} handleToast={visib => this.handlePopups('newProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully."  />
+                    <Toastie show={this.state.editProdToast} handleToast={visib => this.handlePopups('editProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
                 </Container>
 
-                <PopUp show={this.state.showNewProdModal} hide={() => this.handleNewProdModal(false)} title="Create a product">
-                    <NewProduct hideModal={() => this.handleNewProdModal(false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleNewToast} />
+                <PopUp show={this.state.newProdModal} hide={() => this.handlePopups('newProdModal', false)} title="Create a product">
+                    <NewProduct hideModal={() => this.handlePopups('newProdModal', false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('newProdToast', visib)} />
                 </PopUp>
 
-                <PopUp show={this.state.showEditProdModal} hide={() => this.handleEditProdModal(false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handleEditProdModal(false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleEditToast} />
+                <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
+                    <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('editProdToast', visib)} />
                 </PopUp>
             </>
         )

@@ -19,13 +19,12 @@ class OthersProfile extends Component {
         this.state = {
             user: undefined,
             products: undefined,
-            showEmailModal: false,
-            showWppModal: false,
+            emailModal: false,
             rating: ''
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
-        this.ratingService = new RatingService()
+        //this.ratingService = new RatingService()
     }
 
     componentDidMount = () => this.getUser()
@@ -37,7 +36,6 @@ class OthersProfile extends Component {
             .catch(err => console.log('ERROR GETING USER', err))   
     }
 
-    
     loadProducts = () => {
         this.productsService
         .getAllProducts()
@@ -45,17 +43,29 @@ class OthersProfile extends Component {
         .catch(err => console.log('ERROR GETTING PRODS', err))
     }
     
-    handleEmailModal = visib => this.setState({ showEmailModal: visib })
-    handleWppModal = visib => this.setState({showWppModal: visib})
+    handlePopups = (target, visib) => this.setState({ [target]: visib })
     
-    handleRateInput = e => this.setState({ [e.target.name]: e.target.value })
-    handleRateSubmit = e => {
-        e.preventDefault()
-        console.log('RATING', this.state.rating)
-        //this.giveRating()
-        this.state.user.ratings.filter(elm => elm.rater === this.props.theUser._id).length() === 1 && this.editRating()
-        this.state.user.ratings.filter(elm => elm.rater === this.props.theUser._id).length() === 0 && this.newRating()()
+    addToFavorites = product => {
+        const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
+        const removeFav = { likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== product._id) }
+        
+        this.userService
+        .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(product._id) ? removeFav : addFav)
+        .then(user => this.userService.getOneUser(user.data._id))
+        .then(user => this.props.setUser(user.data))
+        .catch(err => console.log('ERROR ADDING/REMOVING FROM FAVS', err))
     }
+    
+    
+    
+    // handleRateInput = e => this.setState({ [e.target.name]: e.target.value })
+    // handleRateSubmit = e => {
+    //     e.preventDefault()
+    //     console.log('RATING', this.state.rating)
+    //     //this.giveRating()
+    //     this.state.user.ratings.filter(elm => elm.rater === this.props.theUser._id).length() === 1 && this.editRating()
+    //     this.state.user.ratings.filter(elm => elm.rater === this.props.theUser._id).length() === 0 && this.newRating()()
+    // }
 
     // getRating = () => {
     //     const allRates = this.state.user.ratings.reduce((acc, elm) => (acc + elm.ratingValue), 0)
@@ -88,34 +98,34 @@ class OthersProfile extends Component {
     //     // console.log('rate', rate)
     // }
 
-    newRating = () => {
-        const newRate = { rater: this.props.theUser._id, ratingValue: this.state.rating }
-        const propInfo = { ratings: [...this.state.user.ratings, newRate] }
+    // newRating = () => {
+    //     const newRate = { rater: this.props.theUser._id, ratingValue: this.state.rating }
+    //     const propInfo = { ratings: [...this.state.user.ratings, newRate] }
 
-        this.userService
-            .editUser(this.state.user._id, propInfo)
-            .then(() => {
-                this.props.history.push('/')
-                this.props.history.push(`/profile/${this.state.user._id}`)
-                console.log(this.state.user)
-            })
-            .catch(err => console.log('ERROR IN NEW RATING', err))
-    }
+    //     this.userService
+    //         .editUser(this.state.user._id, propInfo)
+    //         .then(() => {
+    //             this.props.history.push('/')
+    //             this.props.history.push(`/profile/${this.state.user._id}`)
+    //             console.log(this.state.user)
+    //         })
+    //         .catch(err => console.log('ERROR IN NEW RATING', err))
+    // }
 
-    editRating = () => {
-        const newRate = { rater: this.props.theUser._id, ratingValue: this.state.rating }
-        const editRatings = this.state.user.ratings.filter(elm => elm.rater !== this.props.theUser._id)
-        const propInfo = { ratings: [...editRatings, newRate] }
+    // editRating = () => {
+    //     const newRate = { rater: this.props.theUser._id, ratingValue: this.state.rating }
+    //     const editRatings = this.state.user.ratings.filter(elm => elm.rater !== this.props.theUser._id)
+    //     const propInfo = { ratings: [...editRatings, newRate] }
 
-        this.userService
-            .editUser(this.state.user._id, propInfo)
-            .then(() => {
-                this.props.history.push('/')
-                this.props.history.push(`/profile/${this.state.user._id}`)
-                console.log(this.state.user)
-            })
-            .catch(err => console.log('ERROR IN NEW RATING', err))
-    }
+    //     this.userService
+    //         .editUser(this.state.user._id, propInfo)
+    //         .then(() => {
+    //             this.props.history.push('/')
+    //             this.props.history.push(`/profile/${this.state.user._id}`)
+    //             console.log(this.state.user)
+    //         })
+    //         .catch(err => console.log('ERROR IN NEW RATING', err))
+    // }
 
 
 
@@ -150,7 +160,7 @@ class OthersProfile extends Component {
                                     </Form> */}
 
                                     <br/>
-                                    <Button onClick={() => this.handleEmailModal(true)} variant="secondary" size="sm">Contact via Email</Button>
+                                    <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
                                     <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
                                 </Col>
                             </Row>
@@ -160,15 +170,15 @@ class OthersProfile extends Component {
                             <Row>
                                 {this.state.products
                                     ?
-                                    this.state.products.map(elm => <ProductCard key={elm._id} showModal={visib => this.handleModal(visib)} productToEdit={id => this.defineEditProd(id)} product={elm} theUser={this.props.theUser} />)
+                                    this.state.products.map(elm => <ProductCard key={elm._id} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)
                                     :
                                     <Loader />
                                 }
                             </Row>
                         </Container>
                         
-                        <PopUp show={this.state.showEmailModal} hide={() => this.handleEmailModal(false)} title="Send an email">
-                            <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
+                        <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
+                            <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
                         </PopUp>
                     </>
                     :
