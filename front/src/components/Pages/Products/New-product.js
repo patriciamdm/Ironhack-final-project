@@ -34,7 +34,6 @@ class NewProduct extends Component {
         this.productService
             .newProduct(this.state)
             .then(() => {
-                //this.props.history.push('/products')
                 this.props.reloadProducts()
                 this.props.hideModal()
                 this.props.handleToast(true)
