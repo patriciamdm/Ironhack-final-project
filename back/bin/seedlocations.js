@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Location = require('../models/location.model');
 
 const dbName = 'project-3'
-mongoose.connect(`mongodb+srv://ManuelBarreda:659104490MBn@cluster0.kulpg.mongodb.net/${dbName}`);
+mongoose.connect(`${process.env.DB_REMOTE}`);
 
 Location.collection.drop()
 
