@@ -21,6 +21,12 @@ h1, h2, h3 {
     border-color: #3e78ac;
 }
 
+.btn-secondary button:active {
+    color: #fff;
+    background-color: #1f4f79;
+    border-color: #1f4f79;
+}
+
 .navbar{
     background-color: #1f4f79;
     box-shadow: 2px 2px 8px lightgray;
@@ -46,7 +52,6 @@ h1, h2, h3 {
 
 .btn {
     font-weight: 200;
-    margin-top: 20px;
 }
 
 .home-btns {
@@ -56,11 +61,6 @@ h1, h2, h3 {
 
 .home-btns .btn {
     margin: 20px;
-}
-
-.search-bar {
-    width: 100%;
-    border: none;
 }
 
 .loader {

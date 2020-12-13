@@ -4,7 +4,7 @@ import { Col, Button, Container, Row, Modal } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
-import PopUpButtons from '../../Shared/PopUps/Pop-up-buttons'
+import PopUpConfirm from '../../Shared/PopUps/Pop-up-confirm'
 import EditProduct from './Edit-product'
 import EmailForm from '../../Shared/Email-form'
 import Toastie from '../../Shared/PopUps/Toastie'
@@ -18,11 +18,11 @@ class ProductDetails extends Component {
         this.state = {
             product: undefined,
             owner: undefined,
-            showDeleteModal: false,
-            showEditModal: false,
-            showContactModal: false,
-            showEmailModal: false,
-            showWppModal: false,
+            deleteProdModal: false,
+            editProdModal: false,
+            contactUserModal: false,
+            emailModal: false,
+            wppModal: false,
             showToast: false,
             toastType: 'success',
             toastTitle: 'SUCCESS!',
@@ -33,9 +33,9 @@ class ProductDetails extends Component {
         this.userService = new UserService()
     }
 
-    componentDidMount = () => this.loadProducts()
+    componentDidMount = () => this.loadProduct()
     
-    loadProducts = () => {
+    loadProduct = () => {
         this.productsService
             .getOneProduct(this.props.match.params.product_id)
             .then(res => this.setState({ product: res.data }, () => this.getOwner()))
@@ -49,51 +49,30 @@ class ProductDetails extends Component {
             .catch(err => console.log('ERROR WITH PRODUCT OWNER', err))
     }
 
-    handleEditModal = visibility => this.setState({ showEditModal: visibility })
-
-    handleDeleteModal = visibility => this.setState({ showDeleteModal: visibility })
+    handlePopups = (target, visib) => this.setState({ [target]: visib })
 
     deleteProduct = () => {
         this.productsService
             .deleteProduct(this.state.product._id)
-            .then(() => {
-                this.props.history.push('/products')
-            })
+            .then(() => this.props.history.push('/products'))
             .catch(err => console.log('ERROR DELETING PRODUCT', err))
     }
 
-    handleContactModal = visibility => this.setState({ showContactModal: visibility })
-    
-    handleEmailModal = visib => this.setState({ showEmailModal: visib })
-    
-    handleWppModal = visib => this.setState({ showWppModal: visib })
-    
     addToFavorites = () => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, this.state.product] }
-        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== this.state.product._id)}
-
-        this.props.theUser.likedProducts.includes(this.state.product._id)
-            ?
-            this.userService
-                .editUser(this.props.theUser._id, removeFav)
-                .then(user => this.userService.getOneUser(user.data._id))
-                .then(user => this.props.setUser(user.data))
-                .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
-            :
-            this.userService
-                .editUser(this.props.theUser._id, addFav)
-                .then(user => this.userService.getOneUser(user.data._id))
-                .then(user => this.props.setUser(user.data))
-                .catch(err => console.log('ERROR ADDING TO FAVS', err))
+        const removeFav = { likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== this.state.product._id) }
+        this.userService
+            .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(this.state.product._id) ? removeFav : addFav)
+            .then(user => this.userService.getOneUser(user.data._id))
+            .then(user => this.props.setUser(user.data))
+            .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
     }
-
-    handleToast = visib => this.setState({ showToast: visib })
 
     render() {
         return (
             <>
                 <Container className="product-details">
-                    <Toastie show={this.state.showToast} handleToast={this.handleToast} toastType={this.state.toastType} toastText={this.state.toastText} toastTitle={this.state.toastTitle} />
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType={this.state.toastType} toastText={this.state.toastText} toastTitle={this.state.toastTitle} />
                     {this.state.product
                         ?
                         <Row className="justify-content-center">
@@ -121,18 +100,17 @@ class ProductDetails extends Component {
                                 <h6 className="price">Price: {this.state.product.price}€</h6>
                                 <h6 className="status" style={{ textTransform: 'capitalize' }}>Where: <a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${this.state.product.location.replace(/\s/g, '+')}`}>
                                     {this.state.product.location}</a></h6>
-                                <h6 className="status">
-                                    <span style={this.state.product.status === 'available' ? { color: 'green' } : (this.state.product.status === 'sold' ? { color: 'red' } : { color: 'orange' })}>
+                                <h6 className="status"><span style={this.state.product.status === 'available' ? { color: 'green' } : (this.state.product.status === 'sold' ? { color: 'red' } : { color: 'orange' })}>
                                     {this.state.product.status}</span></h6>
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>
-                                        <Button onClick={() => this.handleEditModal(true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Edit product</Button>
-                                        <Button onClick={() => this.handleDeleteModal(true)} variant="danger" size="sm">Delete product</Button>
+                                        <Button onClick={() => this.handlePopups('editProdModal', true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Edit product</Button>
+                                        <Button onClick={() => this.handlePopups('deleteProdModal', true)} variant="danger" size="sm">Delete product</Button>
                                     </>
                                     :
                                     <>
-                                        <Button onClick={() => this.handleContactModal(true)} variant="secondary" size="sm" style={{ marginRight: '20px' }}>Show interest</Button>
+                                        <Button onClick={() => this.handlePopups('contactUserModal', true)} variant="secondary" size="sm" style={{ marginRight: '20px' }}>Show interest</Button>
                                         {this.props.theUser.likedProducts.includes(this.state.product._id)
                                             ?
                                             <Button onClick={() => this.addToFavorites()} variant="secondary" size="sm">Remove from favs</Button>
@@ -150,36 +128,30 @@ class ProductDetails extends Component {
                 {this.state.product
                     &&
                     <>
-                    <PopUp show={this.state.showEditModal} hide={() => this.handleEditModal(false)} title="Edit product">
-                        <EditProduct hideModal={() => this.handleEditModal(false)} productId={this.state.product._id} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={this.handleToast}/>
+                    <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
+                        <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.product._id} reloadProducts={() => this.loadProduct()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib)}/>
                     </PopUp>
 
-                    <PopUpButtons show={this.state.showDeleteModal} hide={() => this.handleDeleteModal(false)} title="Wait!">
-                        <Modal.Body><b>Are you sure you want to delete this product?</b></Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => this.handleDeleteModal(false)}>
-                                No, go back
-                            </Button>
-                            <Button variant="danger" onClick={() => this.deleteProduct()}>
-                                Yes, delete
-                            </Button>
-                        </Modal.Footer>
-                    </PopUpButtons>
+                    <PopUpConfirm show={this.state.deleteProdModal} hide={() => this.handlePopups('deleteProdModal', false)}
+                        leftAction={() => this.handlePopups('deleteProdModal', false)} leftText='No, go back'
+                        rightAction={() => this.deleteProduct()} rightText='Yes, delete'
+                        type='danger' title="Wait!" body={<b>Are you sure you want to delete this product?</b>}
+                    />
                     </>
                 }
                 {this.state.owner
                     &&
                     <>
-                    <PopUpButtons show={this.state.showContactModal} hide={() => this.handleContactModal(false)} title="Contact seller">
-                        <Modal.Body><b>How would you like to contact this seller?</b></Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>Via Email</Button>
-                            <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Via WhatsApp</a>
-                        </Modal.Footer>
-                    </PopUpButtons>
+                    <PopUpConfirm show={this.state.contactUserModal} hide={() => this.handlePopups('contactUserModal', false)}
+                        leftAction={() => this.handlePopups('emailModal', true)} leftText='Via email'
+                        rightText='Via WhatsApp'
+                        type='none' title="Contact seller" body={<b>How would you like to contact this seller?</b>}
+                    />
+                    {/* <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a> */}
+
                     
-                    <PopUp show={this.state.showEmailModal} hide={() => this.handleEmailModal(false)} title="Send an email">
-                        <EmailForm hideModal={() => this.handleEmailModal(false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />
+                    <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
+                        <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />
                     </PopUp>
                     </>
                 }
