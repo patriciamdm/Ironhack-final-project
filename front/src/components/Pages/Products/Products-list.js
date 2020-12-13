@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Dropdown } from 'react-bootstrap'
+import { Container, Row, Button } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
-import DropdownButton from '../../Shared/Dropdown-button'
 import ProductCard from './Prod-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from './Edit-product'
@@ -32,13 +31,23 @@ class ProductList extends Component {
         this.userService = new UserService()
     }
 
-    componentDidMount = () => this.loadProducts()
+    componentDidMount = () => {
+        this.loadProducts()
+    }
 
     loadProducts = () => {
         this.productsService
             .getAllProducts()
             .then(allProds => this.setState({ products: allProds.data, filteredProds: allProds.data }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
+    }
+
+    loadCategories = () => {
+
+    }
+
+    loadLocations = () => {
+        
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -49,8 +58,8 @@ class ProductList extends Component {
 
     // SEARCH BAR, FILTERS & SORTING
 
-    filterBy = (filter, value) => {
-        const filterProds = this.state.products.filter(elm => elm.[filter].toLowerCase().includes(value.toLowerCase()))
+    filterBy = (filter, value, filter2) => {
+        const filterProds = this.state.products.filter(elm => elm.[filter].toLowerCase().includes(value.toLowerCase()) || elm.[filter2].toLowerCase().includes(value.toLowerCase()))
         this.setState({ filteredProds: filterProds })
     }
 
@@ -90,7 +99,7 @@ class ProductList extends Component {
                             <h1>All products</h1>
                             {this.state.products && <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" >Create new product</Button>}
                         </article>
-                        <SearchBar searchFor={value => this.filterBy('name', value)} style={{padding: '0px 15px'}}/>
+                        <SearchBar searchFor={value => this.filterBy('name', value, 'description')} style={{padding: '0px 15px'}}/>
                     </Row>
                     <FilterBtns filterBy={this.filterBy} unfilter={this.unfilter} sortBy={this.sortBy} categories={this.state.prodCategories} locations={this.state.prodLocations} />
                     {this.state.filteredProds

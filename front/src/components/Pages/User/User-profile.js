@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import ProductCardProfile from '../Products/Prod-card-profile'
@@ -18,7 +18,7 @@ class UserProfile extends Component {
         super(props)
         this.state = {
             products: undefined,
-            favorites: undefined,
+            favorites: [],
             prodToTarget: undefined,
             editUserModal: false,
             editUserToast: false,
@@ -38,12 +38,19 @@ class UserProfile extends Component {
 
     loadProducts = () => {
         this.productsService
-            .getAllProducts()
-            .then(allProds => this.setState({ products: allProds.data.filter(elm => elm.owner === this.props.theUser._id) }))
+            .getProductsByOwner(this.props.theUser._id)
+            .then(allProds => this.setState({ products: allProds.data }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
-
+    
     loadFavorites = () => {
+        // this.props.theUser.likedProducts.forEach(elm => {
+        //     this.productsService
+        //         .getOneProduct(elm)
+        //         .then(prod => this.setState({ favorites: [...this.state.favorites, prod.data] }))
+        //         .catch(err => console.log('ERROR GET FAV', err))
+        // })
+
         this.productsService
             .getAllProducts()
             .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
@@ -70,19 +77,14 @@ class UserProfile extends Component {
             .catch(err => console.log('ERROR DELETING USER', err))
     }
 
-    removeFavorite = prod => {
-        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== prod._id)}
+    removeFavorite = prodId => {
+        const removeFav = {likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== prodId)}
 
-        this.props.theUser.likedProducts.includes(prod._id)
-            &&
-            this.userService
+        this.userService
             .editUser(this.props.theUser._id, removeFav)
             .then(user => this.userService.getOneUser(user.data._id))
             .then(user => this.props.setUser(user.data))
-            .then(() => {
-                this.props.history.push('/')
-                this.props.history.push('/profile')
-            })
+            .then(() => this.loadFavorites())
             .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
     }
 
@@ -113,7 +115,7 @@ class UserProfile extends Component {
                             {this.state.favorites
                                 ?
                                 <Row>
-                                    {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} productToTarget={id => this.defineTargetProd(id)} removeFromFavs={prod => this.removeFavorite(prod)} product={elm} theUser={this.props.theUser} />)}
+                                    {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} productToTarget={id => this.defineTargetProd(id)} removeFromFavs={prodId => this.removeFavorite(prodId)} product={elm} theUser={this.props.theUser} />)}
                                 </Row>
                                 :
                                 <Loader style={{ display: 'flex', justifyContent: 'center' }} /> 

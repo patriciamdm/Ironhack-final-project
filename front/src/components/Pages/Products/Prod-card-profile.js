@@ -42,9 +42,9 @@ class ProductCardProfile extends Component {
                                     <Link to={`/products/${this.props.product._id}`} className="btn btn-secondary btn-sm">View details</Link>
                                     {this.props.theUser.likedProducts.includes(this.props.product._id)
                                         ?
-                                        <Button onClick={() => this.props.removeFromFavs(this.props.product)} variant="secondary" size="sm">Remove fav</Button>
+                                        <Button onClick={() => this.props.removeFromFavs(this.props.product._id)} variant="secondary" size="sm">Remove fav</Button>
                                         :
-                                        <Button onClick={() => this.props.removeFromFavs(this.props.product)} variant="secondary" size="sm">Add fav</Button>
+                                        <Button onClick={() => this.props.removeFromFavs(this.props.product._id)} variant="secondary" size="sm">Add fav</Button>
                                     }
                                 </ButtonGroup>
                             }
