@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Category = require('../models/category.model');
 
 const dbName = 'project-3'
-mongoose.connect(`mongodb+srv://ManuelBarreda:659104490MBn@cluster0.kulpg.mongodb.net/${dbName}`);
+mongoose.connect(`${process.env.DB_REMOTE}`);
 
 Category.collection.drop()
 
