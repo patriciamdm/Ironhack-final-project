@@ -174,7 +174,7 @@ class ProductDetails extends Component {
                         <Modal.Body><b>How would you like to contact this seller?</b></Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => this.handleEmailModal(true)}>Via Email</Button>
-                            <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a>
+                            <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Via WhatsApp</a>
                         </Modal.Footer>
                     </PopUpButtons>
                     
