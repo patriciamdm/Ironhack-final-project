@@ -35,12 +35,12 @@ class ProductCard extends Component {
                                     {this.props.product.status}</span></Card.Subtitle>
                             {this.props.product.owner === this.props.theUser._id
                                 ?
-                                <ButtonGroup size="sm" className="btn-block">
+                                <ButtonGroup size="sm" className="btn-block" style={{marginTop: '15px'}}>
                                     <Button onClick={() => this.showModal()} variant="secondary" size="sm">Edit product</Button>
                                     <Link to={`/products/${this.props.product._id}`} className="btn btn-secondary btn-sm">View details</Link>
                                 </ButtonGroup>
                                 :
-                                <ButtonGroup size="sm" className="btn-block">
+                                <ButtonGroup size="sm" className="btn-block"  style={{marginTop: '15px'}}>
                                     <Link to={`/products/${this.props.product._id}`} className="btn btn-secondary btn-sm">View details</Link>
                                     {this.props.theUser.likedProducts.includes(this.props.product._id)
                                         ?

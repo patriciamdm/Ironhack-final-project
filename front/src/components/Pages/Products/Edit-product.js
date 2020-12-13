@@ -3,6 +3,8 @@ import { Form, Button } from 'react-bootstrap'
 
 import ProductService from '../../../services/products.service'
 import FilesService from '../../../services/upload.service'
+import CategoryService from '../../../services/category.service'
+import LocationService from '../../../services/location.service'
 
 import Spinner from '../../Shared/Spinner'
 
@@ -19,18 +21,42 @@ class EditProduct extends Component {
             category: '',
             location: '',
             owner: this.props.loggedUser ? this.props.loggedUser._id : '',
-            locationList: ['Alava','Albacete','Alicante','Almería','Asturias','Avila','Badajoz','Barcelona','Burgos','Cáceres', 'Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara', 'Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra', 'Orense','Palencia','Las Palmas','Pontevedra','La Rioja','Salamanca','Segovia','Sevilla','Soria','Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
+            categoryList: undefined,
+            locationList: undefined
         }
 
         this.productService = new ProductService()
         this.filesService = new FilesService()
+        this.categoryService = new CategoryService()
+        this.locationService = new LocationService()
     }
 
+
     componentDidMount = () => {
+        this.loadProduct()
+        this.loadCategories()
+        this.loadLocations()
+    }
+
+    loadProduct = () => {
         this.productService
             .getOneProduct(this.props.productId)
             .then(res => this.setState({ _id: res.data._id, name: res.data.name, description: res.data.description, image: res.data.image, price: res.data.price, status: res.data.status, owner: this.props.theUser._id, category: res.data.category, location: res.data.location}))
             .catch(err => console.log('ERROR FINDING PROD', err))
+    }
+
+    loadCategories = () => {
+        this.categoryService
+            .getAllCategories()
+            .then(categs => this.setState({ categoryList: categs.data }))
+            .catch(err => console.log('ERROR GET CATEGS', err))        
+    }
+
+    loadLocations = () => {
+        this.locationService
+            .getAllLocations()
+            .then(locs => this.setState({ locationList: locs.data }))
+            .catch(err => console.log('ERROR GET LOCATIONS', err))        
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -76,7 +102,7 @@ class EditProduct extends Component {
     render() {
         return (
         <>
-            {this.state._id
+            {this.state._id && this.state.locationList && this.state.categoryList
                 ?
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="name">
@@ -94,13 +120,7 @@ class EditProduct extends Component {
                     <Form.Group controlId="category">
                         <Form.Label>Category</Form.Label>
                         <Form.Control as="select" name="category" value={this.state.category} onChange={this.handleInput} >
-                            <option value='motor'>Motor</option>
-                            <option value='fashion'>Fashion</option>
-                            <option value='electronics'>Electronics</option>
-                            <option value='sports'>Sports</option>
-                            <option value='home'>Home</option>
-                            <option value='culture'>Culture</option>
-                            <option value='others'>Others</option>
+                            {this.state.categoryList.map(elm => <option key={elm._id} value={elm.name}>{elm.name}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="status">
@@ -118,7 +138,7 @@ class EditProduct extends Component {
                     <Form.Group controlId="location">
                         <Form.Label>Location</Form.Label>
                         <Form.Control as="select" name="location" value={this.state.location} onChange={this.handleInput}>
-                            {this.state.locationList.map((elm, idx) => <option key={idx} value={elm.toLowerCase()}>{elm}</option>)}
+                            {this.state.locationList.map(elm => <option key={elm._id} value={elm.name.toLowerCase()}>{elm.name}</option>)}
                         </Form.Control>
                     </Form.Group>    
                     <Button variant="secondary" type="submit">Submit</Button>

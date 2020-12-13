@@ -8,10 +8,11 @@ import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from './Edit-product'
 import Toastie from '../../Shared/PopUps/Toastie'
 import NewProduct from './New-product'
+import FilterBtns from '../../Shared/Filter-btns'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
-import FilterBtns from '../../Shared/Filter-btns'
+
 
 class ProductList extends Component {
     constructor(props) {
@@ -24,30 +25,20 @@ class ProductList extends Component {
             newProdToast: false,
             editProdModal: false,
             editProdToast: false,
-            prodCategories: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others'],
-            prodLocations: ['Alava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Avila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza']
+            prodCategories: undefined,
+            prodLocations: undefined
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
     }
 
-    componentDidMount = () => {
-        this.loadProducts()
-    }
+    componentDidMount = () => this.loadProducts()
 
     loadProducts = () => {
         this.productsService
             .getAllProducts()
             .then(allProds => this.setState({ products: allProds.data, filteredProds: allProds.data }))
             .catch(err => console.log('ERROR GET ALL PRODS', err))
-    }
-
-    loadCategories = () => {
-
-    }
-
-    loadLocations = () => {
-        
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -101,7 +92,7 @@ class ProductList extends Component {
                         </article>
                         <SearchBar searchFor={value => this.filterBy('name', value, 'description')} style={{padding: '0px 15px'}}/>
                     </Row>
-                    <FilterBtns filterBy={this.filterBy} unfilter={this.unfilter} sortBy={this.sortBy} categories={this.state.prodCategories} locations={this.state.prodLocations} />
+                    <FilterBtns filterBy={this.filterBy} unfilter={this.unfilter} sortBy={this.sortBy} />
                     {this.state.filteredProds
                         ?
                         <Row>
