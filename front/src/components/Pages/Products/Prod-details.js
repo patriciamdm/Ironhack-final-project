@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Button, Container, Row, Modal } from 'react-bootstrap'
+import { Col, Button, Container, Row } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'

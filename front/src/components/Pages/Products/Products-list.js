@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Dropdown } from 'react-bootstrap'
+import { Container, Row, Button } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
 import SearchBar from '../../Shared/Searchbar'
-import DropdownButton from '../../Shared/Dropdown-button'
 import ProductCard from './Prod-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EditProduct from './Edit-product'
