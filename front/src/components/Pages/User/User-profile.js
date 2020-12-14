@@ -9,6 +9,8 @@ import PopUpConfirm from '../../Shared/PopUps/Pop-up-confirm'
 import Toastie from '../../Shared/PopUps/Toastie'
 import NewProduct from '../Products/New-product'
 
+import Chat from '../../Chat/Chat'
+
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 import EditUser from './Edit-profile'
@@ -137,6 +139,11 @@ class UserProfile extends Component {
                                 :
                                 <Loader style={{ display: 'flex', justifyContent: 'center' }} />
                             }
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={12}>
+                            <Chat />
                         </Col>
                     </Row>
                     <Toastie show={this.state.editUserToast} handleToast={visib => this.handlePopups('editUserToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Profile updated successfully." />

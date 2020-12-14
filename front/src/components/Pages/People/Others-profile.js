@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
-import ProductCard from '../Products/Prod-card'
 import ProductCardProfile from '../Products/Prod-card-profile'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EmailForm from '../../Shared/Email-form'
