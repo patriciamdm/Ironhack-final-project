@@ -44,22 +44,18 @@ class UserProfile extends Component {
     }
     
     loadFavorites = () => {
-        // this.props.theUser.likedProducts.forEach(elm => {
-        //     this.productsService
-        //         .getOneProduct(elm)
-        //         .then(prod => this.setState({ favorites: [...this.state.favorites, prod.data] }))
-        //         .catch(err => console.log('ERROR GET FAV', err))
-        // })
+        
+        this.props.theUser.likedProducts.forEach(elm => {
+            this.productsService
+                .getOneProduct(elm)
+                .then(prod => this.setState({ favorites: [...this.state.favorites, prod.data] }))
+                .catch(err => console.log('ERROR GET FAV', err))
+        })
 
-        this.productsService
-            .getAllProducts()
-            .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
-            .catch(err => console.log('ERROR GET FAVS', err))
-
-        // this.userService
-        //     .getFavouriteProductsOfUser(this.props.theUser._id)
-        //     .then(allProds => this.setState({ favorites: allProds.data }, () => console.log(this.state.favorites)))
-        //     .catch(err => console.log('ERROR GET ALL PRODS', err))
+        // this.productsService
+        //     .getAllProducts()
+        //     .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
+        //     .catch(err => console.log('ERROR GET FAVS', err))
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -89,6 +85,7 @@ class UserProfile extends Component {
             .editUser(this.props.theUser._id, removeFav)
             .then(user => this.userService.getOneUser(user.data._id))
             .then(user => this.props.setUser(user.data))
+            .then(() => this.setState({ favorites: [] }))
             .then(() => this.loadFavorites())
             .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
     }
