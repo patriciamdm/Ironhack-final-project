@@ -96,8 +96,22 @@ h1, h2, h3 {
     color: black
 }
 
-.card-title {
-    font-weight: 300;
+.product-card p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.product-card .card-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.product-card .card-subtitle {
+    font-weight: 400;
 }
 
 .status {
