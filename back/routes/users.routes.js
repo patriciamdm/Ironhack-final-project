@@ -21,6 +21,14 @@ router.get('/getOneUser/:user_id', checkUserId, (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
+router.get('/getFavouriteProductsOfUser/:user_id', checkUserId, (req, res) => {
+
+    User
+        .findById(req.params.user_id)
+        .then(response => res.json(response.likedProducts))
+        .catch(err => res.status(500).json(err))
+})
+
 router.put('/editUser/:user_id', checkUserId, (req, res) => {
 
     User
