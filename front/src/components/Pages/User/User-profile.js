@@ -18,7 +18,7 @@ class UserProfile extends Component {
         super(props)
         this.state = {
             products: undefined,
-            favorites: undefined,
+            favorites: [],
             prodToTarget: undefined,
             editUserModal: false,
             editUserToast: false,

@@ -50,7 +50,7 @@ class FilterBtns extends Component {
                     <DropdownButton title="Category" variant="secondary" >
                         <Dropdown.Item as="button" onClick={() => this.props.unfilter()}>All</Dropdown.Item>
                         <Dropdown.Divider />
-                        {this.state.categories.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.props.filterBy('category', elm)}><span style={{ textTransform: 'capitalize' }}>{elm}</span></Dropdown.Item>)}
+                        {this.state.categories.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.props.filterBy('category', elm)}><p style={{ textTransform: 'capitalize' }}>{elm.name}</p></Dropdown.Item>)}
                     </DropdownButton>
 
                     <DropdownButton title="Location" variant="secondary" >
