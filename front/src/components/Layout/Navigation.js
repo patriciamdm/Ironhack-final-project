@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import AuthService from '../../services/auth.service'
@@ -38,6 +38,16 @@ class Navigation extends Component {
                                 <Link to="/profile">
                                     <Nav.Link as="div">Profile</Nav.Link>
                                 </Link>
+                                {this.props.theUser.role === 'admin'
+                                    &&
+                                   
+                                    <NavDropdown title="Admin"id="basic-nav-dropdown" style={{margin: '0px'}}>
+                                        <NavDropdown.Item as="div"><Link to="/admin">Admin page</Link></NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item as="div"><Link to="/admin/products">Manage products</Link></NavDropdown.Item>
+                                        <NavDropdown.Item as="div"><Link to="/admin/users">Manage users</Link></NavDropdown.Item>
+                                    </NavDropdown>
+                                }
                                 <Nav.Link as="div" onClick={this.logOut}>Log out</Nav.Link>
                             </>
                             :

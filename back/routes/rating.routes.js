@@ -16,7 +16,7 @@ router.post('/giveRating', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getUserRating/:user_id', (req, res) => {
+router.get('/getUserRatings/:user_id', (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(req.params.user_id)) {
         res.status(404).json({ message: 'Invalid ID' })

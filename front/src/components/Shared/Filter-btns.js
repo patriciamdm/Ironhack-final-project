@@ -50,21 +50,21 @@ class FilterBtns extends Component {
                     <DropdownButton title="Category" variant="secondary" >
                         <Dropdown.Item as="button" onClick={() => this.props.unfilter()}>All</Dropdown.Item>
                         <Dropdown.Divider />
-                        {this.state.categories.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.props.filterBy('category', elm)}><span style={{ textTransform: 'capitalize' }}>{elm}</span></Dropdown.Item>)}
+                        {this.state.categories.map(elm => <Dropdown.Item as="button" key={elm._id} onClick={() => this.props.filterBy(elm.name, 'category')}><span style={{ textTransform: 'capitalize' }}>{elm.name}</span></Dropdown.Item>)}
                     </DropdownButton>
 
                     <DropdownButton title="Location" variant="secondary" >
                         <Dropdown.Item as="button" onClick={() => this.props.unfilter()}>All</Dropdown.Item>
                         <Dropdown.Divider />
-                        {this.state.locations.map((elm, idx) => <Dropdown.Item as="button" key={idx} onClick={() => this.props.filterBy('location', elm)}><span style={{ textTransform: 'capitalize' }}>{elm}</span></Dropdown.Item>)}
+                        {this.state.locations.map(elm => <Dropdown.Item as="button" key={elm._id} onClick={() => this.props.filterBy(elm.name, 'location')}><span style={{ textTransform: 'capitalize' }}>{elm.name}</span></Dropdown.Item>)}
                     </DropdownButton>
                     
                     <DropdownButton title="Availability" variant="secondary" >
                         <Dropdown.Item as="button" onClick={() => this.props.unfilter()}>All</Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('status', 'available')}>Available</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('status', 'reserved')}>Reserved</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('status', 'sold')}>Sold</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('available', 'status')}>Available</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('reserved', 'status')}>Reserved</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => this.props.filterBy('sold', 'status')}>Sold</Dropdown.Item>
                     </DropdownButton>
                 </Row>
                 :

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
-import RatingService from '../../services/rating.service'
-import UserService from '../../services/user.service'
+import RatingService from '../../../services/rating.service'
+import UserService from '../../../services/user.service'
 
 
-class EditRatingForm extends Component {
+class RatingForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -16,29 +16,27 @@ class EditRatingForm extends Component {
         this.userService = new UserService()
     }
 
-    componentDidMount = () => {
-        this.ratingService
-            .getOneRating(this.props.rateId)
-            .then(response => this.setState({ rating: response.data.value, comment: response.data.comment }))
-            .catch(err => console.log('ERROR GETTING RATE', err))
-    }
-
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {
         e.preventDefault()
+        this.sendRating()
+        this.props.cleanRatings()
+        this.props.loadRatings()
+        this.props.hideModal()
+    }
+
+    sendRating = () => {
+        const rate = { raterId: this.props.theUser._id, ratedId: this.props.user._id, ratingValue: this.state.rating, ratingComment: this.state.comment }
 
         this.ratingService
-            .editOneRating(this.props.rateId, this.state)
-            .then(() => {
-                this.props.cleanRatings()
-                this.props.reloadRatings()
-                this.props.hideModal()
-                this.props.handleToast(true)
+            .giveRating(rate)
+            .then(response => {
+                const addRate = { rating: [...this.props.user.rating, response.data._id] }
+                this.userService.editUser(this.props.user._id, addRate)
             })
-            .catch(err => console.log('ERROR EDITING RATE', err))
-
-        
+            .catch(err => console.log('ERROR RATING', err))
+                
     }
 
     render() {
@@ -65,4 +63,4 @@ class EditRatingForm extends Component {
     }
 }
 
-export default EditRatingForm
+export default RatingForm

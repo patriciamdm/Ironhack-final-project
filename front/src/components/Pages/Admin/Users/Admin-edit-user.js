@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
-import Loader from '../../Shared/Spinner'
+import Loader from '../../../Shared/Spinner'
 
-import UserService from '../../../services/user.service'
-import FilesService from '../../../services/upload.service'
+import UserService from '../../../../services/user.service'
+import FilesService from '../../../../services/upload.service'
 
-class EditUser extends Component {
+class AdminEditUser extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -14,6 +14,7 @@ class EditUser extends Component {
             username: '',
             image: '',
             email: '',
+            role: undefined,
             phone: undefined
         }
 
@@ -23,22 +24,24 @@ class EditUser extends Component {
 
     componentDidMount = () => {
         this.userService
-            .getOneUser(this.props.theUser._id)
-            .then(res => this.setState({ _id: res.data._id, username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone}))
-            .catch(err => console.log('ERROR FINDING PROD', err))
+            .getOneUser(this.props.userId)
+            .then(res => this.setState({ _id: res.data._id, username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone, role: res.data.role}))
+            .catch(err => console.log('ERROR FINDING USER', err))
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
     
     handleSubmit = e => {
         e.preventDefault()
-        const editedUser = { username: this.state.username, image: this.state.image, email: this.state.email, phone: this.state.phone, }
+        const editedUser = { username: this.state.username, image: this.state.image, email: this.state.email, phone: this.state.phone, role: this.state.role}
 
         this.userService
             .editUser(this.state._id, editedUser)
-            .then(user => this.userService.getOneUser(user.data._id))
-            .then(user => this.props.setUser(user.data))
-            .then(() => this.props.handleModal())
+            .then(user => {
+                this.props.hideModal()
+                this.props.loadUsers()
+                this.props.handleToast(true)
+            })
             .catch(err => console.log('ERROR IN EDIT', err))
     }
 
@@ -66,6 +69,13 @@ class EditUser extends Component {
                     <Form.Label>Image {this.state.uploadingActive && <Loader />}</Form.Label>
                     <Form.Control type="file" onChange={this.handleImageUpload} />
                 </Form.Group>
+                <Form.Group controlId="role">
+                    <Form.Label>Phone number</Form.Label>
+                    <Form.Control as="select" name="role" value={this.state.role} onChange={this.handleInput} >
+                            <option value='user' default >User</option>
+                            <option value='admin'>Admin</option>
+                    </Form.Control>
+                </Form.Group>
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleInput} />
@@ -80,4 +90,4 @@ class EditUser extends Component {
     }
 }
 
-export default EditUser
+export default AdminEditUser

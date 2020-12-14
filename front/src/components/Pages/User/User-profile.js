@@ -8,17 +8,20 @@ import EditProduct from '../Products/Edit-product'
 import PopUpConfirm from '../../Shared/PopUps/Pop-up-confirm'
 import Toastie from '../../Shared/PopUps/Toastie'
 import NewProduct from '../Products/New-product'
+import EditUser from './Edit-profile'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
-import EditUser from './Edit-profile'
+import RatingService from '../../../services/rating.service'
+
 
 class UserProfile extends Component {
     constructor(props) {
         super(props)
         this.state = {
             products: undefined,
-            favorites: undefined,
+            favorites: [],
+            avgRating: undefined,
             prodToTarget: undefined,
             editUserModal: false,
             editUserToast: false,
@@ -29,11 +32,13 @@ class UserProfile extends Component {
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
+        this.ratingService = new RatingService()
     }
 
     componentDidMount = () => {
         this.loadProducts()
         this.loadFavorites()
+        this.getAverageRating(this.props.theUser._id)
     }
 
     loadProducts = () => {
@@ -56,6 +61,16 @@ class UserProfile extends Component {
         //     .getAllProducts()
         //     .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
         //     .catch(err => console.log('ERROR GET FAVS', err))
+    }
+    
+    getAverageRating = userId => {
+        this.ratingService
+            .getUserRatings(userId)
+            .then(rates => {
+                const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
+                this.setState({ avgRating: isNaN(avgRate.toFixed(2)) ? 'No ratings' : `${avgRate.toFixed(2)}/5` })
+            })
+            .catch(err => console.log('ERROR GETTING AVG RATES', err))
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -100,11 +115,18 @@ class UserProfile extends Component {
                         </Col>
                         <Col md={9}>
                             <h1>Welcome {this.props.theUser.username}</h1>
-                            <hr/>
-                            <h6>Email: {this.props.theUser.email}</h6>
-                            <h6>Phone: {this.props.theUser.phone}</h6>
-                            <Button onClick={() => this.handlePopups('editUserModal', true)} variant="secondary" size="sm">Edit profile</Button>
-                            <Button onClick={() => this.handlePopups('deleteUserModal', true)} variant="danger" size="sm">Delete account</Button>
+                            <hr />
+                            <section style={{display: 'flex', justifyContent: 'space-between', margin: '10px 0px'}}>
+                                <div>
+                                    <p><b>Email:</b> {this.props.theUser.email}</p>
+                                    <p><b>Phone:</b> {this.props.theUser.phone}</p>
+                                    <p><b>Average rating:</b> {this.state.avgRating}</p>
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                    <Button onClick={() => this.handlePopups('editUserModal', true)} variant="secondary" size="sm">Edit profile</Button>
+                                    <Button onClick={() => this.handlePopups('deleteUserModal', true)} variant="danger" size="sm">Delete account</Button>
+                                </div>
+                            </section>
                         </Col>
                     </Row>
                     <br />

@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import Loader from '../../Shared/Spinner'
-import ProductCard from '../Products/Prod-card'
 import ProductCardProfile from '../Products/Prod-card-profile'
+import RatingForm from '../Ratings/Rating-form'
+import EditRatingForm from '../Ratings/Edit-rating-form'
+import RatingCard from '../Ratings/Rating-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
-import EmailForm from '../../Shared/Email-form'
-import RatingForm from '../../Shared/Rating-form'
-import EditRatingForm from '../../Shared/Edit-rating-form'
-import RatingCard from '../../Shared/Rating-card'
 import Toastie from '../../Shared/PopUps/Toastie'
-
+import EmailForm from '../../Shared/Email-form'
 
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
@@ -28,7 +26,8 @@ class OthersProfile extends Component {
             ratingModal: false,
             editRatingModal: false,
             editRatingToast: false,
-            rateToTarget: undefined
+            rateToTarget: undefined,
+            avgRating: undefined
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -47,6 +46,8 @@ class OthersProfile extends Component {
     loadUserInfo = () => {
         this.loadProducts()
         this.loadRatings()
+        this.getAverageRating(this.props.match.params.userId)
+        this.defineTargetRate(this.state.ratings.filter(elm => elm.rater === this.props.theUser._id)[0])
     }
 
     loadProducts = () => {
@@ -68,9 +69,24 @@ class OthersProfile extends Component {
         })
     }
 
+    getAverageRating = userId => {
+        this.ratingService
+            .getUserRatings(userId)
+            .then(rates => {
+                const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
+                this.setState({ avgRating: isNaN(avgRate.toFixed(2)) ? 'No ratings' : `${avgRate.toFixed(2)} / 5` })
+            })
+            .catch(err => console.log('ERROR GETTING AVG RATES', err))
+    }
+
     defineTargetRate = rateId => this.setState({rateToTarget: rateId })
     
     handlePopups = (target, visib) => this.setState({ [target]: visib })
+
+    // openEditModal = () => {
+    //     this.defineTargetRate(this.state.ratings.filter(elm => elm.rater === this.props.theUser._id)[0]._id)
+    //     this.handlePopups('editRatingModal', true)
+    // }
     
     addToFavorites = product => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
@@ -94,15 +110,20 @@ class OthersProfile extends Component {
                                 <Col md={3}>
                                     <img src={this.state.user.image} alt="User avatar" />
                                 </Col>
-                                <Col md={9}>
+                                <Col md={9} >
                                     <h1>{this.state.user.username}'s profile</h1>
                                     <hr/>
-                                    <h6>Email: {this.state.user.email}</h6>
-                                    <h6>Phone: {this.state.user.phone}</h6>
-                                    <br/>
-                                    <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Rate user</Button>
-                                    <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
-                                    <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
+                                    <section style={{display: 'flex', justifyContent: 'space-between', margin: '10px'}}>
+                                        <div>
+                                            <p><b>Email:</b> {this.state.user.email}</p>
+                                            <p><b>Phone:</b> {this.state.user.phone}</p>
+                                            <p><b>Average rating:</b> {this.state.avgRating}</p>
+                                        </div>
+                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                            <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
+                                            <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
+                                        </div>
+                                    </section>
                                 </Col>
                             </Row>
                             <br/>
@@ -124,7 +145,14 @@ class OthersProfile extends Component {
                                 <Col>
                                     <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                         <h2>Reviews</h2>
-                                        <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" size="sm">Create new product</Button>
+                                        {this.state.rateToTarget
+                                            &&
+                                            (this.state.rateToTarget.rater === this.props.theUser._id
+                                            ?
+                                            <Button onClick={() => this.handlePopups('editRatingModal', true)} variant="secondary" size="sm">Edit rating</Button>
+                                            :
+                                            <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>)
+                                        }
                                     </article>
                                     <hr style={{ marginTop: '10px' }}/>
                                     {this.state.ratings

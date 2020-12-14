@@ -6,7 +6,6 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import AuthService from '../services/auth.service';
 
-
 import Navigation from './Layout/Navigation';
 import Footer from './Layout/Footer';
 
@@ -15,11 +14,13 @@ import Signup from './Pages/User/Signup';
 import Login from './Pages/User/Login';
 
 import UserProfile from './Pages/User/User-profile';
-//import EditUser from './Pages/User/Edit-profile';
+
+import AdminPage from './Pages/Admin/Admin-page';
+import AdminProducts from './Pages/Admin/Prods/Admin-products'
+import AdminUsers from './Pages/Admin/Users/Admin-users'
 
 import ProductList from './Pages/Products/Products-list';
 import ProductDetails from './Pages/Products/Prod-details';
-//import NewProduct from './Pages/Products/New-product';
 
 import UserList from './Pages/People/Users-list'
 import OthersProfile from './Pages/People/Others-profile';
@@ -64,6 +65,10 @@ class App extends Component {
         <main>
           <Switch>
             <Route path='/' exact render={() => <Home theUser={this.state.loggedInUser} handleToast={this.handleDelToast} showToast={this.state.showToast} toastieInfo={this.state.toastieInfo}/>} />
+            
+            <Route path='/admin' exact render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminPage theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
+            <Route path='/admin/products' render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminProducts theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
+            <Route path='/admin/users' render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminUsers theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             
             <Route path='/signup' render={props => <Signup setUser={this.setUser} {...props} />} />
             <Route path='/login' render={props => <Login setUser={this.setUser} {...props} />} />

@@ -6,7 +6,7 @@ import FilesService from '../../../services/upload.service'
 import CategoryService from '../../../services/category.service'
 import LocationService from '../../../services/location.service'
 
-import Spinner from '../../Shared/Spinner'
+import Loader from '../../Shared/Spinner'
 
 class EditProduct extends Component {
     constructor(props) {
@@ -132,7 +132,7 @@ class EditProduct extends Component {
                         </Form.Control>
                     </Form.Group>    
                     <Form.Group controlId="image">
-                        <Form.Label>Image {this.state.uploadingActive && <Spinner />}</Form.Label>
+                        <Form.Label>Image {this.state.uploadingActive && <Loader />}</Form.Label>
                         <Form.Control type="file" onChange={this.handleImageUpload} />
                     </Form.Group>
                     <Form.Group controlId="location">
@@ -144,7 +144,7 @@ class EditProduct extends Component {
                     <Button variant="secondary" type="submit">Submit</Button>
                 </Form>
                 :
-                <Spinner />
+                <Loader />
                 }
             </>
         )

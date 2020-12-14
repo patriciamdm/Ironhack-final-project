@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Card, Button } from 'react-bootstrap'
-import Loader from '../Shared/Spinner'
+import Loader from '../../Shared/Spinner'
 
 
-import UserService from '../../services/user.service'
+import UserService from '../../../services/user.service'
 
 
 class RatingCard extends Component {
@@ -39,19 +39,19 @@ class RatingCard extends Component {
                     ?
                     <Card className="rating-card" >
                         <img src={this.state.raterImg} alt={this.state.raterName} />
-                        <article >
-                            <Link to={`/profile/${this.state.raterId}`}>
-                                <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.raterName}</Card.Title>
+                        <article>
+                            <Link to={`/profile/${this.state.raterId}`} >
+                                <Card.Title style={{ fontSize: '1.2rem', color: 'black' }}>{this.state.raterName}</Card.Title>
                             </Link>
                             <Card.Body style={{padding: '0px'}}>{this.state.comment}</Card.Body>
                         </article>
-                        <section className="card-subtitle" style={{textAlign: 'center'}}>
+                        <section className="card-subtitle" style={{textAlign: 'center', fontWeight: '400', padding: '10px'}}>
                             <p style={{textTransform: 'uppercase', margin: '0px'}}>Rating</p>
                             <p style={{fontSize: '1.2rem', margin: '0px'}}>{this.state.ratingValue}/5</p>
                         </section>
                         {this.state.raterId === this.props.theUser._id
                             &&
-                            <Button onClick={() => this.showEditModal()} variant="secondary" size="sm" style={{marginLeft: '20px'}}>Edit</Button>
+                            <Button onClick={() => this.showEditModal()} variant="secondary" size="sm" style={{margin: '0px 10px'}}>Edit</Button>
                         }
                     </Card>
                     :

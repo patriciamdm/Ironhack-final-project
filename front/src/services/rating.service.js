@@ -10,7 +10,7 @@ class RatingService {
 
     giveRating = ratingInfo => this.apiHandler.post('/giveRating', ratingInfo)
     getOneRating = ratingId => this.apiHandler.get(`/getOneRating/${ratingId}`)
-    getUserRating = userId => this.apiHandler.get(`/getUserRating/${userId}`)
+    getUserRatings = userId => this.apiHandler.get(`/getUserRatings/${userId}`)
     editOneRating = (ratingId, editedRate) => this.apiHandler.put(`/editOneRating/${ratingId}`, editedRate)
 }
     

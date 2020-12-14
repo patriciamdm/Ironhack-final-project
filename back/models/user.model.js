@@ -23,6 +23,11 @@ const userSchema = new Schema({
         type: Number,
         required: true
     },
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        required: true
+    },
     rating: [{
             type: Schema.Types.ObjectId,
             rel: 'Rating',

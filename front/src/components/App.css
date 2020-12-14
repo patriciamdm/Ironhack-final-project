@@ -42,6 +42,13 @@ h1, h2, h3 {
     text-decoration: none;
 }
 
+.dropdown-item a {
+    color: gray;
+    font-weight: 300;
+    font-size: .9rem;
+    text-transform: none;
+}
+
 .footer a {
     text-decoration: none;
     color: white
@@ -118,12 +125,16 @@ h1, h2, h3 {
     text-transform: capitalize;
 }
 
-.profile img {
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.profile-info img {
     max-height: 250px;
 }
 
 .profile-info .btn {
-    margin-right: 20px;
+    margin: 5px;
 }
 
 .user-card {
@@ -180,4 +191,26 @@ h1, h2, h3 {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+}
+
+.admin-prod-card {
+    display: 'flex';
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+.admin-prod-card .card-title {
+    font-size: .8rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.admin-prod-card p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    font-size: .9rem;
 }
