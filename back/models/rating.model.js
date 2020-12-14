@@ -15,6 +15,10 @@ const ratingSchema = new Schema({
     value: {
         type: Number,
         required: true
+    },
+    comment: {
+        type: String,
+        required: false
     }
 }, {
     timestamps: true

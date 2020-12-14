@@ -23,9 +23,9 @@ class ProductCard extends Component {
                         </Link>
                         
                         <Card.Body>
-                            <Card.Title style={{height: '28px', overflow: 'hidden', marginBottom: '15px'}}>{this.props.product.name}</Card.Title>
-                            <Card.Subtitle style={{fontStyle: 'italic', fontSize: '0.9rem', fontWeight: '300', marginBottom: '10px'}}>Price: {this.props.product.price}€</Card.Subtitle>
-                            <Card.Text style={{height: '48px', overflow: 'hidden'}}>{this.props.product.description}</Card.Text>
+                            <Card.Title >{this.props.product.name}</Card.Title>
+                            <Card.Subtitle style={{fontStyle: 'italic', fontSize: '0.9rem', marginBottom: '10px'}}>Price: {this.props.product.price}€</Card.Subtitle>
+                            <Card.Text className="card-description">{this.props.product.description}</Card.Text>
                             <Card.Subtitle style={{ textTransform: 'capitalize' }}>
                                 <a className="maps" target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${this.props.product.location.replace(/\s/g, '+')}`}>
                                     {this.props.product.location}</a>
