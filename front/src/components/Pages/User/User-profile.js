@@ -18,7 +18,7 @@ class UserProfile extends Component {
         super(props)
         this.state = {
             products: undefined,
-            favorites: [],
+            favorites: undefined,
             prodToTarget: undefined,
             editUserModal: false,
             editUserToast: false,
@@ -55,6 +55,11 @@ class UserProfile extends Component {
             .getAllProducts()
             .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
             .catch(err => console.log('ERROR GET FAVS', err))
+
+        // this.userService
+        //     .getFavouriteProductsOfUser(this.props.theUser._id)
+        //     .then(allProds => this.setState({ favorites: allProds.data }, () => console.log(this.state.favorites)))
+        //     .catch(err => console.log('ERROR GET ALL PRODS', err))
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
