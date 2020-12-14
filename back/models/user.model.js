@@ -23,15 +23,11 @@ const userSchema = new Schema({
         type: Number,
         required: true
     },
-    // ratings: [{
-    //     type: Object,
-    //     required: false
-    // }],
-    // rating: [{
-    //         type: Schema.Types.ObjectId,
-    //         rel: 'Rating',
-    //         required: false
-    // }],
+    rating: [{
+            type: Schema.Types.ObjectId,
+            rel: 'Rating',
+            required: false
+    }],
     likedProducts: [{
         type: Schema.Types.ObjectId,
         rel: 'Product',
