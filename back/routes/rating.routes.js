@@ -8,10 +8,10 @@ const Rating = require('../models/rating.model')
 
 router.post('/giveRating', (req, res) => {
 
-    const { raterId, ratedId, ratingValue } = req.body
+    const { raterId, ratedId, ratingValue, ratingComment } = req.body
 
     Rating
-        .create({ rater: raterId, rated: ratedId, value: ratingValue })
+        .create({ rater: raterId, rated: ratedId, value: ratingValue, comment: ratingComment })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

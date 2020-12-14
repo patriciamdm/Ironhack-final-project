@@ -6,6 +6,7 @@ import Loader from '../../Shared/Spinner'
 import ProductCard from '../Products/Prod-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
 import EmailForm from '../../Shared/Email-form'
+import RatingForm from '../../Shared/Rating-form'
 
 
 import ProductService from '../../../services/products.service'
@@ -20,6 +21,7 @@ class OthersProfile extends Component {
             user: undefined,
             products: undefined,
             emailModal: false,
+            ratingModal: false,
             rating: ''
         }
         this.productsService = new ProductService()
@@ -160,6 +162,7 @@ class OthersProfile extends Component {
                                     </Form> */}
 
                                     <br/>
+                                    <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Rate user</Button>
                                     <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
                                     <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
                                 </Col>
@@ -179,6 +182,10 @@ class OthersProfile extends Component {
                         
                         <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
                             <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
+                        </PopUp>
+
+                        <PopUp show={this.state.ratingModal} hide={() => this.handlePopups('ratingModal', false)} title={`Rate ${this.state.user}`}>
+                            <RatingForm hideModal={() => this.handlePopups('ratingModal', false)} user={this.state.user} theUser={this.props.theUser}/>
                         </PopUp>
                     </>
                     :
