@@ -25,30 +25,28 @@ router.get('/getUserRating/:user_id', (req, res) => {
 
     Rating
         .find({ rated: req.params.user_id })
-        .then(response => res.jason(response))
+        .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
     
 })
 
-// router.get('/getSpecificRating', (req, res) => {
+router.get('/getOneRating/:rate_id', (req, res) => {
+    
+    Rating
+        .findById(req.params.rate_id)
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
 
-//     const { raterId, ratedId, ratingValue } = req.body
+router.put('/editOneRating/:rate_id', (req, res) => {
 
-//     Rating
-//         .find({ rated: ratedId, rater: raterId })
-//         .then(response => res.jason(response))
-//         .catch(err => res.status(500).json(err))
-// })
+    const { ratingValue, ratingComment } = req.body
 
-// router.put('/editSpecificRating', (req, res) => {
-
-//     const { raterId, ratedId } = req.body
-
-//     Rating
-//         .find({ rater: raterId, rated: ratedId })
-//         .then(response => res.jason(response))
-//         .catch(err => res.status(500).json(err))
-// })
+    Rating
+        .findByIdAndUpdate(req.params.rate_id, req.body)
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
 
 
 module.exports = router

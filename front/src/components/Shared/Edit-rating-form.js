@@ -5,7 +5,7 @@ import RatingService from '../../services/rating.service'
 import UserService from '../../services/user.service'
 
 
-class RatingForm extends Component {
+class EditRatingForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -16,27 +16,29 @@ class RatingForm extends Component {
         this.userService = new UserService()
     }
 
+    componentDidMount = () => {
+        this.ratingService
+            .getOneRating(this.props.rateId)
+            .then(response => this.setState({ rating: response.data.value, comment: response.data.comment }))
+            .catch(err => console.log('ERROR GETTING RATE', err))
+    }
+
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {
         e.preventDefault()
-        this.sendRating()
-        this.props.cleanRatings()
-        this.props.loadRatings()
-        this.props.hideModal()
-    }
-
-    sendRating = () => {
-        const rate = { raterId: this.props.theUser._id, ratedId: this.props.user._id, ratingValue: this.state.rating, ratingComment: this.state.comment }
 
         this.ratingService
-            .giveRating(rate)
-            .then(response => {
-                const addRate = { rating: [...this.props.user.rating, response.data._id] }
-                this.userService.editUser(this.props.user._id, addRate)
+            .editOneRating(this.props.rateId, this.state)
+            .then(() => {
+                this.props.cleanRatings()
+                this.props.reloadRatings()
+                this.props.hideModal()
+                this.props.handleToast(true)
             })
-            .catch(err => console.log('ERROR RATING', err))
-                
+            .catch(err => console.log('ERROR EDITING RATE', err))
+
+        
     }
 
     render() {
@@ -63,4 +65,4 @@ class RatingForm extends Component {
     }
 }
 
-export default RatingForm
+export default EditRatingForm
