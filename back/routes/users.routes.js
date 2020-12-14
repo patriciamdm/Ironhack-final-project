@@ -4,6 +4,7 @@ const router = express.Router()
 const {checkUserId} = require('../middlewares/middleware')
 
 const User = require('../models/user.model')
+const Product = require('../models/product.model')
 
 router.get('/getAllUsers', (req, res) => {
 
@@ -26,6 +27,12 @@ router.get('/getFavouriteProductsOfUser/:user_id', checkUserId, (req, res) => {
     User
         .findById(req.params.user_id)
         .then(response => res.json(response.likedProducts))
+        .then(arrayOfId => res.json(arrayOfId.forEach(element => {
+            Product
+                .findById(element)
+                .then(response => res.json(response))
+                .catch(err => res.status(500).json(err))
+        })))
         .catch(err => res.status(500).json(err))
 })
 
