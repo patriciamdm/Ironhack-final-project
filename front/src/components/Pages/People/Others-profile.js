@@ -21,8 +21,7 @@ class OthersProfile extends Component {
             user: undefined,
             products: undefined,
             emailModal: false,
-            ratingModal: false,
-            rating: ''
+            ratingModal: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -147,20 +146,6 @@ class OthersProfile extends Component {
                                     <hr/>
                                     <h6>Email: {this.state.user.email}</h6>
                                     <h6>Phone: {this.state.user.phone}</h6>
-                                    {/* <Rating name="size-medium" defaultValue={this.state.user} precision={1} /> */}
-
-                                    {/* <Form onSubmit={this.handleRateSubmit}>
-                                        <Form.Group controlId="rating">
-                                            <Form.Label>Rating</Form.Label>
-                                            <Form.Control as="select" name="rating" value={this.state.ratingValue} onChange={this.handleRateInput} >
-                                                <option value='1'>1</option>
-                                                <option value='2'>2</option>
-                                                <option value='3'>3</option>
-                                            </Form.Control>
-                                        </Form.Group>    
-                                        <Button variant="secondary" type="submit">Submit</Button>
-                                    </Form> */}
-
                                     <br/>
                                     <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Rate user</Button>
                                     <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
@@ -184,7 +169,7 @@ class OthersProfile extends Component {
                             <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
                         </PopUp>
 
-                        <PopUp show={this.state.ratingModal} hide={() => this.handlePopups('ratingModal', false)} title={`Rate ${this.state.user}`}>
+                        <PopUp show={this.state.ratingModal} hide={() => this.handlePopups('ratingModal', false)} title={`Rate ${this.state.user.username}`}>
                             <RatingForm hideModal={() => this.handlePopups('ratingModal', false)} user={this.state.user} theUser={this.props.theUser}/>
                         </PopUp>
                     </>
