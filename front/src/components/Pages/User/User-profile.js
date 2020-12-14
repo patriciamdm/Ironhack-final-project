@@ -10,6 +10,8 @@ import Toastie from '../../Shared/PopUps/Toastie'
 import NewProduct from '../Products/New-product'
 import EditUser from './Edit-profile'
 
+import Chat from '../../Chat/Chat'
+
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 import RatingService from '../../../services/rating.service'
@@ -159,6 +161,11 @@ class UserProfile extends Component {
                                 :
                                 <Loader style={{ display: 'flex', justifyContent: 'center' }} />
                             }
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={12}>
+                            <Chat />
                         </Col>
                     </Row>
                     <Toastie show={this.state.editUserToast} handleToast={visib => this.handlePopups('editUserToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Profile updated successfully." />
