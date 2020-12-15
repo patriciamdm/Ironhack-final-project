@@ -12,7 +12,7 @@ class UserCard extends Component {
 
     render() {
         return (
-            <Col xs={6} sm={6} md={4} lg={3}>
+            <Col xs={12} sm={6} md={4} lg={3}>
                 {this.state.user._id === this.props.loggedUser._id
                     ?
                     <Link to={'/profile'}>

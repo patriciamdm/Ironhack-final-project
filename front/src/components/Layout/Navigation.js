@@ -19,7 +19,7 @@ class Navigation extends Component {
 
     render() {
         return (
-            <Navbar className="navbar" variant="dark" expand="md" style={{ marginBottom: '50px' }}>
+            <Navbar className="navbar" variant="dark" expand="md" id="top-navigation">
                 <Link to='/'>
                     <Navbar.Brand>Dealz_</Navbar.Brand>
                 </Link>

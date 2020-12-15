@@ -7,6 +7,7 @@ import RatingForm from '../Ratings/Rating-form'
 import EditRatingForm from '../Ratings/Edit-rating-form'
 import RatingCard from '../Ratings/Rating-card'
 import PopUp from '../../Shared/PopUps/Pop-up-modal'
+import PopUpConfirm from '../../Shared/PopUps/Pop-up-confirm'
 import Toastie from '../../Shared/PopUps/Toastie'
 import EmailForm from '../../Shared/Email-form'
 
@@ -27,6 +28,8 @@ class OthersProfile extends Component {
             ratingModal: false,
             editRatingModal: false,
             editRatingToast: false,
+            delRatingModal: false,
+            delRatingToast: false,
             rateToTarget: undefined,
             avgRating: undefined
         }
@@ -70,6 +73,12 @@ class OthersProfile extends Component {
         })
     }
 
+    reloadRatings = () => {
+        this.setState({ ratings: [] })
+        this.loadRatings()
+        this.getAverageRating(this.state.user._id)
+    }
+
     getAverageRating = userId => {
         this.ratingService
             .getUserRatings(userId)
@@ -78,6 +87,19 @@ class OthersProfile extends Component {
                 this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))} / 5` })
             })
             .catch(err => console.log('ERROR GETTING AVG RATES', err))
+    }
+
+    deleteRating = () => {
+        const newRatings = this.state.user.rating.filter(elm => elm !== this.state.rateToTarget)
+        this.userService
+            .editUser(this.state.user._id, { rating: newRatings })
+            .then(() => this.setState({ ratings: [] }, () => this.getUser()))
+            .then(() => this.ratingService.deleteRating(this.state.rateToTarget))
+            .then(() => {
+                this.handlePopups('delRatingModal', false)
+                this.handlePopups('delRatingToast', true)
+            })
+            .catch(err => console.log('ERROR DELETING RATE', err))
     }
 
     defineTargetRate = rateId => this.setState({rateToTarget: rateId })
@@ -113,23 +135,23 @@ class OthersProfile extends Component {
                                 </Col>
                                 <Col md={9} >
                                     <h1>{this.state.user.username}'s profile</h1>
-                                    <hr/>
-                                    <section style={{display: 'flex', justifyContent: 'space-between', margin: '10px'}}>
-                                        <div>
+                                    <hr />
+                                    <Row>
+                                        <Col sm={8} lg={8} style={{ margin: '10px'}}>
                                             <p><b>Email:</b> {this.state.user.email}</p>
                                             <p><b>Phone:</b> {this.state.user.phone}</p>
                                             <p><b>Average rating:</b> {this.state.avgRating}</p>
-                                        </div>
-                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                        </Col>
+                                        <Col style={{ display: 'flex', flexDirection: 'column' }}>
                                             <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
                                             <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
-                                        </div>
-                                    </section>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                             <br/>
                             <Row>
-                                <Col>
+                                <Col md={12} lg={6}>
                                     <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                         <h2>Products</h2>
                                     </article>
@@ -143,23 +165,16 @@ class OthersProfile extends Component {
                                         <Loader style={{ display: 'flex', justifyContent: 'center' }} /> 
                                     }
                                 </Col>
-                                <Col>
+                                <Col md={12} lg={6}>
                                     <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                         <h2>Reviews</h2>
-                                        {this.state.rateToTarget
-                                            &&
-                                            (this.state.rateToTarget.rater === this.props.theUser._id
-                                            ?
-                                            <Button onClick={() => this.handlePopups('editRatingModal', true)} variant="secondary" size="sm">Edit rating</Button>
-                                            :
-                                            <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>)
-                                        }
+                                        <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>
                                     </article>
                                     <hr style={{ marginTop: '10px' }}/>
                                     {this.state.ratings
                                         ?
                                         <Row>
-                                            {this.state.ratings.map(elm => <RatingCard key={elm._id} showEditRateModal={visib => this.handlePopups('editRatingModal', visib)} defineTarget={id => this.defineTargetRate(id)} rating={elm} theUser={this.props.theUser} />)}
+                                            {this.state.ratings.map(elm => <RatingCard key={elm._id} showModal={target => this.handlePopups(target, true)} defineTarget={id => this.defineTargetRate(id)} rating={elm} theUser={this.props.theUser} />)}
                                         </Row>
                                         :
                                         <Loader style={{ display: 'flex', justifyContent: 'center' }} />
@@ -172,20 +187,27 @@ class OthersProfile extends Component {
                                 </Col>
                             </Row>
                             <Toastie show={this.state.editRatingToast} handleToast={visib => this.handlePopups('editRatingToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Rating updated successfully." />
+                            <Toastie show={this.state.delRatingToast} handleToast={visib => this.handlePopups('delRatingToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Rating deleted successfully." />
 
                         </Container>
                         
                         <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
-                            <EmailForm hideModal={() => this.handlePopups('emailModal', false)} loadRatings={() => this.loadRatings()} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
+                            <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
                         </PopUp>
 
                         <PopUp show={this.state.ratingModal} hide={() => this.handlePopups('ratingModal', false)} title={`Rate ${this.state.user.username}`}>
-                            <RatingForm hideModal={() => this.handlePopups('ratingModal', false)} cleanRatings={() => this.setState({ratings: []})} loadRatings={() => this.loadRatings()} user={this.state.user} theUser={this.props.theUser}/>
+                            <RatingForm hideModal={() => this.handlePopups('ratingModal', false)} reloadRatings={() => this.reloadRatings()} user={this.state.user} theUser={this.props.theUser}/>
                         </PopUp>
 
                         <PopUp show={this.state.editRatingModal} hide={() => this.handlePopups('editRatingModal', false)} title={`Rate ${this.state.user.username}`}>
-                            <EditRatingForm hideModal={() => this.handlePopups('editRatingModal', false)} rateId={this.state.rateToTarget} cleanRatings={() => this.setState({ratings: []})} reloadRatings={() => this.loadRatings()} handleToast={visib => this.handlePopups('editRatingToast', visib)} user={this.state.user} theUser={this.props.theUser}/>
+                            <EditRatingForm hideModal={() => this.handlePopups('editRatingModal', false)} rateId={this.state.rateToTarget} reloadRatings={() => this.reloadRatings()} handleToast={visib => this.handlePopups('editRatingToast', visib)} user={this.state.user} theUser={this.props.theUser}/>
                         </PopUp>
+
+                        <PopUpConfirm show={this.state.delRatingModal} hide={() => this.handlePopups('delRatingModal', false)}
+                            leftAction={() => this.handlePopups('delRatingModal', false)} leftText='No, go back'
+                            rightAction={() => this.deleteRating()} rightText='Yes, delete'
+                            type='danger' title="Caution!" body={<b>Are you sure you want to delete this rating?</b>}
+                            />
                     </>
                     :
                     <Loader />

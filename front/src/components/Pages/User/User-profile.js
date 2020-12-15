@@ -117,22 +117,22 @@ class UserProfile extends Component {
                         <Col md={9}>
                             <h1>Welcome {this.props.theUser.username}</h1>
                             <hr />
-                            <section style={{display: 'flex', justifyContent: 'space-between', margin: '10px 0px'}}>
-                                <div>
+                            <Row>
+                                <Col sm={8} lg={8} style={{ margin: '10px'}}>
                                     <p><b>Email:</b> {this.props.theUser.email}</p>
                                     <p><b>Phone:</b> {this.props.theUser.phone}</p>
                                     <p><b>Average rating:</b> {this.state.avgRating}</p>
-                                </div>
-                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                </Col>
+                                <Col style={{display: 'flex', flexDirection: 'column'}}>
                                     <Button onClick={() => this.handlePopups('editUserModal', true)} variant="secondary" size="sm">Edit profile</Button>
                                     <Button onClick={() => this.handlePopups('deleteUserModal', true)} variant="danger" size="sm">Delete account</Button>
-                                </div>
-                            </section>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                     <br />
                     <Row>
-                        <Col>
+                        <Col md={12} lg={6}>
                             <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                 <h2>My favorites</h2>
                             </article>
@@ -146,7 +146,7 @@ class UserProfile extends Component {
                                 <Loader style={{ display: 'flex', justifyContent: 'center' }} /> 
                             }
                         </Col>
-                        <Col>
+                        <Col md={12} lg={6}>
                             <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                 <h2>My products</h2>
                                 <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" size="sm">Create new product</Button>

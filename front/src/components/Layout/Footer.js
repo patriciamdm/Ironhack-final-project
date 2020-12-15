@@ -36,7 +36,7 @@ class Footer extends Component {
                                     </ul>
                                 </Col>
                                 <Col  sm={6} md={3}>
-                                    <h6>Dealz_</h6>
+                                    <h6>Company</h6>
                                     <ul style={{listStyle: 'none', padding: '0px'}}>
                                         <li><Nav.Link as="div" style={{padding: '10px 0px'}}>About Us</Nav.Link></li>
                                         <li><Nav.Link as="div" style={{padding: '10px 0px'}}>Contact</Nav.Link></li>

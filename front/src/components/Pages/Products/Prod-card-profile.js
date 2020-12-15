@@ -16,7 +16,7 @@ class ProductCardProfile extends Component {
     render() {
         return (
             <>
-                <Col xs={12} sm={12} md={6} lg={6}>
+                <Col xs={12} sm={6} md={4} lg={6}>
                     <Card className="product-card">
                         <Card.Img variant="top" src={this.props.product.image} style={{height: '200px'}}/>
                         <Card.Body>
