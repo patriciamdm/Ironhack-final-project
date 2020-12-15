@@ -6,16 +6,6 @@ const { checkUserId, checkRatingId } = require('../middlewares/middleware')
 
 const Rating = require('../models/rating.model')
 
-router.post('/giveRating', (req, res) => {
-
-    const { raterId, ratedId, ratingValue, ratingComment } = req.body
-
-    Rating
-        .create({ rater: raterId, rated: ratedId, value: ratingValue, comment: ratingComment })
-        .then(response => res.json(response))
-        .catch(err => res.status(500).json(err))
-})
-
 router.get('/getUserRatings/:user_id', checkUserId, (req, res) => {
 
     Rating
@@ -37,6 +27,16 @@ router.get('/getRaterRate/:rater_id/:rated_id', (req, res) => {
     
     Rating
         .find({ rater: req.params.rater_id, rated: req.params.rated_id })
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
+router.post('/giveRating', (req, res) => {
+
+    const { raterId, ratedId, ratingValue, ratingComment } = req.body
+
+    Rating
+        .create({ rater: raterId, rated: ratedId, value: ratingValue, comment: ratingComment })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
