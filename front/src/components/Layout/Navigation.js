@@ -38,6 +38,9 @@ class Navigation extends Component {
                                 <Link to="/profile">
                                     <Nav.Link as="div">Profile</Nav.Link>
                                 </Link>
+                                <Link to="/chat">
+                                    <Nav.Link as="div">Chat</Nav.Link>
+                                </Link>
                                 {this.props.theUser.role === 'admin'
                                     &&
                                    

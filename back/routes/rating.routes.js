@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
+
+const { checkUserId, checkRatingId } = require('../middlewares/middleware')
+
 
 const Rating = require('../models/rating.model')
-
-
 
 router.post('/giveRating', (req, res) => {
 
@@ -16,12 +16,7 @@ router.post('/giveRating', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getUserRatings/:user_id', (req, res) => {
-
-    if (!mongoose.Types.ObjectId.isValid(req.params.user_id)) {
-        res.status(404).json({ message: 'Invalid ID' })
-        return
-    }
+router.get('/getUserRatings/:user_id', checkUserId, (req, res) => {
 
     Rating
         .find({ rated: req.params.user_id })
@@ -30,7 +25,7 @@ router.get('/getUserRatings/:user_id', (req, res) => {
     
 })
 
-router.get('/getOneRating/:rate_id', (req, res) => {
+router.get('/getOneRating/:rate_id', checkRatingId, (req, res) => {
     
     Rating
         .findById(req.params.rate_id)
@@ -38,9 +33,15 @@ router.get('/getOneRating/:rate_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.put('/editOneRating/:rate_id', (req, res) => {
+router.get('/getRaterRate/:rater_id/:rated_id', (req, res) => {
+    
+    Rating
+        .find({ rater: req.params.rater_id, rated: req.params.rated_id })
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
 
-    const { ratingValue, ratingComment } = req.body
+router.put('/editOneRating/:rate_id', checkRatingId, (req, res) => {
 
     Rating
         .findByIdAndUpdate(req.params.rate_id, req.body)
@@ -48,7 +49,7 @@ router.put('/editOneRating/:rate_id', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.delete('/deleteRating/:rate_id', (req, res) => {
+router.delete('/deleteRating/:rate_id', checkRatingId, (req, res) => {
 
     Rating
         .findByIdAndDelete(req.params.rate_id)

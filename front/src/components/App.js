@@ -1,4 +1,3 @@
-//import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
 import React, { Component } from 'react'
@@ -26,6 +25,7 @@ import UserList from './Pages/People/Users-list'
 import OthersProfile from './Pages/People/Others-profile';
 import ScrollToTop from './Layout/Scroll-top';
 
+import Chat from './Chat/Chat'
 
 class App extends Component {
   constructor() {
@@ -79,6 +79,8 @@ class App extends Component {
             
             <Route path='/users' render={() => this.state.loggedInUser ? <UserList theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             <Route path='/profile/:userId' render={props => this.state.loggedInUser ? <OthersProfile theUser={this.state.loggedInUser} setUser={this.setUser} {...props} /> : <Redirect to='/' />} />
+
+            <Route path='/chat' render={() => this.state.loggedInUser ? <Chat theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
           </Switch>
         </main>
         <Footer theUser={this.state.loggedInUser } />

@@ -105,11 +105,6 @@ class OthersProfile extends Component {
     defineTargetRate = rateId => this.setState({rateToTarget: rateId })
     
     handlePopups = (target, visib) => this.setState({ [target]: visib })
-
-    // openEditModal = () => {
-    //     this.defineTargetRate(this.state.ratings.filter(elm => elm.rater === this.props.theUser._id)[0]._id)
-    //     this.handlePopups('editRatingModal', true)
-    // }
     
     addToFavorites = product => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }

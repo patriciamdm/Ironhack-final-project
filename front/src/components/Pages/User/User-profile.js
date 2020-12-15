@@ -50,18 +50,12 @@ class UserProfile extends Component {
     }
     
     loadFavorites = () => {
-        
         this.props.theUser.likedProducts.forEach(elm => {
             this.productsService
                 .getOneProduct(elm)
                 .then(prod => this.setState({ favorites: [...this.state.favorites, prod.data] }))
                 .catch(err => console.log('ERROR GET FAV', err))
         })
-
-        // this.productsService
-        //     .getAllProducts()
-        //     .then(allProds => this.setState({ favorites: allProds.data.filter(elm => this.props.theUser.likedProducts.includes(elm._id)) }))
-        //     .catch(err => console.log('ERROR GET FAVS', err))
     }
     
     getAverageRating = userId => {

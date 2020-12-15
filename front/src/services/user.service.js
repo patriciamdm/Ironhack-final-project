@@ -10,7 +10,6 @@ class UserService {
 
     getAllUsers = () => this.apiHandler.get('/getAllUsers')
     getOneUser = userId => this.apiHandler.get(`/getOneUser/${userId}`)
-    // getFavouriteProductsOfUser = userId => this.apiHandler.get(`/getFavouriteProductsOfUser/${userId}`)
     editUser = (userId, userInfo) => this.apiHandler.put(`/editUser/${userId}`, userInfo)
     deleteUser = userId => this.apiHandler.delete(`/deleteUser/${userId}`)
 }

@@ -21,11 +21,8 @@ class Footer extends Component {
                             <p>Copyright © 2020 Dealz_</p>
                             <p>Developed by Manuel Barreda and Patricia Muñoz</p>
                         </Col>
-                        {/* <Col> */}
                         <Col sm={12} md={7} lg={8}>
-                        {/* <Col sm={12} style={{flexBasis: '0', flexGrow: '1'}}> */}
                             <Row style={{padding: '10px'}}>
-                            {/* <Row style={{display: 'flex', flexWrap: 'wrap'}}> */}
                                 <Col sm={6} md={3}>
                                     <h6>Dealz_</h6>
                                     <ul style={{listStyle: 'none', padding: '0px'}}>

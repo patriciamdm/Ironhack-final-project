@@ -23,10 +23,7 @@ class ProductCardProfile extends Component {
                             <Card.Title style={{height: '28px', overflow: 'hidden', marginBottom: '15px'}}>{this.props.product.name}</Card.Title>
                             <Card.Subtitle style={{fontStyle: 'italic', fontSize: '0.9rem', fontWeight: '300', marginBottom: '10px'}}>Price: {this.props.product.price}€</Card.Subtitle>
                             <Card.Text style={{height: '48px', overflow: 'hidden'}}>{this.props.product.description}</Card.Text>
-                            <Card.Subtitle style={{ textTransform: 'capitalize', marginTop: '10px' }}>
-                            {/* <a className="maps" target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${this.props.product.location.replace(/\s/g, '+')}`}>
-                                    {this.props.product.location}</a> */}
-                            </Card.Subtitle>
+                            <Card.Subtitle style={{ textTransform: 'capitalize', marginTop: '10px' }}></Card.Subtitle>
                             <Card.Subtitle style={{ textTransform: 'capitalize', marginTop: '10px', fontStyle: 'italic' }}>
                                 <span style={this.props.product.status === 'available' ? { color: 'green' } : (this.props.product.status === 'sold' ? { color: 'red' } : { color: 'orange' })}>
                                     {this.props.product.status}</span></Card.Subtitle>

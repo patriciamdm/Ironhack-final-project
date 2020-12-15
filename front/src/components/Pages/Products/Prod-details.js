@@ -147,8 +147,6 @@ class ProductDetails extends Component {
                         rightText='Via WhatsApp'
                         type='none' title="Contact seller" body={<b>How would you like to contact this seller?</b>}
                     />
-                    {/* <a className="btn btn-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.owner.phone}?text=Mensaje automático de la Patriapp`}>Via WhatsApp</a> */}
-
                     
                     <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
                         <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />

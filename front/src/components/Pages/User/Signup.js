@@ -21,7 +21,6 @@ class Signup extends Component {
         this.filesService = new FilesService()
     }
 
-    // ^([6-7]{1})([0-9]{8})$ Para móviles españoles
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
 
     handleSubmit = e => {

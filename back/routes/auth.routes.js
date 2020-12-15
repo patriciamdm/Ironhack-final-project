@@ -13,7 +13,7 @@ router.post('/signup', (req, res) => {
         res.status(400).json({ message: 'Rellena todos los campos' })
         return
     }
-    // TO-DO: Al finalizar el desarrollo hacer contraseñas seguras
+    
     if (password.length < 1) {
         res.status(400).json({ message: 'Contraseña insegura' })
         return
