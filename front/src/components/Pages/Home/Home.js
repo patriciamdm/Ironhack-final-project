@@ -17,7 +17,7 @@ const Home = ({theUser, toastieInfo, handleToast, showToast}) => {
             <Container>
                 <Row style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '130px 0px'}}>
                     <Col md={12} lg={6}>
-                        <img style={{ width: '400px', height: '350px' }} src={image} alt="Typing on computer"/>
+                        <img style={{ width: '400px', height: '350px' }} src={image} alt={"Typing on computer"}/>
                     </Col>
                     <Col md={12} lg={6} style={{ padding: '30px', textAlign: 'left' }}>
                         <article className="home-texts">

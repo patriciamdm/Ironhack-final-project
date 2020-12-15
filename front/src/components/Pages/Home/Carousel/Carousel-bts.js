@@ -14,25 +14,25 @@ const BtsCarousel = () => {
     return (
         <Carousel style={{width: '100vw'}}>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image1} alt="Photography equipment"/>
+                <img className="d-block" style={{ height: '600px' }} src={image1} alt={"Photography equipment"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image2} alt="Coding books"/>
+                <img className="d-block" style={{ height: '600px' }} src={image2} alt={"Coding books"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image4} alt="Clothes rack"/>
+                <img className="d-block" style={{ height: '600px' }} src={image4} alt={"Clothes rack"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image3} alt="Old library"/>
+                <img className="d-block" style={{ height: '600px' }} src={image3} alt={"Old library"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image5} alt="Ping pong equipment"/>
+                <img className="d-block" style={{ height: '600px' }} src={image5} alt={"Ping pong equipment"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image6} alt="Gaming equipment"/>
+                <img className="d-block" style={{ height: '600px' }} src={image6} alt={"Gaming equipment"}/>
             </Carousel.Item>
             <Carousel.Item>
-                <img className="d-block" style={{ height: '600px' }} src={image7} alt="Classcial car interior"/>
+                <img className="d-block" style={{ height: '600px' }} src={image7} alt={"Classcial car interior"}/>
             </Carousel.Item>
         </Carousel>
     )
