@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {checkProductId} = require('../middlewares/middleware')
+const {checkProductId, checkOwnerId} = require('../middlewares/middleware')
 
 const Product = require('../models/product.model')
 
@@ -21,7 +21,7 @@ router.get('/getOneProduct/:product_id', checkProductId, (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getProductsByOwner/:owner_id', (req, res) => {
+router.get('/getProductsByOwner/:owner_id', checkOwnerId, (req, res) => {
 
     Product
         .find({owner: req.params.owner_id})

@@ -63,7 +63,7 @@ function Chat() {
         <button className="chat-button">Send Message</button>
       </form>
       <div className="render-chat">
-        <h1>Chat Log</h1>
+        {/* <h1>Chat Log</h1> */}
         {renderChat()}
       </div>
     </div>

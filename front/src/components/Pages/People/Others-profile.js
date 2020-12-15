@@ -14,6 +14,7 @@ import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 import RatingService from '../../../services/rating.service'
 
+import Chat from '../../Chat/Chat'
 
 class OthersProfile extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class OthersProfile extends Component {
             .getUserRatings(userId)
             .then(rates => {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
-                this.setState({ avgRating: isNaN(avgRate.toFixed(2)) ? 'No ratings' : `${avgRate.toFixed(2)} / 5` })
+                this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))} / 5` })
             })
             .catch(err => console.log('ERROR GETTING AVG RATES', err))
     }
@@ -163,6 +164,11 @@ class OthersProfile extends Component {
                                         :
                                         <Loader style={{ display: 'flex', justifyContent: 'center' }} />
                                     }
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={12}>
+                                    <Chat/>
                                 </Col>
                             </Row>
                             <Toastie show={this.state.editRatingToast} handleToast={visib => this.handlePopups('editRatingToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Rating updated successfully." />

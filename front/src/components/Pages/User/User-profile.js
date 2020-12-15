@@ -10,12 +10,11 @@ import Toastie from '../../Shared/PopUps/Toastie'
 import NewProduct from '../Products/New-product'
 import EditUser from './Edit-profile'
 
-import Chat from '../../Chat/Chat'
-
 import ProductService from '../../../services/products.service'
 import UserService from '../../../services/user.service'
 import RatingService from '../../../services/rating.service'
 
+import Chat from '../../Chat/Chat'
 
 class UserProfile extends Component {
     constructor(props) {
@@ -70,7 +69,7 @@ class UserProfile extends Component {
             .getUserRatings(userId)
             .then(rates => {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
-                this.setState({ avgRating: isNaN(avgRate.toFixed(2)) ? 'No ratings' : `${avgRate.toFixed(2)}/5` })
+                this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))}/5` })
             })
             .catch(err => console.log('ERROR GETTING AVG RATES', err))
     }
@@ -165,7 +164,7 @@ class UserProfile extends Component {
                     </Row>
                     <Row>
                         <Col md={12}>
-                            <Chat />
+                            <Chat/>
                         </Col>
                     </Row>
                     <Toastie show={this.state.editUserToast} handleToast={visib => this.handlePopups('editUserToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Profile updated successfully." />
