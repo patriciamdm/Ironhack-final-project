@@ -31,7 +31,8 @@ class OthersProfile extends Component {
             delRatingModal: false,
             delRatingToast: false,
             rateToTarget: undefined,
-            avgRating: undefined
+            avgRating: undefined,
+            loggedUserRating: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -51,7 +52,7 @@ class OthersProfile extends Component {
         this.loadProducts()
         this.loadRatings()
         this.getAverageRating(this.props.match.params.userId)
-        this.defineTargetRate(this.state.ratings.filter(elm => elm.rater === this.props.theUser._id)[0])
+        this.loggedUserRated()
     }
 
     loadProducts = () => {
@@ -71,6 +72,13 @@ class OthersProfile extends Component {
                 })
                 .catch(err => new Error('ERROR GETTING RATES', err))
         })
+    }
+
+    loggedUserRated = () => {
+        this.ratingService
+            .getRaterRate(this.props.theUser._id, this.state.user._id)
+            .then(rate => rate.data && this.setState({ loggedUserRating: true, rateToTarget: rate.data[0]._id }))
+            .catch(err => console.log('ERROR GETTING USER RATED', err))
     }
 
     reloadRatings = () => {
@@ -163,7 +171,12 @@ class OthersProfile extends Component {
                                 <Col md={12} lg={6}>
                                     <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                         <h2>Reviews</h2>
-                                        <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>
+                                        {this.state.loggedUserRating
+                                            ?
+                                            <Button onClick={() => this.handlePopups('editRatingModal', true)} variant="secondary" size="sm">Edit rating</Button>
+                                            :
+                                            <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>
+                                        }
                                     </article>
                                     <hr style={{ marginTop: '10px' }}/>
                                     {this.state.ratings
