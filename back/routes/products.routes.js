@@ -13,6 +13,15 @@ router.get('/getAllProducts', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
+router.get('/getLast5Products', (req, res) => {
+
+    Product
+        .find()
+        .then(last5ProdArray => last5ProdArray.slice(-5))
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
 router.get('/getOneProduct/:product_id', checkProductId, (req, res) => {
 
     Product

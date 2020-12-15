@@ -13,6 +13,15 @@ router.get('/getAllUsers', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
+router.get('/getLast5Users', (req, res) => {
+
+    User
+        .find()
+        .then(last5UsersArray => last5UsersArray.slice(-5))
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
 router.get('/getOneUser/:user_id', checkUserId, (req, res) => {
 
     User
