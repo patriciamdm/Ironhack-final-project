@@ -47,6 +47,7 @@ class Navigation extends Component {
                                     <NavDropdown title="Admin"id="basic-nav-dropdown" style={{margin: '0px'}}>
                                         <NavDropdown.Item as="div"><Link to="/admin">Admin page</Link></NavDropdown.Item>
                                         <NavDropdown.Divider />
+                                        <NavDropdown.Item as="div"><Link to="/admin/data">Statistics</Link></NavDropdown.Item>
                                         <NavDropdown.Item as="div"><Link to="/admin/products">Manage products</Link></NavDropdown.Item>
                                         <NavDropdown.Item as="div"><Link to="/admin/users">Manage users</Link></NavDropdown.Item>
                                     </NavDropdown>

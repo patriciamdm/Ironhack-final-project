@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
 
+import image from './glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg'
+
 import BtsCarousel from './Carousel/Carousel-bts'
 import Toastie from '../../Shared/PopUps/Toastie'
 
@@ -14,22 +16,8 @@ const Home = ({theUser, toastieInfo, handleToast, showToast}) => {
             <BtsCarousel />
             <Container>
                 <Row style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '130px 0px'}}>
-                    {/* <Col xs={8} md={6} className="home-btns">
-                        {theUser
-                            ?
-                            <>
-                                <Link to="/products" className="btn btn-secondary">Products</Link>
-                                <Link to="/profile" className="btn btn-secondary">My profile</Link>
-                            </>
-                            :
-                            <>
-                                <Link to="/signup" className="btn btn-secondary">Sign up</Link>
-                                <Link to="/login" className="btn btn-secondary">Log in</Link>
-                            </>
-                        }
-                    </Col> */}
                     <Col md={12} lg={6}>
-                        <img style={{width: '400px', height: '350px'}}></img>
+                        <img style={{ width: '400px', height: '350px' }} src={image} alt="Typing on computer"/>
                     </Col>
                     <Col md={12} lg={6} style={{ padding: '30px', textAlign: 'left' }}>
                         <article className="home-texts">
