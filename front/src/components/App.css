@@ -80,8 +80,9 @@ h1, h2, h3 {
 }
 
 .loader {
-    margin-top: 50px;
-    margin-left: 100px;
+    margin: 50px 100px;
+    display: block;
+    text-align: center;
 }
 
 .dropdown {
@@ -225,12 +226,17 @@ h1, h2, h3 {
 }
 
 .admin-list {
-    margin: 20px 0px;
-    max-height: 150px;
-    width: 200px;
+    margin: 20px 0px 10px;
+    max-height: 234px;
+    width: 100%;
     overflow: scroll;
-    border: .5px solid lightgray;
-    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+}
+
+.admin-list p {
+    font-size: 1.1em;
+    font-weight: 300;
 }
 
 .admin-modal-list {
