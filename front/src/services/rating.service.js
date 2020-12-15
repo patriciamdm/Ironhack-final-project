@@ -11,6 +11,7 @@ class RatingService {
     giveRating = ratingInfo => this.apiHandler.post('/giveRating', ratingInfo)
     getOneRating = ratingId => this.apiHandler.get(`/getOneRating/${ratingId}`)
     getUserRatings = userId => this.apiHandler.get(`/getUserRatings/${userId}`)
+    deleteRating = ratingId => this.apiHandler.delete(`/deleteRating/${ratingId}`)
     editOneRating = (ratingId, editedRate) => this.apiHandler.put(`/editOneRating/${ratingId}`, editedRate)
 }
     

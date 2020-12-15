@@ -16,7 +16,7 @@ class ProductCard extends Component {
     render() {
         return (
             <>
-                <Col xs={6} sm={6} md={4} lg={3} >
+                <Col xs={12} sm={6} md={4} lg={3} >
                     <Card className="product-card">
                         <Link to={`/products/${this.props.product._id}`}>
                             <Card.Img variant="top" src={this.props.product.image} style={{ height: '200px' }} />

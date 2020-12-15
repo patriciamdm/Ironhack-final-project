@@ -17,7 +17,7 @@ class AdminProdCard extends Component {
     render() {
         return (
             <Col xs={12} sm={12} md={6} lg={4}>
-                <Card className="admin-prod-card" style={this.props.product.status === 'available' ? { border: '1px solid #339633' } : (this.props.product.status === 'sold' ? { border: '1px solid red' } : { border: '1px solid orange' })}>
+                <Card className="admin-prod-card" style={this.props.product.status === 'available' ? { border: '1px solid green', backgroundColor: "#7ccb7c80" } : (this.props.product.status === 'sold' ? { border: '1px solid red', backgroundColor: "#ff999980" } : { border: '1px solid orange', backgroundColor: "#ffdb9980" })}>
                     <img src={this.props.product.image} alt={this.props.product.name} style={{objectFit: 'cover', width: '100px', height: '100px', marginRight: '10px', borderRadius: '3px'}}/>
                     <article style={{width: '100%'}}>
                         <Card.Title style={{ fontSize: '1.2rem' }}>{this.props.product.name}</Card.Title>

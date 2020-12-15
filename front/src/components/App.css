@@ -3,7 +3,8 @@ body {
 }
 
 main {
-    min-height: 75vh;
+    min-height: 85vh;
+    margin-top: 130px;
 }
 
 img  {
@@ -40,6 +41,14 @@ h1, h2, h3 {
 
 .navbar a {
     text-decoration: none;
+}
+
+#top-navigation {
+    position: fixed;
+    height: 60px;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
 }
 
 .dropdown-item a {
@@ -214,3 +223,34 @@ h1, h2, h3 {
     overflow: hidden;
     font-size: .9rem;
 }
+
+.admin-list {
+    margin: 20px 0px;
+    max-height: 150px;
+    width: 200px;
+    overflow: scroll;
+    border: .5px solid lightgray;
+    border-radius: 4px;
+}
+
+.admin-modal-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: .5px solid lightgray;
+    border-radius: 4px;
+    height: 60px;
+    padding: 10px 15px;
+    margin: 10px 0px
+}
+
+
+
+
+/* p {
+
+    background-color: #ffdb9980;
+    background-color: #ff999980;
+    background-color: #7ccb7c80;
+
+} */

@@ -29,9 +29,8 @@ class EditRatingForm extends Component {
         e.preventDefault()
 
         this.ratingService
-            .editOneRating(this.props.rateId, this.state)
+            .editOneRating(this.props.rateId, {value: this.state.rating, comment: this.state.comment})
             .then(() => {
-                this.props.cleanRatings()
                 this.props.reloadRatings()
                 this.props.hideModal()
                 this.props.handleToast(true)

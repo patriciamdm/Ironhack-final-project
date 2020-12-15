@@ -21,8 +21,6 @@ class RatingForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.sendRating()
-        this.props.cleanRatings()
-        this.props.loadRatings()
         this.props.hideModal()
     }
 
@@ -35,6 +33,7 @@ class RatingForm extends Component {
                 const addRate = { rating: [...this.props.user.rating, response.data._id] }
                 this.userService.editUser(this.props.user._id, addRate)
             })
+            .then(() => this.props.reloadRatings())
             .catch(err => console.log('ERROR RATING', err))
                 
     }
