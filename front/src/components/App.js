@@ -17,6 +17,7 @@ import UserProfile from './Pages/User/User-profile';
 import AdminPage from './Pages/Admin/Admin-page';
 import AdminProducts from './Pages/Admin/Prods/Admin-products'
 import AdminUsers from './Pages/Admin/Users/Admin-users'
+import DataStats from './Pages/Admin/Data-statistics/Data-stats'
 
 import ProductList from './Pages/Products/Products-list';
 import ProductDetails from './Pages/Products/Prod-details';
@@ -69,6 +70,7 @@ class App extends Component {
             <Route path='/admin' exact render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminPage theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             <Route path='/admin/products' render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminProducts theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             <Route path='/admin/users' render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <AdminUsers theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
+            <Route path='/admin/data' render={() => this.state.loggedInUser && this.state.loggedInUser.role === 'admin' ? <DataStats theUser={this.state.loggedInUser} /> : <Redirect to='/' />} />
             
             <Route path='/signup' render={props => <Signup setUser={this.setUser} {...props} />} />
             <Route path='/login' render={props => <Login setUser={this.setUser} {...props} />} />
