@@ -49,7 +49,7 @@ class App extends Component {
     this.authService
       .loggedin()
       .then(res => this.setUser(res.data))
-      .catch(err => console.log('ERROR IN COMP MOUNT AUTH', err))
+      .catch(err => new Error('ERROR IN COMP MOUNT AUTH', err)) 
   }
 
   scrollToTop = () => {

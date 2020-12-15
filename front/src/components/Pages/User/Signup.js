@@ -32,7 +32,7 @@ class Signup extends Component {
                 this.props.setUser(loggedUser.data)
                 this.props.history.push('/products')
             })
-            .catch(err => console.log('ERROR IN SIGN UP', err))
+            .catch(err => new Error('ERROR IN SIGN UP', err))
     }
 
     handleImageUpload = e => {
@@ -47,7 +47,7 @@ class Signup extends Component {
             .then(response => {
                 this.setState({ image: response.data.secure_url, uploadingActive: false })
             })
-            .catch(err => console.log('ERRORRR!', err))
+            .catch(err => new Error('ERROR UPLOADING IMG', err))
     }
     
     render() {

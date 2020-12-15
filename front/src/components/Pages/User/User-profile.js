@@ -46,7 +46,7 @@ class UserProfile extends Component {
         this.productsService
             .getProductsByOwner(this.props.theUser._id)
             .then(allProds => this.setState({ products: allProds.data }))
-            .catch(err => console.log('ERROR GET ALL PRODS', err))
+            .catch(err => new Error('ERROR GET ALL PRODS', err))
     }
     
     loadFavorites = () => {
@@ -54,7 +54,7 @@ class UserProfile extends Component {
             this.productsService
                 .getOneProduct(elm)
                 .then(prod => this.setState({ favorites: [...this.state.favorites, prod.data] }))
-                .catch(err => console.log('ERROR GET FAV', err))
+                .catch(err => new Error('ERROR GET FAV', err))
         })
     }
     
@@ -65,7 +65,7 @@ class UserProfile extends Component {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
                 this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))}/5` })
             })
-            .catch(err => console.log('ERROR GETTING AVG RATES', err))
+            .catch(err => new Error('ERROR GETTING AVG RATES', err))
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -85,7 +85,7 @@ class UserProfile extends Component {
                 this.props.history.push('/')
                 this.props.handleToast()
             })
-            .catch(err => console.log('ERROR DELETING USER', err))
+            .catch(err => new Error('ERROR DELETING USER', err))
     }
 
     removeFavorite = prodId => {
@@ -97,7 +97,7 @@ class UserProfile extends Component {
             .then(user => this.props.setUser(user.data))
             .then(() => this.setState({ favorites: [] }))
             .then(() => this.loadFavorites())
-            .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
+            .catch(err => new Error('ERROR REMOVING FROM FAVS', err))
     }
 
     render() {

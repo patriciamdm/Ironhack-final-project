@@ -44,7 +44,7 @@ class OthersProfile extends Component {
         this.userService
             .getOneUser(this.props.match.params.userId)
             .then(user => this.setState({ user: user.data }, () => this.loadUserInfo()))
-            .catch(err => console.log('ERROR GETING USER', err))   
+            .catch(err => new Error('ERROR GETING USER', err))   
     }
 
     loadUserInfo = () => {
@@ -58,7 +58,7 @@ class OthersProfile extends Component {
         this.productsService
         .getAllProducts()
         .then(myProds => this.setState({ products: myProds.data.filter(elm => elm.owner === this.state.user._id) }))
-        .catch(err => console.log('ERROR GETTING PRODS', err))
+        .catch(err => new Error('ERROR GETTING PRODS', err))
     }
 
     loadRatings = () => {
@@ -69,7 +69,7 @@ class OthersProfile extends Component {
                     const ratings = [...this.state.ratings, rate.data]
                     this.setState({ratings: ratings})
                 })
-                .catch(err => console.log('ERROR GETTING RATES', err))
+                .catch(err => new Error('ERROR GETTING RATES', err))
         })
     }
 
@@ -86,7 +86,7 @@ class OthersProfile extends Component {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
                 this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))} / 5` })
             })
-            .catch(err => console.log('ERROR GETTING AVG RATES', err))
+            .catch(err => new Error('ERROR GETTING AVG RATES', err))
     }
 
     deleteRating = () => {
@@ -99,7 +99,7 @@ class OthersProfile extends Component {
                 this.handlePopups('delRatingModal', false)
                 this.handlePopups('delRatingToast', true)
             })
-            .catch(err => console.log('ERROR DELETING RATE', err))
+            .catch(err => new Error('ERROR DELETING RATE', err))
     }
 
     defineTargetRate = rateId => this.setState({rateToTarget: rateId })
@@ -114,7 +114,7 @@ class OthersProfile extends Component {
         .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(product._id) ? removeFav : addFav)
         .then(user => this.userService.getOneUser(user.data._id))
         .then(user => this.props.setUser(user.data))
-        .catch(err => console.log('ERROR ADDING/REMOVING FROM FAVS', err))
+        .catch(err => new Error('ERROR ADDING/REMOVING FROM FAVS', err))
     }
 
     render() {

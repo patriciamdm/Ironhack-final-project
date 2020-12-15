@@ -42,21 +42,21 @@ class EditProduct extends Component {
         this.productService
             .getOneProduct(this.props.productId)
             .then(res => this.setState({ _id: res.data._id, name: res.data.name, description: res.data.description, image: res.data.image, price: res.data.price, status: res.data.status, owner: this.props.theUser._id, category: res.data.category, location: res.data.location}))
-            .catch(err => console.log('ERROR FINDING PROD', err))
+            .catch(err => new Error('ERROR FINDING PROD', err))
     }
 
     loadCategories = () => {
         this.categoryService
             .getAllCategories()
             .then(categs => this.setState({ categoryList: categs.data }))
-            .catch(err => console.log('ERROR GET CATEGS', err))        
+            .catch(err => new Error('ERROR GET CATEGS', err))        
     }
 
     loadLocations = () => {
         this.locationService
             .getAllLocations()
             .then(locs => this.setState({ locationList: locs.data }))
-            .catch(err => console.log('ERROR GET LOCATIONS', err))        
+            .catch(err => new Error('ERROR GET LOCATIONS', err))        
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -81,7 +81,7 @@ class EditProduct extends Component {
                 this.props.hideModal()
                 this.props.handleToast(true)
             })
-            .catch(err => console.log('ERROR CREATING PRODUCT', err))
+            .catch(err => new Error('ERROR CREATING PRODUCT', err))
     }
 
     handleImageUpload = e => {
@@ -96,7 +96,7 @@ class EditProduct extends Component {
             .then(response => {
                 this.setState({ image: response.data.secure_url, uploadingActive: false })
             })
-            .catch(err => console.log('ERRORRR!', err))
+            .catch(err => new Error('ERROR UPLOADING IMG', err))
     }
 
     render() {

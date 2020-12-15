@@ -34,7 +34,7 @@ class RatingForm extends Component {
                 this.userService.editUser(this.props.user._id, addRate)
             })
             .then(() => this.props.reloadRatings())
-            .catch(err => console.log('ERROR RATING', err))
+            .catch(err => new Error('ERROR RATING', err))
                 
     }
 

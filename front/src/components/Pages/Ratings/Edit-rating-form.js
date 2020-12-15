@@ -20,7 +20,7 @@ class EditRatingForm extends Component {
         this.ratingService
             .getOneRating(this.props.rateId)
             .then(response => this.setState({ rating: response.data.value, comment: response.data.comment }))
-            .catch(err => console.log('ERROR GETTING RATE', err))
+            .catch(err => new Error('ERROR GETTING RATE', err))
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -35,7 +35,7 @@ class EditRatingForm extends Component {
                 this.props.hideModal()
                 this.props.handleToast(true)
             })
-            .catch(err => console.log('ERROR EDITING RATE', err))
+            .catch(err => new Error('ERROR EDITING RATE', err))
 
         
     }

@@ -39,14 +39,14 @@ class ProductDetails extends Component {
         this.productsService
             .getOneProduct(this.props.match.params.product_id)
             .then(res => this.setState({ product: res.data }, () => this.getOwner()))
-            .catch(err => console.log('ERROR WITH PRODUCT DETAILS', err))
+            .catch(err => new Error('ERROR WITH PRODUCT DETAILS', err))
     }
 
     getOwner = () => {
         this.userService
             .getOneUser(this.state.product.owner)
             .then(user => this.setState({ owner: user.data }))
-            .catch(err => console.log('ERROR WITH PRODUCT OWNER', err))
+            .catch(err => new Error('ERROR WITH PRODUCT OWNER', err))
     }
 
     handlePopups = (target, visib) => this.setState({ [target]: visib })
@@ -55,7 +55,7 @@ class ProductDetails extends Component {
         this.productsService
             .deleteProduct(this.state.product._id)
             .then(() => this.props.history.push('/products'))
-            .catch(err => console.log('ERROR DELETING PRODUCT', err))
+            .catch(err => new Error('ERROR DELETING PRODUCT', err))
     }
 
     addToFavorites = () => {
@@ -65,7 +65,7 @@ class ProductDetails extends Component {
             .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(this.state.product._id) ? removeFav : addFav)
             .then(user => this.userService.getOneUser(user.data._id))
             .then(user => this.props.setUser(user.data))
-            .catch(err => console.log('ERROR REMOVING FROM FAVS', err))
+            .catch(err => new Error('ERROR REMOVING FROM FAVS', err))
     }
 
     render() {

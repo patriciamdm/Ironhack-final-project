@@ -29,7 +29,7 @@ class EmailForm extends Component {
         this.emailService
             .sendEmail(this.state)
             .then(res => console.log('EMAIL SENT', res))
-            .catch(err => console.log('ERROR SENDING EMAIL', err))
+            .catch(err => new Error('ERROR SENDING EMAIL', err))
     }
 
     render() {

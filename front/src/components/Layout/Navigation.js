@@ -14,7 +14,7 @@ class Navigation extends Component {
         this.authService
             .logout()
             .then(() => this.props.setUser(undefined))
-            .catch(err => console.log('ERROR IN LOG OUT', err))
+            .catch(err => new Error('ERROR IN LOG OUT', err))  
     }
 
     render() {

@@ -24,7 +24,7 @@ class RatingCard extends Component {
         this.userService
             .getOneUser(this.props.rating.rater)
             .then(user => this.setState({ raterName: user.data.username, raterId: user.data._id, raterImg: user.data.image }))
-            .catch(err => console.log('ERROR GETTING RATER', err))
+            .catch(err => new Error('ERROR GETTING RATER', err))
     }
 
     showModal = target => {

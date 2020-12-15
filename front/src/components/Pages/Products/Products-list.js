@@ -38,7 +38,7 @@ class ProductList extends Component {
         this.productsService
             .getAllProducts()
             .then(allProds => this.setState({ products: allProds.data, filteredProds: allProds.data }))
-            .catch(err => console.log('ERROR GET ALL PRODS', err))
+            .catch(err => new Error('ERROR GET ALL PRODS', err))
     }
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
@@ -83,7 +83,7 @@ class ProductList extends Component {
             .editUser(this.props.theUser._id, this.props.theUser.likedProducts.includes(product._id) ? removeFav : addFav)
             .then(user => this.userService.getOneUser(user.data._id))
             .then(user => this.props.setUser(user.data))
-            .catch(err => console.log('ERROR ADDING/REMOVING FROM FAVS', err))
+            .catch(err => new Error('ERROR ADDING/REMOVING FROM FAVS', err))
     }
 
     render() {

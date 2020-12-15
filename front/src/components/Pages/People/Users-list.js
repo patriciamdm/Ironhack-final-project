@@ -25,7 +25,7 @@ class UserList extends Component {
         this.userService
             .getAllUsers()
             .then(allUsers => this.setState({ users: allUsers.data, filteredUsers: allUsers.data }))
-            .catch(err => console.log('ERROR GET ALL USERS', err))
+            .catch(err => new Error('ERROR GET ALL USERS', err))
     }
     
     searchFor = search => {

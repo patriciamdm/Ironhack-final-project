@@ -25,7 +25,7 @@ class EditUser extends Component {
         this.userService
             .getOneUser(this.props.theUser._id)
             .then(res => this.setState({ _id: res.data._id, username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone}))
-            .catch(err => console.log('ERROR FINDING PROD', err))
+            .catch(err => new Error('ERROR FINDING PROD', err))
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -39,7 +39,7 @@ class EditUser extends Component {
             .then(user => this.userService.getOneUser(user.data._id))
             .then(user => this.props.setUser(user.data))
             .then(() => this.props.handleModal())
-            .catch(err => console.log('ERROR IN EDIT', err))
+            .catch(err => new Error('ERROR IN EDIT', err))
     }
 
     handleImageUpload = e => {
@@ -52,7 +52,7 @@ class EditUser extends Component {
         this.filesService
             .uploadImage(uploadData)
             .then(response => this.setState({ image: response.data.secure_url, uploadingActive: false }))
-            .catch(err => console.log('ERRORRR!', err))
+            .catch(err => new Error('ERROR UPLOADING IMG', err))
     }
 
     render() {

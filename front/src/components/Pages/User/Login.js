@@ -32,7 +32,7 @@ class Login extends Component {
             })
             .catch(err => {
                 this.setState({showToast: true})
-                console.log('ERROR IN LOG IN', err)
+                new Error('ERROR IN LOG IN', err)
             })
     }
 

@@ -25,14 +25,14 @@ class FilterBtns extends Component {
         this.categoryService
             .getAllCategories()
             .then(categs => this.setState({ categories: categs.data }))
-            .catch(err => console.log('ERROR GET CATEGS', err))        
+            .catch(err => new Error('ERROR GET CATEGS', err))        
     }
 
     loadLocations = () => {
         this.locationService
             .getAllLocations()
             .then(locs => this.setState({ locations: locs.data }))
-            .catch(err => console.log('ERROR GET LOCATIONS', err))        
+            .catch(err => new Error('ERROR GET LOCATIONS', err))      
     }
 
     render() {
