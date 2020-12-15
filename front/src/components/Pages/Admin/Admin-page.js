@@ -10,6 +10,7 @@ import Toastie from '../../Shared/PopUps/Toastie'
 import AdminList from './Lists/Admin-list'
 import NewElm from './Lists/New-element'
 import EditElm from './Lists/Edit-element'
+import AdminPageCard from './Admin-page-card'
 
 
 import CategoryService from '../../../services/category.service'
@@ -51,6 +52,8 @@ class AdminPage extends Component {
     componentDidMount = () => {
         this.loadCategories()
         this.loadLocations()
+        this.loadLastProducts()
+        this.loadLastUsers()
     }
 
     loadCategories = () => {
@@ -65,6 +68,20 @@ class AdminPage extends Component {
             .getAllLocations()
             .then(locs => this.setState({ locations: locs.data }))
             .catch(err => console.log('ERROR GET LOCATIONS', err))        
+    }
+
+    loadLastProducts = () => {
+        this.productService
+            .getLast5Products()
+            .then(prods => this.setState({ products: prods.data }))
+            .catch(err => console.log('ERROR GET 5 PRODS', err)) 
+    }
+
+    loadLastUsers = () => {
+        this.userService
+            .getLast5Users()
+            .then(users => this.setState({ users: users.data }))
+            .catch(err => console.log('ERROR GET 5 USERS', err)) 
     }
 
     defineTargetElm = elmId => this.setState({ targetElm: elmId })
@@ -98,26 +115,38 @@ class AdminPage extends Component {
             <>
                 <Container>
                     <Row>
-                        <Col>
+                        <Col style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px', borderBottom: '1px solid lightgray'}}>
                             <h1>Welcome to the Admin page, {this.props.theUser.username}</h1>
-                            <hr />
+                            <Link to="/admin/data" className="btn btn-secondary btn-lg" style={{marginTop: '10px'}}>View statistics</Link>
                         </Col>
                     </Row>
                     <Row style={{ textAlign: 'center'}} >
-                        <Col sm={12} md={6} lg={4} >
-                            <h3>Products</h3>
+                        <Col sm={12} md={6} lg={4} style={{marginTop: '40px'}}>
+                            <h3 style={{marginBottom: '20px'}}>Products</h3>
+                            {this.state.products
+                                ?
+                                this.state.products.map(elm => <AdminPageCard key={elm._id} name={elm.name} image={elm.image} status={elm.status} />)
+                                :
+                                <Loader />
+                            }
                             <Link to="/admin/products" className="btn btn-secondary btn-sm">Manage products</Link>
                         </Col>
 
-                        <Col sm={12} md={6} lg={4} >
-                            <h3>Users</h3>
+                        <Col sm={12} md={6} lg={4} style={{marginTop: '40px'}}>
+                            <h3 style={{marginBottom: '20px'}}>Users</h3>
+                            {this.state.users
+                                ?
+                                this.state.users.map(elm => <AdminPageCard key={elm._id} name={elm.username} image={elm.image} id={elm._id} />)
+                                :
+                                <Loader />
+                            }
                             <Link to="/admin/users" className="btn btn-secondary btn-sm">Manage users</Link>
                         </Col>
 
-                        <Col sm={12} md={12} lg={3} >
+                        <Col sm={12} md={12} lg={4} >
                             <Row>
-                                <Col lg={12} md={6} style={{marginBottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <h3>Categories</h3>
+                                <Col lg={12} md={6} style={{marginTop: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                <h3 style={{marginBottom: '0px'}}>Categories</h3>
                                 {this.state.categories
                                     ?
                                     <article className="admin-list">
@@ -129,8 +158,8 @@ class AdminPage extends Component {
                                     <Button variant="secondary" size="sm" onClick={() => this.handlePopups('categoriesModal', true)}>Manage categories</Button>
                                 </Col>
 
-                                <Col lg={12} md={6} style={{marginBottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <h3>Locations</h3>
+                                <Col lg={12} md={6} style={{marginTop: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <h3 style={{marginBottom: '0px'}}>Locations</h3>
                                 {this.state.locations
                                     ?
                                     <article className="admin-list">
@@ -155,7 +184,7 @@ class AdminPage extends Component {
                 
                 </Container>
 
-                
+            
                 
                 {/* CATEGORIES */}
 

@@ -17,7 +17,7 @@ router.get('/getLast5Products', (req, res) => {
 
     Product
         .find()
-        .then(last5ProdArray => last5ProdArray.slice(-5))
+        .then(last5ProdArray => last5ProdArray.slice(-6).reverse())
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

@@ -17,7 +17,7 @@ router.get('/getLast5Users', (req, res) => {
 
     User
         .find()
-        .then(last5UsersArray => last5UsersArray.slice(-5))
+        .then(last5UsersArray => last5UsersArray.slice(-6).reverse())
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
