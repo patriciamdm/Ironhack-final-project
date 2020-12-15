@@ -244,8 +244,13 @@ h1, h2, h3 {
     margin: 10px 0px
 }
 
+.home-texts p {
+    margin-bottom: 5px;
+}
 
-
+.home-texts {
+    margin-bottom: 30px;
+}
 
 /* p {
 

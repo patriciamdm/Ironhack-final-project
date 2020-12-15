@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap'
 const PopUp = ({ show, hide, title, children, size }) => {
 
     return (
-        <Modal show={show} onHide={hide} size={size} >
+        <Modal centered show={show} onHide={hide} size={size} >
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>

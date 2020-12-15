@@ -6,28 +6,56 @@ import Toastie from '../../Shared/PopUps/Toastie'
 
 const Home = ({theUser, toastieInfo, handleToast, showToast}) => {
     return (
-        <Container>
-            <Row className="justify-content-center">
-                <BtsCarousel />
-            </Row>
-            <Row className="justify-content-center">
-                <Col xs={8} md={6} className="home-btns">
-                    {theUser
-                        ?
-                        <>
-                            <Link to="/products" className="btn btn-secondary">Products</Link>
-                            <Link to="/profile" className="btn btn-secondary">My profile</Link>
-                        </>
-                        :
-                        <>
-                            <Link to="/signup" className="btn btn-secondary">Sign up</Link>
-                            <Link to="/login" className="btn btn-secondary">Log in</Link>
-                        </>
-                    }
-                </Col>
-            </Row>
+        <section style={{ textAlign: 'center' }}>
+            <article style={{ padding: '70px 0px 140px' }}>
+                <h1 style={{marginBottom: '40px', fontSize: '4em'}}>Welcome to Dealz_</h1>
+                <h3>Te jode en tu armario? Mandalo a otro barrio!</h3>
+            </article>
+            <BtsCarousel />
+            <Container>
+                <Row style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '130px 0px'}}>
+                    {/* <Col xs={8} md={6} className="home-btns">
+                        {theUser
+                            ?
+                            <>
+                                <Link to="/products" className="btn btn-secondary">Products</Link>
+                                <Link to="/profile" className="btn btn-secondary">My profile</Link>
+                            </>
+                            :
+                            <>
+                                <Link to="/signup" className="btn btn-secondary">Sign up</Link>
+                                <Link to="/login" className="btn btn-secondary">Log in</Link>
+                            </>
+                        }
+                    </Col> */}
+                    <Col md={12} lg={6}>
+                        <img style={{width: '400px', height: '350px'}}></img>
+                    </Col>
+                    <Col md={12} lg={6} style={{ padding: '30px', textAlign: 'left' }}>
+                        <article className="home-texts">
+                            <h3 style={{marginBottom: '20px'}}>Vende todo lo que no quieras.</h3>
+                            <p>Elige entre diversas categorías, el lugar donde quieras vender y ponle un precio.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p>Inicia sesión o registrate y empieza a vender todo lo que ya no quieres.</p>
+                        </article>
+                        {theUser
+                            ?
+                            <div style={{textAlign: 'center'}}>
+                                <Link to="/products" className="btn btn-secondary" style={{margin: '0px 10px'}}>Products</Link>
+                                <Link to="/profile" className="btn btn-secondary" style={{margin: '0px 10px'}}>My profile</Link>
+                            </div>
+                            :
+                            <div style={{textAlign: 'center'}}>
+                                <Link to="/signup" className="btn btn-secondary" style={{margin: '0px 10px'}}>Sign up</Link>
+                                <Link to="/login" className="btn btn-secondary" style={{margin: '0px 10px'}}>Log in</Link>
+                            </div>
+                        }
+                    </Col>
+                </Row>
+            </Container>
             <Toastie show={showToast} handleToast={handleToast} toastType={toastieInfo.toastType} toastText={toastieInfo.toastText} toastTitle={toastieInfo.toastTitle} />
-        </Container>
+        </section>
+        
     )
 }
 

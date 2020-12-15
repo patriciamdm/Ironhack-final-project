@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap'
 const PopUpConfirm = ({ show, hide, title, body, leftAction, rightAction, leftText, rightText, type }) => {
 
     return (
-        <Modal show={show} onHide={hide} >
+        <Modal centered show={show} onHide={hide} >
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
+import CategoryService from '../../../../services/category.service'
+import LocationService from '../../../../services/location.service'
+
 
 class EditElm extends Component {
     constructor() {
@@ -8,6 +11,18 @@ class EditElm extends Component {
         this.state = {
             name: ''
         }
+        this.categoryService = new CategoryService()
+        this.locationService = new LocationService()
+    }
+
+    componentDidMount = () => {
+        this.props.type === 'category' && this.categoryService.getOneCategory(this.props.elm)
+            .then(category => this.setState({ name: category.data.name }))
+            .catch(err => console.log('ERROR GETTING CATEGORY', err))
+        
+        this.props.type === 'location' && this.locationService.getOneLocation(this.props.elm)
+            .then(location => this.setState({ name: location.data.name }))
+            .catch(err => console.log('ERROR GETTING LOCATION', err))
     }
     
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -15,13 +30,21 @@ class EditElm extends Component {
     handleSubmit = e => {
         e.preventDefault()
 
-        // this.authService
-        //     .signup(this.state)
-        //     .then(loggedUser => {
-        //         this.props.setUser(loggedUser.data)
-        //         this.props.history.push('/products')
-        //     })
-        //     .catch(err => console.log('ERROR IN SIGN UP', err))
+        this.props.type === 'category' && this.categoryService.editCategory(this.props.elm, { name: this.state.name })
+            .then(() => {
+                this.props.loadList()
+                this.props.hideModal()
+                this.props.handleToast()
+            })
+            .catch(err => console.log('ERROR EDITING CATEGORY', err))
+        
+        this.props.type === 'location' && this.locationService.editLocation(this.props.elm, { name: this.state.name })
+            .then(() => {
+                this.props.loadList()
+                this.props.hideModal()
+                this.props.handleToast()
+            })
+            .catch(err => console.log('ERROR EDITING LOCATION', err))
     }
     
     render() {
