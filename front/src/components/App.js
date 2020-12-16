@@ -14,7 +14,7 @@ import Login from './Pages/User/Login';
 
 import UserProfile from './Pages/User/User-profile';
 
-import AdminPage from './Pages/Admin/Admin-page';
+import AdminPage from './Pages/Admin/Homepage/Admin-page';
 import AdminProducts from './Pages/Admin/Prods/Admin-products'
 import AdminUsers from './Pages/Admin/Users/Admin-users'
 import DataStats from './Pages/Admin/Data-statistics/Data-stats'

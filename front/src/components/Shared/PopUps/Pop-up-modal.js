@@ -5,7 +5,7 @@ const PopUp = ({ show, hide, title, children, size }) => {
     return (
         <Modal centered show={show} onHide={hide} size={size} >
             <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
+                <Modal.Title style={{textTransform: 'capitalize'}}>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {children}

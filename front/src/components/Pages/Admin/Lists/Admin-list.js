@@ -11,15 +11,27 @@ class AdminList extends Component {
 
     editElm = elmId => {
         this.props.targetElm(elmId)
-        this.props.handlePopups(this.props.editModal, true)
+        this.props.handlePopups('showModal', true, this.props.editModal)
     }
 
-    newElm = () => this.props.handlePopups(this.props.newModal, true)
+    newElm = () => this.props.handlePopups('showModal', true, this.props.newModal)
 
     delElm = elmId => {
         this.props.targetElm(elmId)
-        this.props.handlePopups(this.props.deleteModal, true)
+        this.props.handlePopups('showModal', true, this.props.deleteModal)
     }
+
+    // editElm = elmId => {
+    //     this.props.targetElm(elmId)
+    //     this.props.handlePopups(this.props.editModal, true)
+    // }
+
+    // newElm = () => this.props.handlePopups(this.props.newModal, true)
+
+    // delElm = elmId => {
+    //     this.props.targetElm(elmId)
+    //     this.props.handlePopups(this.props.deleteModal, true)
+    // }
 
 
     render() {

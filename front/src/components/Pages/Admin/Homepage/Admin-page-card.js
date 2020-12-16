@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 
-import RatingService from '../../../services/rating.service'
+import RatingService from '../../../../services/rating.service'
 
 const AdminPageCard = ({ name, image, status, id }) => {
 
