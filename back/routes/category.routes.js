@@ -4,6 +4,7 @@ const router = express.Router()
 const {checkCategoryId} = require('../middlewares/middleware')
 
 const Category = require('../models/category.model')
+const Products = require('../models/category.model')
 
 router.get('/getAllCategories', (req, res) => {
 
@@ -39,6 +40,10 @@ router.put('/editCategory/:category_id', checkCategoryId, (req, res) => {
 
 router.delete('/deleteCategory/:category_id', checkCategoryId, (req, res) => {
 
+    // Products
+    //     .updateMany({category: req.params.category_id},{"$set":{"category":"Others"}} )
+    //     .then(response => res.json(response))
+    //     .catch(err => res.status(500).json(err))
     Category
         .findByIdAndDelete(req.params.category_id)
         .then(response => res.json(response))

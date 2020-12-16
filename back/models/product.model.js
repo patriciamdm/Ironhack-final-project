@@ -21,7 +21,6 @@ const productSchema = new Schema({
     category: {
         type: String,
         required: true,
-        enum: ['motor', 'fashion', 'electronics', 'sports', 'home', 'culture', 'others']
     },
     status: {
         type: String,
@@ -30,7 +29,7 @@ const productSchema = new Schema({
     },
     location: {
         type: String,
-        required: false
+        required: true
     },
     owner: {
         type: Schema.Types.ObjectId,
