@@ -1,31 +1,19 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import ProductService from '../../../../services/products.service'
-
-import NivoResponsivePie from './Nivo-pie'
+import ProdsCategoryPie from './prods-cat-pie'
+import ProdsLocationDonut from './prods-loc-donut'
+//import ProdsStatusRadar from './prods-stat-radar'
 
 
 class DataStats extends Component {
     constructor() {
         super()
         this.state = {
-            pie: undefined,
-            pieData: [{id: 'loles', value: 25}, {id: 'jesjes', value: 40 }, {id: 'nices', value: 15}, {id: 'yasss', value: 20}]
-        }
-        this.productService = new ProductService()
-    }
-
-    loadPie = () => {
-        this.productService
-            .getAllProducts()
-            .then(allProds => {
             
-            })
-            .catch(err => console.log(err))
+            
+        }
     }
-
-
 
 
     render() {
@@ -34,9 +22,21 @@ class DataStats extends Component {
                 <h1>Dealz_ statistics</h1>
                 <hr />
                 <Row>
-                    <Col>
-                        <NivoResponsivePie height="500px" data={this.state.pieData} />
+                    <Col sm={12} md={12} lg={6}>
+                        <section style={{ height: '400px' }}>
+                            <ProdsCategoryPie />
+                        </section>
                     </Col>
+                    <Col sm={12} md={12} lg={6}>
+                        <section style={{ height: '400px' }}>
+                            <ProdsLocationDonut />
+                        </section>
+                    </Col>
+                    {/* <Col>
+                        <section style={{ height: '400px' }}>
+                            <ProdsLocationDonut />
+                        </section>
+                    </Col> */}
                 </Row>
             </Container>
         )

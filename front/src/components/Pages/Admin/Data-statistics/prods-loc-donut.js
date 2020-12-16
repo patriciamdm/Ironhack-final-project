@@ -1,10 +1,48 @@
+import React, { Component } from 'react'
 import { ResponsivePie } from '@nivo/pie'
 
-const NivoResponsivePie = ({ data, height }) => {
-    return (
-        <section style={{ height: {height} }}>
+import ProductService from '../../../../services/products.service'
+import LocationService from '../../../../services/location.service'
+
+
+class ProdsLocationDonut extends Component {
+    constructor() {
+        super()
+        this.state = {
+            locations: undefined,
+            prodsByLocation: []
+        }
+        this.productService = new ProductService()
+        this.locationService = new LocationService()
+    }
+
+    componentDidMount = () => {
+        this.loadLocations()
+    }
+
+    loadLocations = () => {
+        this.locationService
+            .getAllLocations()
+            .then(allLocs => this.setState({ locations: allLocs.data }, () => this.prodsByLocation()))
+            .catch(err => console.log(err))
+    }
+
+    prodsByLocation = () => {
+        this.state.locations.forEach(elm => {
+            this.productService
+                .getProductsByLocation(elm.name.toLowerCase())
+                .then(locProds => {
+                    const newArr = [...this.state.prodsByLocation, {id: elm.name, value: locProds.data.length }]
+                    this.setState({ prodsByLocation: newArr }, () => console.log(this.state.prodsByLocation))
+                })
+                .catch(err => console.log(err))
+        })
+    }
+
+    render() {
+        return (
             <ResponsivePie
-                data={data}
+                data={this.state.prodsByLocation}
                 margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
                 innerRadius={0.5}
                 padAngle={0.7}
@@ -43,9 +81,9 @@ const NivoResponsivePie = ({ data, height }) => {
                     }
                 ]}
             />
-        </section>
-    )
-
+        )
+    }
 }
 
-export default NivoResponsivePie
+
+export default ProdsLocationDonut

@@ -38,7 +38,7 @@ router.get('/getProductsByOwner/:owner_id', checkOwnerId, (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getProductsByCategory/:category_name', checkOwnerId, (req, res) => {
+router.get('/getProductsByCategory/:category_name', (req, res) => {
 
     Product
         .find({category: req.params.category_name})
