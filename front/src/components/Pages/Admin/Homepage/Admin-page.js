@@ -28,30 +28,11 @@ class AdminPage extends Component {
             targetElm: undefined,
             categories: undefined,
             locations: undefined,
-
-
-
-
-
-            categoriesModal: false,
-            editCatModal: false,
-            editCatToast: false,
-            newCatModal: false,
-            newCatToast: false,
-            delCatModal: false,
-            delCatToast: false,
-            locationsModal: false,
-            editLocModal: false,
-            editLocToast: false,
-            newLocModal: false,
-            newLocToast: false,
-            delLocModal: false,
-            delLocToast: false,
-
-
-
             showModal: false,
             modalTitle: undefined,
+            showModalConfirm: false,
+            modalConfirmType: undefined,
+            modalConfirmText: undefined,
             showToast: false,
             toastText: undefined
         }
@@ -63,18 +44,6 @@ class AdminPage extends Component {
         this.loadCategories()
         this.loadLocations()
     }
-
-    defineContent = (content, target) => this.setState({ [target]: content})
-
-    defineTargetElm = elmId => this.setState({ targetElm: elmId })
-    
-    //handlePopups = (target, visib) => this.setState({ [target]: visib })
-    
-    handlePopups = (target, visib, content) => {
-        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
-        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
-    }
-
 
     loadCategories = () => {
         this.categoryService
@@ -90,31 +59,39 @@ class AdminPage extends Component {
             .catch(err => console.log('ERROR GET LOCATIONS', err)) 
     }
 
+    defineContent = (content, target) => this.setState({ [target]: content})
 
-
-
-
+    defineTargetElm = elmId => this.setState({ targetElm: elmId })
     
-    deleteCategory = id => {
-        this.categoryService
-            .deleteCategory(id)
-            .then(() => {
-                this.loadCategories()
-                this.handlePopups('delCatModal', false)
-                this.handlePopups('delCatToast', true)
-            })
-            .catch(err => console.log('ERROR DELETING LOCATION', err))
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showModalConfirm' && this.setState({ [target]: visib, modalTitle: "Caution!" })
+        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
     }
 
-    deleteLocation = id => {
-        this.locationService
-            .deleteLocation(id)
-            .then(() => {
-                this.loadLocations()
-                this.handlePopups('delLocModal', false)
-                this.handlePopups('delLocToast', true)
-            })
-            .catch(err => console.log('ERROR DELETING LOCATION', err))
+    deleteElement = (type, id) => {
+
+        type === 'category'
+            &&
+            this.categoryService
+                .deleteCategory(id)
+                .then(() => {
+                    this.loadCategories()
+                    this.handlePopups('showModalConfirm', false)
+                    this.handlePopups('showToast', true, 'Category deleted successfully.')
+                })
+                .catch(err => console.log('ERROR DELETING LOCATION', err))
+        
+        type === 'location'
+            &&
+            this.locationService
+                .deleteLocation(id)
+                .then(() => {
+                    this.loadLocations()
+                    this.handlePopups('showModalConfirm', false)
+                    this.handlePopups('showToast', true, 'Location deleted successfully.')
+                })
+                .catch(err => console.log('ERROR DELETING LOCATION', err))
     }
 
     render() {
@@ -150,80 +127,40 @@ class AdminPage extends Component {
                         </Col>
                     </Row>
                     
-                    <Toastie show={this.state.editCatToast} handleToast={visib => this.handlePopups('editCatToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Category edited successfully." />
-                    <Toastie show={this.state.newCatToast} handleToast={visib => this.handlePopups('newCatToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Category created successfully." />
-                    <Toastie show={this.state.delCatToast} handleToast={visib => this.handlePopups('delCatToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Category deleted successfully." />
-                    
-                    <Toastie show={this.state.editLocToast} handleToast={visib => this.handlePopups('editLocToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Location edited successfully." />
-                    <Toastie show={this.state.newLocToast} handleToast={visib => this.handlePopups('newLocToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Location created successfully." />
-                    <Toastie show={this.state.delLocToast} handleToast={visib => this.handlePopups('delLocToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Location deleted successfully." />
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText={this.state.toastText} />
                 
                 </Container>
 
-            
-                
-                {/* CATEGORIES */}
 
                 <PopUp size="lg" show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle}>
                     
                     {this.state.modalTitle === 'categories' && <AdminList hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
-                        array={this.state.categories} targetElm={this.defineTargetElm} editModal='edit category' newModal='new category' deleteModal='delete category' />}
-                    
+                        array={this.state.categories} targetElm={this.defineTargetElm} editModal='edit category' newModal='new category'
+                        setDeleteModal={() => this.setState({modalConfirmType: 'category', modalConfirmText: 'Are you sure you want to delete this category?' })} />}
 
                     {this.state.modalTitle === 'locations' && <AdminList hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
-                            array={this.state.locations} targetElm={this.defineTargetElm} editModal='edit location' newModal='new location' deleteModal='delete location' />}
+                        array={this.state.locations} targetElm={this.defineTargetElm} editModal='edit location' newModal='new location'
+                        setDeleteModal={() => this.setState({ modalConfirmType: 'location', modalConfirmText: 'Are you sure you want to delete this location?' })} />}
+
+                    {this.state.modalTitle === 'new category' && <NewElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
+                        handleToast={() => this.handlePopups('showToast', true, 'Category created successfully.')} type="category" loadList={this.loadCategories} />}
+
+                    {this.state.modalTitle === 'new location' && <NewElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
+                        handleToast={() => this.handlePopups('showToast', true, 'Location created successfully.')} type="location" loadList={this.loadLocations} />}
                     
+                    {this.state.modalTitle === 'edit category' && <EditElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
+                        handleToast={() => this.handlePopups('showToast', true, 'Category edited successfully.')} type="category" elm={this.state.targetElm} loadList={this.loadCategories} />}
 
-                    {this.state.modalTitle === 'new category'
-                        &&
-                        <NewElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups} handleToast={() => this.handlePopups('newCatToast', true)}
+                    {this.state.modalTitle === 'edit location' && <EditElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups}
+                        handleToast={() => this.handlePopups('showToast', true, 'Location edited successfully.')} type="location" elm={this.state.targetElm} loadList={this.loadLocations} />}
 
-                            type="category" />}
-                    
-
-                    {this.state.modalTitle === 'new location'
-                        &&
-                        <NewElm hideModal={() => this.handlePopups('showModal', false)} handlePopups={this.handlePopups} handleToast={() => this.handlePopups('newLocToast', true)}
-
-                            type="location" />}
-                    
                 </PopUp>
 
 
+                <PopUpConfirm show={this.state.showModalConfirm} hide={() => this.handlePopups('showModalConfirm', false)} title={this.state.modalTitle} type='danger'
+                    body={this.state.modalConfirmText} leftText='No, go back' rightText='Yes, delete' leftAction={() => this.handlePopups('showModalConfirm', false)}
+                    rightAction={() => this.deleteElement(this.state.modalConfirmType, this.state.targetElm)} />
 
-
-
-
-                
-
-               
-
-                <PopUp show={this.state.editCatModal} hide={() => this.handlePopups('editCatModal', false)} title="Edit category">
-                    <EditElm hideModal={() => this.handlePopups('editCatModal', false)} handlePopups={this.handlePopups} handleToast={() => this.handlePopups('editCatToast', true)}
-                        type="category" elm={this.state.targetElm} loadList={this.loadCategories} />
-                </PopUp>
-
-                <PopUpConfirm show={this.state.delCatModal} hide={() => this.handlePopups('delCatModal', false)}
-                    leftAction={() => this.handlePopups('delCatModal', false)} leftText='No, go back'
-                    rightAction={() => this.deleteCategory(this.state.targetElm)} rightText='Yes, delete'
-                    type='danger' title="Caution!" body={<b>Are you sure you want to delete this category?</b>}
-                />
-
-            
-                
-                
-
-
-                <PopUp show={this.state.editLocModal} hide={() => this.handlePopups('editLocModal', false)} title="Edit location">
-                    <EditElm hideModal={() => this.handlePopups('editLocModal', false)} handlePopups={this.handlePopups} handleToast={() => this.handlePopups('editLocToast', true)}
-                        type="location" elm={this.state.targetElm} loadList={this.loadLocations} />
-                </PopUp>
-                
-                <PopUpConfirm show={this.state.delLocModal} hide={() => this.handlePopups('delLocModal', false)}
-                    leftAction={() => this.handlePopups('delLocModal', false)} leftText='No, go back'
-                    rightAction={() => this.deleteLocation(this.state.targetElm)} rightText='Yes, delete'
-                    type='danger' title="Caution!" body={<b>Are you sure you want to delete this location?</b>}
-                />
             </>
         )
     }

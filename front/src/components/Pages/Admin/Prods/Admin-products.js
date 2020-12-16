@@ -21,14 +21,13 @@ class AdminProducts extends Component {
             products: undefined,
             filteredProds: undefined,
             prodToTarget: undefined,
-            newProdModal: false,
-            newProdToast: false,
-            editProdModal: false,
-            editProdToast: false,
-            delProdModal: false,
-            delProdToast: false,
             prodCategories: undefined,
-            prodLocations: undefined
+            prodLocations: undefined,
+            showModal: false,
+            modalTitle: undefined,
+            showModalConfirm: false,
+            showToast: false,
+            toastText: undefined
         }
         this.productsService = new ProductService()
     }
@@ -67,14 +66,18 @@ class AdminProducts extends Component {
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
 
-    handlePopups = (target, visib) => this.setState({ [target]: visib })
-    
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showModalConfirm' && this.setState({ [target]: visib, modalTitle: "Caution!" })
+        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
+    }
+
     deleteProduct = () => {
         this.productsService
             .deleteProduct(this.state.prodToTarget)
             .then(() => {
-                this.handlePopups('delProdModal', false)
-                this.handlePopups('delProdToast', true)
+                this.handlePopups('showModalConfirm', false)
+                this.handlePopups('showToast', true, 'Product deleted successfully.')
                 this.loadProducts()
             })
             .catch(err => console.log('ERROR DELETING PRODUCT', err))
@@ -87,7 +90,7 @@ class AdminProducts extends Component {
                     <Row>
                         <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding:' 0px 15px'}}>
                             <h1>All products</h1>
-                            {this.state.products && <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" >Create new product</Button>}
+                            {this.state.products && <Button onClick={() => this.handlePopups('showModal', true, 'new product')} variant="secondary" >Create new product</Button>}
                         </article>
                         <SearchBar searchFor={value => this.searchBy(value)} style={{padding: '0px 15px'}}/>
                     </Row>
@@ -100,24 +103,27 @@ class AdminProducts extends Component {
                     :
                     <Row><Loader /></Row>
                     }
-                    <Toastie show={this.state.newProdToast} handleToast={visib => this.handlePopups('newProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully." />
-                    <Toastie show={this.state.editProdToast} handleToast={visib => this.handlePopups('editProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
-                    <Toastie show={this.state.delProdToast} handleToast={visib => this.handlePopups('delProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product deleted successfully." />
+
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText={this.state.toastText} />
+
                 </Container>
 
-                 <PopUp show={this.state.newProdModal} hide={() => this.handlePopups('newProdModal', false)} title="Create a product">
-                    <NewProduct hideModal={() => this.handlePopups('newProdModal', false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('newProdToast', visib)} />
+                
+                <PopUp show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle}>
+                    
+                    {this.state.modalTitle === 'new product' && <NewProduct hideModal={() => this.handlePopups('showModal', false)}
+                        reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={() => this.handlePopups('showToast', true, 'Product created successfully.')} />}
+                    
+                    {this.state.modalTitle === 'edit product' && <EditProduct hideModal={() => this.handlePopups('showModal', false)} productId={this.state.prodToTarget}
+                        reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib, 'Product updated successfully.')} />}
+                    
                 </PopUp>
 
-                <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('editProdToast', visib)} />
-                </PopUp>
-
-               <PopUpConfirm show={this.state.delProdModal} hide={() => this.handlePopups('delProdModal', false)}
-                        leftAction={() => this.handlePopups('delProdModal', false)} leftText='No, go back'
+               <PopUpConfirm show={this.state.showModalConfirm} hide={() => this.handlePopups('showModalConfirm', false)}
+                        leftAction={() => this.handlePopups('showModalConfirm', false)} leftText='No, go back'
                         rightAction={() => this.deleteProduct()} rightText='Yes, delete'
-                        type='danger' title="Wait!" body={<b>Are you sure you want to delete this product?</b>}
-                    />
+                    type='danger' title="Wait!" body={<b>Are you sure you want to delete this product?</b>} />
+                
             </>
         )
     }

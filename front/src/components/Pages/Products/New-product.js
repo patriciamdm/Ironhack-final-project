@@ -61,7 +61,7 @@ class NewProduct extends Component {
             .then(() => {
                 this.props.reloadProducts()
                 this.props.hideModal()
-                this.props.handleToast(true)
+                this.props.handleToast()
             })
             .catch(err => new Error('ERROR CREATING PRODUCT', err))
     }
@@ -120,7 +120,6 @@ class NewProduct extends Component {
                 </Form>
                 :
                 <Loader />
-            
         )
     }
 }

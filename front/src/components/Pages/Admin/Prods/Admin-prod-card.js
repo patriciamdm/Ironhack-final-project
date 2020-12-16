@@ -9,9 +9,9 @@ class AdminProdCard extends Component {
         }
     }
 
-    handleAction = target => {
+    handleAction = (target, content) => {
         this.props.targetProd(this.props.product._id)
-        this.props.handlePopups(target, true)
+        this.props.handlePopups(target, true, content)
     }
 
     render() {
@@ -23,8 +23,8 @@ class AdminProdCard extends Component {
                         <Card.Title style={{ fontSize: '1.2rem' }}>{this.props.product.name}</Card.Title>
                         <Card.Text className="admin-card-text">{this.props.product.description}</Card.Text>
                         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                            <Button variant="secondary" size="sm" onClick={() => this.handleAction('editProdModal')} style={{marginRight: '10px'}}>Edit</Button>
-                            <Button variant="danger" size="sm" onClick={() => this.handleAction('delProdModal')}>Delete</Button>
+                            <Button variant="secondary" size="sm" onClick={() => this.handleAction('showModal', 'edit product')} style={{marginRight: '10px'}}>Edit</Button>
+                            <Button variant="danger" size="sm" onClick={() => this.handleAction('showModalConfirm')}>Delete</Button>
                         </div>
                     </article>
 
