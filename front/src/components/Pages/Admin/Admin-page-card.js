@@ -8,7 +8,7 @@ const AdminPageCard = ({ name, image, status, id }) => {
     const [state, setState] = useState({ avgRating: undefined })
     const ratingService = new RatingService()
 
-    useEffect(() => id && getAvgRate())
+    useEffect(() => id && getAvgRate(), [])
 
     const getAvgRate = () => {
         ratingService
