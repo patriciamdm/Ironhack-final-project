@@ -5,6 +5,8 @@ const {checkProductId, checkOwnerId} = require('../middlewares/middleware')
 
 const Product = require('../models/product.model')
 
+// GET
+
 router.get('/getAllProducts', (req, res) => {
 
     Product
@@ -38,13 +40,33 @@ router.get('/getProductsByOwner/:owner_id', checkOwnerId, (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getProductsByCategory/:category_name', checkOwnerId, (req, res) => {
+// ANALYTICS
+
+router.get('/getProductsByCategory/:category_name', (req, res) => {
 
     Product
         .find({category: req.params.category_name})
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
+router.get('/getProductsByLocation/:location_name', (req, res) => {
+
+    Product
+        .find({location: req.params.location_name})
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
+router.get('/getProductsByStatus/:status', (req, res) => {
+
+    Product
+        .find({status: req.params.status})
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
+})
+
+// POST
 
 router.post('/newProduct', (req, res) => {
 
@@ -54,6 +76,8 @@ router.post('/newProduct', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
+// PUT
+
 router.put('/editProduct/:product_id', checkProductId, (req, res) => {
 
     Product
@@ -61,6 +85,8 @@ router.put('/editProduct/:product_id', checkProductId, (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
+// DELETE
 
 router.delete('/deleteProduct/:product_id', checkProductId, (req, res) => {
 
