@@ -38,7 +38,7 @@ router.put('/editCategory/:id', checkIdFormat, (req, res) => {
 })
 
 router.delete('/deleteCategory/:id', checkIdFormat, (req, res) => {
-  
+
     Category
         .findByIdAndDelete(req.params.id) 
         .then(response => res.json(response))
