@@ -2,12 +2,28 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Card, Button } from 'react-bootstrap'
 
+import RatingService from '../../../services/rating.service'
+
 class UserCard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: this.props.theUser
+            user: this.props.theUser,
+            avgRating: undefined
         }
+        this.ratingService = new RatingService()
+    }
+
+    componentDidMount = () => this.getAverageRating()
+
+    getAverageRating = () => {
+        this.ratingService
+            .getUserRatings(this.state.user._id)
+            .then(rates => {
+                const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
+                this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))} / 5` })
+            })
+            .catch(err => console.log('ERROR GETTING AVG RATES', err))
     }
 
     render() {
@@ -20,6 +36,7 @@ class UserCard extends Component {
                             <img src={this.state.user.image} alt={this.state.user.username}/>
                             <article >
                                 <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
+                                <Card.Text className="admin-card-text">Rating: {this.state.avgRating}</Card.Text>
                                 <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
                             </article>
                         </Card>

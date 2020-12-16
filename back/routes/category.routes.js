@@ -4,7 +4,6 @@ const router = express.Router()
 const {checkIdFormat} = require('../middlewares/middleware')
 
 const Category = require('../models/category.model')
-const Products = require('../models/category.model')
 
 router.get('/getAllCategories', (req, res) => {
 
@@ -39,19 +38,9 @@ router.put('/editCategory/:id', checkIdFormat, (req, res) => {
 })
 
 router.delete('/deleteCategory/:id', checkIdFormat, (req, res) => {
-    
-    const prodTranslation = new Promise(
-        Products
-            .updateMany({ category: req.params.id }, { "$set": { "category": "Others" } }) 
-    )
-    
-    const catDelete = new Promise(
-        Category
-            .findByIdAndDelete(req.params.id) 
-    )
 
-    Promise
-        .all([prodTranslation, catDelete])
+    Category
+        .findByIdAndDelete(req.params.id) 
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
