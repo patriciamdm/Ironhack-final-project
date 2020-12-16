@@ -79,11 +79,7 @@ class OthersProfile extends Component {
             .catch(err => console.log('ERROR GETTING USER RATED', err))
     }
 
-    reloadRatings = () => {
-        this.setState({ ratings: [] })
-        this.loadRatings()
-        this.getAverageRating(this.state.user._id)
-    }
+    reloadRatings = () => this.setState({ ratings: [] }, () =>  this.getUser())
 
     getAverageRating = userId => {
         this.ratingService
