@@ -72,14 +72,14 @@ class AdminPage extends Component {
 
     loadLastProducts = () => {
         this.productService
-            .getLast5Products()
+            .getLast6Products()
             .then(prods => this.setState({ products: prods.data }))
             .catch(err => console.log('ERROR GET 5 PRODS', err)) 
     }
 
     loadLastUsers = () => {
         this.userService
-            .getLast5Users()
+            .getLast6Users()
             .then(users => this.setState({ users: users.data }))
             .catch(err => console.log('ERROR GET 5 USERS', err)) 
     }

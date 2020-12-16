@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {checkLocationId} = require('../middlewares/middleware')
+const {checkIdFormat} = require('../middlewares/middleware')
 
 const Location = require('../models/location.model')
 
@@ -13,10 +13,10 @@ router.get('/getAllLocations', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getOneLocation/:location_id', checkLocationId, (req, res) => {
+router.get('/getOneLocation/:id', checkIdFormat, (req, res) => {
 
     Location
-        .findById(req.params.location_id)
+        .findById(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
@@ -29,18 +29,18 @@ router.post('/newLocation', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.put('/editLocation/:location_id', checkLocationId, (req, res) => {
+router.put('/editLocation/:id', checkIdFormat, (req, res) => {
 
     Location
-        .findByIdAndUpdate(req.params.location_id, req.body)
+        .findByIdAndUpdate(req.params.id, req.body)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.delete('/deleteLocation/:location_id', checkLocationId, (req, res) => {
+router.delete('/deleteLocation/:id', checkIdFormat, (req, res) => {
 
     Location
-        .findByIdAndDelete(req.params.location_id)
+        .findByIdAndDelete(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

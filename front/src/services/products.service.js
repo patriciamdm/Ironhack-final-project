@@ -9,7 +9,7 @@ class ProductService {
     }
 
     getAllProducts = () => this.apiHandler.get('/getAllProducts')
-    getLast5Products = () => this.apiHandler.get('/getLast5Products')
+    getLast6Products = () => this.apiHandler.get('/getLast6Products')
     getProductsByOwner = ownerId => this.apiHandler.get(`/getProductsByOwner/${ownerId}`)
     getOneProduct = prodId => this.apiHandler.get(`/getOneProduct/${prodId}`)
     editProduct = (prodId, prodInfo) => this.apiHandler.put(`/editProduct/${prodId}`, prodInfo)

@@ -1,24 +1,24 @@
 const express = require('express')
 const router = express.Router()
 
-const { checkUserId, checkRatingId } = require('../middlewares/middleware')
+const { checkIdFormat} = require('../middlewares/middleware')
 
 
 const Rating = require('../models/rating.model')
 
-router.get('/getUserRatings/:user_id', checkUserId, (req, res) => {
+router.get('/getUserRatings/:id', checkIdFormat, (req, res) => {
 
     Rating
-        .find({ rated: req.params.user_id })
+        .find({ rated: req.params.id })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
     
 })
 
-router.get('/getOneRating/:rate_id', checkRatingId, (req, res) => {
+router.get('/getOneRating/:id', checkIdFormat, (req, res) => {
     
     Rating
-        .findById(req.params.rate_id)
+        .findById(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
@@ -41,18 +41,18 @@ router.post('/giveRating', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.put('/editOneRating/:rate_id', checkRatingId, (req, res) => {
+router.put('/editOneRating/:id', checkIdFormat, (req, res) => {
 
     Rating
-        .findByIdAndUpdate(req.params.rate_id, req.body)
+        .findByIdAndUpdate(req.params.id, req.body)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.delete('/deleteRating/:rate_id', checkRatingId, (req, res) => {
+router.delete('/deleteRating/:id', checkIdFormat, (req, res) => {
 
     Rating
-        .findByIdAndDelete(req.params.rate_id)
+        .findByIdAndDelete(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

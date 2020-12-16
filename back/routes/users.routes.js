@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {checkUserId} = require('../middlewares/middleware')
+const {checkIdFormat} = require('../middlewares/middleware')
 
 const User = require('../models/user.model')
 
@@ -13,35 +13,36 @@ router.get('/getAllUsers', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getLast5Users', (req, res) => {
+router.get('/getLast6Users', (req, res) => {
 
     User
-        .find()
-        .then(last5UsersArray => last5UsersArray.slice(-6).reverse())
+        .find({}, { username: 1, image: 1, rating: 1 })
+        .limit(6)
+        .sort({createdAt: -1})
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getOneUser/:user_id', checkUserId, (req, res) => {
+router.get('/getOneUser/:id', checkIdFormat, (req, res) => {
 
     User
-        .findById(req.params.user_id)
+        .findById(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.put('/editUser/:user_id', checkUserId, (req, res) => {
+router.put('/editUser/:id', checkIdFormat, (req, res) => {
 
     User
-        .findByIdAndUpdate(req.params.user_id, req.body)
+        .findByIdAndUpdate(req.params.id, req.body)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.delete('/deleteUser/:user_id', checkUserId, (req, res) => {
+router.delete('/deleteUser/:id', checkIdFormat, (req, res) => {
 
     User
-        .findByIdAndDelete(req.params.user_id)
+        .findByIdAndDelete(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

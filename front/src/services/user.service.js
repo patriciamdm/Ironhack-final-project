@@ -9,7 +9,7 @@ class UserService {
     }
 
     getAllUsers = () => this.apiHandler.get('/getAllUsers')
-    getLast5Users = () => this.apiHandler.get('/getLast5Users')
+    getLast6Users = () => this.apiHandler.get('/getLast6Users')
     getOneUser = userId => this.apiHandler.get(`/getOneUser/${userId}`)
     editUser = (userId, userInfo) => this.apiHandler.put(`/editUser/${userId}`, userInfo)
     deleteUser = userId => this.apiHandler.delete(`/deleteUser/${userId}`)

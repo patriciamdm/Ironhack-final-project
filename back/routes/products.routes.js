@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {checkProductId, checkOwnerId} = require('../middlewares/middleware')
+const {checkIdFormat} = require('../middlewares/middleware')
 
 const Product = require('../models/product.model')
 
@@ -15,27 +15,28 @@ router.get('/getAllProducts', (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getLast5Products', (req, res) => {
+router.get('/getLast6Products', (req, res) => {
 
     Product
-        .find()
-        .then(last5ProdArray => last5ProdArray.slice(-6).reverse())
+        .find({}, { name: 1, image: 1, status: 1 })
+        .limit(6)
+        .sort({createdAt: -1})
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getOneProduct/:product_id', checkProductId, (req, res) => {
+router.get('/getOneProduct/:id', checkIdFormat, (req, res) => {
 
     Product
-        .findById(req.params.product_id)
+        .findById(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
-router.get('/getProductsByOwner/:owner_id', checkOwnerId, (req, res) => {
+router.get('/getProductsByOwner/:id', checkIdFormat, (req, res) => {
 
     Product
-        .find({owner: req.params.owner_id})
+        .find({owner: req.params.id})
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
@@ -78,20 +79,20 @@ router.post('/newProduct', (req, res) => {
 
 // PUT
 
-router.put('/editProduct/:product_id', checkProductId, (req, res) => {
+router.put('/editProduct/:id', checkIdFormat, (req, res) => {
 
     Product
-        .findByIdAndUpdate(req.params.product_id, req.body)
+        .findByIdAndUpdate(req.params.id, req.body)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 
 // DELETE
 
-router.delete('/deleteProduct/:product_id', checkProductId, (req, res) => {
+router.delete('/deleteProduct/:id', checkIdFormat, (req, res) => {
 
     Product
-        .findByIdAndDelete(req.params.product_id)
+        .findByIdAndDelete(req.params.id)
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
