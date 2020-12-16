@@ -30,9 +30,9 @@ class ProdsCategoryPie extends Component {
     prodsByCategory = () => {
         this.state.categories.forEach(elm => {
             this.productService
-                .getProductsByCategory(elm.name.toLowerCase())
+                .getProductsByCategory(elm.name)
                 .then(catProds => {
-                    const newArr = [...this.state.prodsByCategory, {id: elm.name, value: catProds.data.length }]
+                    const newArr = [...this.state.prodsByCategory, {id: elm.name, value: catProds.data }]
                     this.setState({ prodsByCategory: newArr }, () => console.log(this.state.prodsByCategory))
                 })
                 .catch(err => console.log(err))

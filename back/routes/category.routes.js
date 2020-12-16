@@ -39,13 +39,19 @@ router.put('/editCategory/:id', checkIdFormat, (req, res) => {
 })
 
 router.delete('/deleteCategory/:id', checkIdFormat, (req, res) => {
+    
+    const prodTranslation = new Promise(
+        Products
+            .updateMany({ category: req.params.id }, { "$set": { "category": "Others" } }) 
+    )
+    
+    const catDelete = new Promise(
+        Category
+            .findByIdAndDelete(req.params.id) 
+    )
 
-    // Products - Promise all
-    //     .updateMany({category: req.params.id},{"$set":{"category":"Others"}} )
-    //     .then(response => res.json(response))
-    //     .catch(err => res.status(500).json(err))
-    Category
-        .findByIdAndDelete(req.params.id)
+    Promise
+        .all([prodTranslation, catDelete])
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

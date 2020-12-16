@@ -23,7 +23,7 @@ class ProdsStatusRadar extends Component {
             this.productService
                 .getProductsByStatus(elm)
                 .then(statProds => {
-                    const newArr = [...this.state.prodsByStatus, {status: elm, value: statProds.data.length }]
+                    const newArr = [...this.state.prodsByStatus, {status: elm, value: statProds.data }]
                     this.setState({ prodsByStatus: newArr }, () => console.log(this.state.prodsByStatus))
                 })
                 .catch(err => console.log(err))

@@ -32,7 +32,7 @@ class ProdsLocationDonut extends Component {
             this.productService
                 .getProductsByLocation(elm.name.toLowerCase())
                 .then(locProds => {
-                    const newArr = [...this.state.prodsByLocation, {id: elm.name, value: locProds.data.length }]
+                    const newArr = [...this.state.prodsByLocation, {id: elm.name, value: locProds.data }]
                     this.setState({ prodsByLocation: newArr }, () => console.log(this.state.prodsByLocation))
                 })
                 .catch(err => console.log(err))
