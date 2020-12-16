@@ -13,32 +13,80 @@ class UsersProdsTimeline extends Component {
                     id: 'users',
                     data: [{
                         x: 'enero',
-                        y: 6
+                        y: 1
                     },{
                         x: 'febrero',
-                        y: 8
+                        y: 2
                     },{
                         x: 'marzo',
-                        y: 9
+                        y: 3
                     },{
                         x: 'abril',
-                        y: 7
+                        y: 4
+                    },{
+                        x: 'mayo',
+                        y: 5
+                    },{
+                        x: 'junio',
+                        y: 6
+                    },{
+                        x: 'julio',
+                        y: 8
+                    },{
+                        x: 'agosto',
+                        y: 8
+                    },{
+                        x: 'septiembre',
+                        y: 10
+                    },{
+                        x: 'octubre',
+                        y: 12
+                    },{
+                        x: 'novimbre',
+                        y: 14
+                    },{
+                        x: 'diciembre',
+                        y: 18
                     }]
                 },
                 {
                     id: 'products',
                     data: [{
                         x: 'enero',
-                        y: 2
+                        y: 1
                     },{
                         x: 'febrero',
-                        y: 3
-                    },{
-                        x: 'marzo',
                         y: 5
                     },{
+                        x: 'marzo',
+                        y: 7
+                    },{
                         x: 'abril',
-                        y: 4
+                        y: 12
+                    },{
+                        x: 'mayo',
+                        y: 18
+                    },{
+                        x: 'junio',
+                        y: 20
+                    },{
+                        x: 'julio',
+                        y: 24
+                    },{
+                        x: 'agosto',
+                        y: 25
+                    },{
+                        x: 'septiembre',
+                        y: 26
+                    },{
+                        x: 'octubre',
+                        y: 27
+                    },{
+                        x: 'novimbre',
+                        y: 29
+                    },{
+                        x: 'diciembre',
+                        y: 30
                     }]
                 }
                 
@@ -46,17 +94,6 @@ class UsersProdsTimeline extends Component {
         }
         this.productService = new ProductService()
     }
-
-    // componentDidMount = () => {
-    //     this.loadProducts()
-    // }
-
-    // loadProducts = () => {
-    //     this.productService
-    //         .getAllProducts()
-    //         .then(allProds => this.setState({ products: [allProds.data] }))
-    //         .catch(err => console.log(err))
-    // }
 
     render() {
         return (
@@ -84,9 +121,10 @@ class UsersProdsTimeline extends Component {
                 tickRotation: 0,
                 legend: 'count',
                 legendOffset: -40,
-                legendPosition: 'middle'
+                legendPosition: 'middle',
+                linearScale: [0, 5, 10, 15, 20, 25, 30, 35]
             }}
-            colors={{ scheme: 'blues' }}
+            colors={{ scheme: 'nivo' }}
             lineWidth={3}
             pointSize={10}
             pointColor={{ from: 'color', modifiers: [] }}
