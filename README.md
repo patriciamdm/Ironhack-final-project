@@ -15,7 +15,7 @@ Manuel de la Barreda & Patricia Muñoz de Dios
 - Teacher: Germán Alvarez
 - TA: Jon Arechalde
 
-### Description:
+#### Description:
 
 Users will be able to buy from and sell to other registered users, add products to their favourites list and give other users a rating including a comment. To contact a seller we have two stablished options - an email form and a WhatsApp window - and one under contruction which renders an internal chat bewteen users.
 Each product created will have a category and location assigned by the user from an assortment previously stablished, along with a file update field to give the product and image that will be hosted using Cloudinary.
@@ -24,7 +24,7 @@ There's an admin console where products, users, categories and locations can be 
 
 ## Technologies:
 
-### Languages and dependencies
+#### Languages and dependencies:
 
 - HTML5 & CSS
 - JavaScript (ES6)
@@ -46,7 +46,7 @@ There's an admin console where products, users, categories and locations can be 
   - bcrypt
   - nivo.rocks
 
-### API
+#### API:
 
 We have developed our own API with the following endpoints.
 
