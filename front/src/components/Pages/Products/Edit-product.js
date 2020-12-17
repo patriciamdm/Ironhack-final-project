@@ -20,7 +20,6 @@ class EditProduct extends Component {
             status: '',
             category: '',
             location: '',
-            owner: this.props.loggedUser ? this.props.loggedUser._id : '',
             categoryList: undefined,
             locationList: undefined
         }
@@ -68,7 +67,6 @@ class EditProduct extends Component {
             description: this.state.description,
             image: this.state.image,
             price: this.state.price,
-            owner: this.props.theUser._id,
             status: this.state.status,
             location: this.state.location,
             category: this.state.category

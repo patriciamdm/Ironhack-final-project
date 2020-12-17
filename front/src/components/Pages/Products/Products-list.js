@@ -21,12 +21,12 @@ class ProductList extends Component {
             products: undefined,
             filteredProds: undefined,
             prodToTarget: undefined,
-            newProdModal: false,
-            newProdToast: false,
-            editProdModal: false,
-            editProdToast: false,
             prodCategories: undefined,
-            prodLocations: undefined
+            prodLocations: undefined,
+            showModal: false,
+            modalTitle: undefined,
+            showToast: false,
+            toastText: undefined
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -43,7 +43,10 @@ class ProductList extends Component {
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
 
-    handlePopups = (target, visib) => this.setState({[target]: visib})
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
+    }
     
 
 
@@ -93,7 +96,7 @@ class ProductList extends Component {
                     <Row>
                         <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding:' 0px 15px'}}>
                             <h1>All products</h1>
-                            {this.state.products && <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" >Create new product</Button>}
+                            {this.state.products && <Button onClick={() => this.handlePopups('showModal', true, 'new product')} variant="secondary" >Create new product</Button>}
                         </article>
                         <SearchBar searchFor={value => this.searchBy(value)} style={{padding: '0px 15px'}}/>
                     </Row>
@@ -101,22 +104,26 @@ class ProductList extends Component {
                     {this.state.filteredProds
                         ?
                         <Row>
-                            {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handlePopups('editProdModal', visib)} productToTarget={id => this.defineTargetProd(id)} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
+                            {this.state.filteredProds.map(elm => <ProductCard key={elm._id} showEditProdModal={visib => this.handlePopups('showModal', visib, 'edit product')} productToTarget={id => this.defineTargetProd(id)} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
                         </Row>
                         :
                         <Row><Loader /></Row>
                     }
-                    <Toastie show={this.state.newProdToast} handleToast={visib => this.handlePopups('newProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully."  />
-                    <Toastie show={this.state.editProdToast} handleToast={visib => this.handlePopups('editProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
+
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText={this.state.toastText} />
+                
                 </Container>
 
-                <PopUp show={this.state.newProdModal} hide={() => this.handlePopups('newProdModal', false)} title="Create a product">
-                    <NewProduct hideModal={() => this.handlePopups('newProdModal', false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('newProdToast', visib)} />
+                <PopUp show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle} >
+                    
+                    {this.state.modalTitle === 'new product' && <NewProduct hideModal={() => this.handlePopups('showModal', false)}
+                        reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib, 'Product created successfully.')} />}
+                    
+                    {this.state.modalTitle === 'edit product' && <EditProduct hideModal={() => this.handlePopups('showModal', false)} productId={this.state.prodToTarget}
+                        reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib, 'Product updated successfully.')} />}
+
                 </PopUp>
 
-                <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('editProdToast', visib)} />
-                </PopUp>
             </>
         )
     }

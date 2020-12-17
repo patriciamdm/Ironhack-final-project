@@ -18,16 +18,12 @@ class ProductDetails extends Component {
         this.state = {
             product: undefined,
             owner: undefined,
+            showModal: false,
+            modalTitle: undefined,
+            showConfirmModal: false,
             deleteProdModal: false,
-            editProdModal: false,
             contactUserModal: false,
-            emailModal: false,
-            wppModal: false,
             showToast: false,
-            toastType: 'success',
-            toastTitle: 'SUCCESS!',
-            toastText: "Product updated successfully."
-
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -49,7 +45,13 @@ class ProductDetails extends Component {
             .catch(err => new Error('ERROR WITH PRODUCT OWNER', err))
     }
 
-    handlePopups = (target, visib) => this.setState({ [target]: visib })
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showToast' && this.setState({ [target]: visib })
+        target === 'showConfirmModal' && this.setState({[target]: visib })
+        target === 'deleteProdModal' && this.setState({[target]: visib })
+        target === 'contactUserModal' && this.setState({[target]: visib })
+    }
 
     deleteProduct = () => {
         this.productsService
@@ -72,7 +74,9 @@ class ProductDetails extends Component {
         return (
             <>
                 <Container className="product-details">
-                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType={this.state.toastType} toastText={this.state.toastText} toastTitle={this.state.toastTitle} />
+                    
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText='Product updated successfully.' />
+                    
                     {this.state.product
                         ?
                         <Row className="justify-content-center">
@@ -105,7 +109,7 @@ class ProductDetails extends Component {
                                 {this.state.product.owner === this.props.theUser._id
                                     ?
                                     <>
-                                        <Button onClick={() => this.handlePopups('editProdModal', true)} variant="secondary" size="sm" style={{marginRight: '20px'}}>Edit product</Button>
+                                        <Button onClick={() => this.handlePopups('showModal', true, 'edit product')} variant="secondary" size="sm" style={{marginRight: '20px'}}>Edit product</Button>
                                         <Button onClick={() => this.handlePopups('deleteProdModal', true)} variant="danger" size="sm">Delete product</Button>
                                     </>
                                     :
@@ -125,33 +129,34 @@ class ProductDetails extends Component {
                         <Loader />
                     }
                 </Container>
+
+
+                <PopUp show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle} >
+
+                    {this.state.product && this.state.modalTitle === 'edit product' && <EditProduct hideModal={() => this.handlePopups('showModal', false)} productId={this.state.product._id}
+                        reloadProducts={() => this.loadProduct()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib)} />}
+                    
+                    {this.state.owner && this.state.modalTitle === 'send email' && <EmailForm hideModal={() => this.handlePopups('showModal', false)}
+                        toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />}
+
+                </PopUp>
+
                 {this.state.product
                     &&
-                    <>
-                    <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
-                        <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.product._id} reloadProducts={() => this.loadProduct()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib)}/>
-                    </PopUp>
-
                     <PopUpConfirm show={this.state.deleteProdModal} hide={() => this.handlePopups('deleteProdModal', false)}
                         leftAction={() => this.handlePopups('deleteProdModal', false)} leftText='No, go back'
                         rightAction={() => this.deleteProduct()} rightText='Yes, delete'
                         type='danger' title="Wait!" body={<b>Are you sure you want to delete this product?</b>}
                     />
-                    </>
                 }
+
                 {this.state.owner
                     &&
-                    <>
                     <PopUpConfirm show={this.state.contactUserModal} hide={() => this.handlePopups('contactUserModal', false)}
-                        leftAction={() => this.handlePopups('emailModal', true)} leftText='Via email'
+                        leftAction={() => this.handlePopups('showModal', true, 'send email')} leftText='Via email'
                         rightText='Via WhatsApp'
                         type='none' title="Contact seller" body={<b>How would you like to contact this seller?</b>}
                     />
-                    
-                    <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
-                        <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.owner} fromUser={this.props.theUser} subject={this.state.product.name} />
-                    </PopUp>
-                    </>
                 }
             </>
         )

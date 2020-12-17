@@ -36,7 +36,7 @@ class AdminUserCard extends Component {
                     <img src={this.props.user.image} alt={this.props.user.username} style={{objectFit: 'cover', width: '100px', height: '100px', marginRight: '10px', borderRadius: '3px'}}/>
                     <article style={{width: '100%'}}>
                         <Card.Title style={{ fontSize: '1.2rem' }}>{this.props.user.username}</Card.Title>
-                        <Card.Text className="admin-card-text">Rating: {this.state.avgRating}</Card.Text>
+                        <Card.Text className="admin-card-text" >Rating: {this.state.avgRating}</Card.Text>
                         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                             <Button variant="secondary" size="sm" onClick={() => this.handleAction('editUserModal')} style={{marginRight: '10px'}}>Edit</Button>
                             <Button variant="danger" size="sm" onClick={() => this.handleAction('delUserModal')}>Delete</Button>
