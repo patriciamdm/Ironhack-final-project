@@ -22,15 +22,24 @@ class OthersProfile extends Component {
             user: undefined,
             products: undefined,
             ratings: [],
+            rateToTarget: undefined,
+            avgRating: undefined,
+            loggedUserRating: false,
+
+            showModal: false,
+            modalTitle: undefined,
+            showToast: false,
+            toastText: undefined,
+            showModalConfirm: false,
+
+
+
             emailModal: false,
             ratingModal: false,
             editRatingModal: false,
             editRatingToast: false,
             delRatingModal: false,
             delRatingToast: false,
-            rateToTarget: undefined,
-            avgRating: undefined,
-            loggedUserRating: false
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -98,16 +107,20 @@ class OthersProfile extends Component {
             .then(() => this.setState({ ratings: [] }, () => this.getUser()))
             .then(() => this.ratingService.deleteRating(this.state.rateToTarget))
             .then(() => {
-                this.handlePopups('delRatingModal', false)
-                this.handlePopups('delRatingToast', true)
+                this.handlePopups('showModalConfirm', false)
+                this.handlePopups('showToast', true, 'Rating deleted successfully.')
             })
             .catch(err => new Error('ERROR DELETING RATE', err))
     }
 
     defineTargetRate = rateId => this.setState({rateToTarget: rateId })
     
-    handlePopups = (target, visib) => this.setState({ [target]: visib })
-    
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showModalConfirm' && this.setState({ [target]: visib, modalTitle: "Caution!" })
+        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
+    }
+
     addToFavorites = product => {
         const addFav = { likedProducts: [...this.props.theUser.likedProducts, product] }
         const removeFav = { likedProducts: this.props.theUser.likedProducts.filter(elm => elm !== product._id) }
@@ -140,7 +153,7 @@ class OthersProfile extends Component {
                                             <p><b>Average rating:</b> {this.state.avgRating}</p>
                                         </Col>
                                         <Col style={{ display: 'flex', flexDirection: 'column' }}>
-                                            <Button onClick={() => this.handlePopups('emailModal', true)} variant="secondary" size="sm">Contact via Email</Button>
+                                            <Button onClick={() => this.handlePopups('showModal', true, 'send email')} variant="secondary" size="sm">Contact via Email</Button>
                                             <a className="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer" href={`https://wa.me/+34${this.state.user.phone}?text=Este es el mensaje automático de Dealz_ para poneros en contacto`}>Contact via WhatsApp</a>
                                         </Col>
                                     </Row>
@@ -155,7 +168,7 @@ class OthersProfile extends Component {
                                     <hr style={{ marginTop: '10px' }}/>
                                     {this.state.products
                                         ?
-                                        <Row>
+                                        <Row style={{maxHeight: '1250px', overflowY: 'scroll'}} >
                                             {this.state.products.map(elm => <ProductCardProfile key={elm._id} addToFavs={prod => this.addToFavorites(prod)} product={elm} theUser={this.props.theUser} />)}
                                         </Row>
                                         :
@@ -167,41 +180,44 @@ class OthersProfile extends Component {
                                         <h2>Reviews</h2>
                                         {this.state.loggedUserRating
                                             ?
-                                            <Button onClick={() => this.handlePopups('editRatingModal', true)} variant="secondary" size="sm">Edit rating</Button>
+                                            <Button onClick={() => this.handlePopups('showModal', true, 'edit rate')} variant="secondary" size="sm">Edit rating</Button>
                                             :
-                                            <Button onClick={() => this.handlePopups('ratingModal', true)} variant="secondary" size="sm">Give rating</Button>
+                                            <Button onClick={() => this.handlePopups('showModal', true, `rate ${this.state.user.username}`)} variant="secondary" size="sm">Give rating</Button>
                                         }
                                     </article>
                                     <hr style={{ marginTop: '10px' }}/>
                                     {this.state.ratings
                                         ?
-                                        <Row>
-                                            {this.state.ratings.map(elm => <RatingCard key={elm._id} showModal={target => this.handlePopups(target, true)} defineTarget={id => this.defineTargetRate(id)} rating={elm} theUser={this.props.theUser} />)}
+                                        <Row style={{maxHeight: '1250px', overflowY: 'scroll'}} >
+                                            {this.state.ratings.map(elm => <RatingCard key={elm._id} showModal={(target, text) => this.handlePopups(target, true, text)} defineTarget={id => this.defineTargetRate(id)} rating={elm} theUser={this.props.theUser} />)}
                                         </Row>
                                         :
                                         <Loader style={{ display: 'flex', justifyContent: 'center' }} />
                                     }
                                 </Col>
                             </Row>
-                            <Toastie show={this.state.editRatingToast} handleToast={visib => this.handlePopups('editRatingToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Rating updated successfully." />
-                            <Toastie show={this.state.delRatingToast} handleToast={visib => this.handlePopups('delRatingToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Rating deleted successfully." />
+
+                            <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText={this.state.toastText} />
 
                         </Container>
-                        
-                        <PopUp show={this.state.emailModal} hide={() => this.handlePopups('emailModal', false)} title="Send an email">
-                            <EmailForm hideModal={() => this.handlePopups('emailModal', false)} toUser={this.state.user} fromUser={this.props.theUser} subject=""/>
+
+
+                        <PopUp show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle}>
+
+                            {this.state.modalTitle === 'send email' && <EmailForm hideModal={() => this.handlePopups('showModal', false)}
+                                toUser={this.state.user} fromUser={this.props.theUser} subject="" />}
+                            
+                            {this.state.modalTitle === `rate ${this.state.user.username}` && <RatingForm hideModal={() => this.handlePopups('showModal', false)}
+                                reloadRatings={() => this.reloadRatings()} user={this.state.user} theUser={this.props.theUser} />}
+                            
+                            {this.state.modalTitle === 'edit rate' && <EditRatingForm hideModal={() => this.handlePopups('showModal', false)}
+                                rateId={this.state.rateToTarget} reloadRatings={() => this.reloadRatings()} handleToast={visib => this.handlePopups('showToast', visib, 'Rating edited successfully.')}
+                                user={this.state.user} theUser={this.props.theUser} />}
+
                         </PopUp>
 
-                        <PopUp show={this.state.ratingModal} hide={() => this.handlePopups('ratingModal', false)} title={`Rate ${this.state.user.username}`}>
-                            <RatingForm hideModal={() => this.handlePopups('ratingModal', false)} reloadRatings={() => this.reloadRatings()} user={this.state.user} theUser={this.props.theUser}/>
-                        </PopUp>
-
-                        <PopUp show={this.state.editRatingModal} hide={() => this.handlePopups('editRatingModal', false)} title={`Rate ${this.state.user.username}`}>
-                            <EditRatingForm hideModal={() => this.handlePopups('editRatingModal', false)} rateId={this.state.rateToTarget} reloadRatings={() => this.reloadRatings()} handleToast={visib => this.handlePopups('editRatingToast', visib)} user={this.state.user} theUser={this.props.theUser}/>
-                        </PopUp>
-
-                        <PopUpConfirm show={this.state.delRatingModal} hide={() => this.handlePopups('delRatingModal', false)}
-                            leftAction={() => this.handlePopups('delRatingModal', false)} leftText='No, go back'
+                        <PopUpConfirm show={this.state.showModalConfirm} hide={() => this.handlePopups('showModalConfirm', false)}
+                            leftAction={() => this.handlePopups('showModalConfirm', false)} leftText='No, go back'
                             rightAction={() => this.deleteRating()} rightText='Yes, delete'
                             type='danger' title="Caution!" body={<b>Are you sure you want to delete this rating?</b>}
                             />

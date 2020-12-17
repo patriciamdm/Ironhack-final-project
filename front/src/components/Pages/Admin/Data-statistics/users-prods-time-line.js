@@ -124,7 +124,7 @@ class UsersProdsTimeline extends Component {
                 legendPosition: 'middle',
                 linearScale: [0, 5, 10, 15, 20, 25, 30, 35]
             }}
-            colors={{ scheme: 'nivo' }}
+            colors={{ scheme: 'category10' }}
             lineWidth={3}
             pointSize={10}
             pointColor={{ from: 'color', modifiers: [] }}

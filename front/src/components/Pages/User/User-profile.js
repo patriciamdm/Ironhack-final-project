@@ -22,12 +22,11 @@ class UserProfile extends Component {
             favorites: [],
             avgRating: undefined,
             prodToTarget: undefined,
-            editUserModal: false,
-            editUserToast: false,
-            deleteUserModal: false,
-            editProdModal: false,
-            editProdToast: false,
-            newProdToast: false
+            showModal: false,
+            modalTitle: undefined,
+            showToast: false,
+            toastText: undefined,
+            showModalConfirm: false,
         }
         this.productsService = new ProductService()
         this.userService = new UserService()
@@ -68,11 +67,16 @@ class UserProfile extends Component {
     
     defineTargetProd = prodId => this.setState({ prodToTarget: prodId })
 
-    handlePopups = (target, visib) => this.setState({[target]: visib})
+    handlePopups = (target, visib, content) => {
+        target === 'showModal' && this.setState({ [target]: visib, modalTitle: content })
+        target === 'showModalConfirm' && this.setState({ [target]: visib, modalTitle: "Caution!" })
+        target === 'showToast' && this.setState({ [target]: visib, toastText: content })
+    }
+
     
     handleSubmitEditUserModal = () => {
-        this.handlePopups('editUserModal', false)
-        this.handlePopups('editUserToast', true)
+        this.handlePopups('showModal', false)
+        this.handlePopups('showToast', true, 'Profile updated successfully.')
     }
 
     deleteUser = () => {
@@ -116,8 +120,8 @@ class UserProfile extends Component {
                                     <p><b>Average rating:</b> {this.state.avgRating}</p>
                                 </Col>
                                 <Col style={{display: 'flex', flexDirection: 'column'}}>
-                                    <Button onClick={() => this.handlePopups('editUserModal', true)} variant="secondary" size="sm">Edit profile</Button>
-                                    <Button onClick={() => this.handlePopups('deleteUserModal', true)} variant="danger" size="sm">Delete account</Button>
+                                    <Button onClick={() => this.handlePopups('showModal', true, 'edit profile')} variant="secondary" size="sm">Edit profile</Button>
+                                    <Button onClick={() => this.handlePopups('showModalConfirm', true)} variant="danger" size="sm">Delete account</Button>
                                 </Col>
                             </Row>
                         </Col>
@@ -131,7 +135,7 @@ class UserProfile extends Component {
                             <hr style={{ marginTop: '10px' }}/>
                             {this.state.favorites
                                 ?
-                                <Row>
+                                <Row style={{maxHeight: '1250px', overflowY: 'scroll'}} >
                                     {this.state.favorites.map(elm => <ProductCardProfile key={elm._id} productToTarget={id => this.defineTargetProd(id)} removeFromFavs={prodId => this.removeFavorite(prodId)} product={elm} theUser={this.props.theUser} />)}
                                 </Row>
                                 :
@@ -141,38 +145,41 @@ class UserProfile extends Component {
                         <Col md={12} lg={6}>
                             <article style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                                 <h2>My products</h2>
-                                <Button onClick={() => this.handlePopups('newProdModal', true)} variant="secondary" size="sm">Create new product</Button>
+                                <Button onClick={() => this.handlePopups('showModal', true, 'create product')} variant="secondary" size="sm">Create new product</Button>
                             </article>
                             <hr style={{ marginTop: '10px' }}/>
                             {this.state.products
                                 ?
-                                <Row>
-                                    {this.state.products.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handlePopups('editProdModal', visib)} productToTarget={id => this.defineTargetProd(id)} product={elm} theUser={this.props.theUser} />)}
+                                <Row style={{maxHeight: '1250px', overflowY: 'scroll'}} >
+                                    {this.state.products.map(elm => <ProductCardProfile key={elm._id} showEditProdModal={visib => this.handlePopups('showModal', visib, 'edit product')} productToTarget={id => this.defineTargetProd(id)} product={elm} theUser={this.props.theUser} />)}
                                 </Row>
                                 :
                                 <Loader style={{ display: 'flex', justifyContent: 'center' }} />
                             }
                         </Col>
                     </Row>
-                    <Toastie show={this.state.editUserToast} handleToast={visib => this.handlePopups('editUserToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Profile updated successfully." />
-                    <Toastie show={this.state.editProdToast} handleToast={visib => this.handlePopups('editProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product updated successfully." />
-                    <Toastie show={this.state.newProdToast} handleToast={visib => this.handlePopups('newProdToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText="Product created successfully." />
+
+                    <Toastie show={this.state.showToast} handleToast={visib => this.handlePopups('showToast', visib)} toastType='success' toastTitle='SUCCESS!' toastText={this.state.toastText} />
+                
                 </Container>
                 
-                <PopUp show={this.state.editUserModal} hide={() => this.handlePopups('editUserModal', false)} title="Edit profile">
-                    <EditUser hideModal={() => this.handlePopups('editUserModal',false)} theUser={this.props.theUser} setUser={this.props.setUser} handleModal={this.handleSubmitEditUserModal} />
+
+
+                <PopUp show={this.state.showModal} hide={() => this.handlePopups('showModal', false)} title={this.state.modalTitle}>
+                
+                    {this.state.modalTitle === 'edit profile' && <EditUser hideModal={() => this.handlePopups('showModal', false)} theUser={this.props.theUser}
+                        setUser={this.props.setUser} handleModal={this.handleSubmitEditUserModal} />}
+                    
+                    {this.state.modalTitle === 'edit product' && <EditProduct hideModal={() => this.handlePopups('showModal', false)} productId={this.state.prodToTarget}
+                        reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib, 'Product updated successfully.')} />}
+
+                    {this.state.modalTitle === 'create product' && <NewProduct hideModal={() => this.handlePopups('newProdModal', false)} reloadProducts={() => this.loadProducts()}
+                        theUser={this.props.theUser} handleToast={visib => this.handlePopups('showToast', visib, 'Product created successfully.')} />}
+
                 </PopUp>
 
-                <PopUp show={this.state.editProdModal} hide={() => this.handlePopups('editProdModal', false)} title="Edit product">
-                    <EditProduct hideModal={() => this.handlePopups('editProdModal', false)} productId={this.state.prodToTarget} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('editProdToast', visib)} />
-                </PopUp>
-
-                <PopUp show={this.state.newProdModal} hide={() => this.handlePopups('newProdModal', false)} title="Create a product">
-                    <NewProduct hideModal={() => this.handlePopups('newProdModal', false)} reloadProducts={() => this.loadProducts()} theUser={this.props.theUser} handleToast={visib => this.handlePopups('newProdToas', visib)} />
-                </PopUp>
-
-                <PopUpConfirm show={this.state.deleteUserModal} hide={() => this.handlePopups('deleteUserModal', false)}
-                    leftAction={() => this.handlePopups('deleteUserModal', false)} leftText='No, go back'
+                <PopUpConfirm show={this.state.showModalConfirm} hide={() => this.handlePopups('showModalConfirm', false)}
+                    leftAction={() => this.handlePopups('showModalConfirm', false)} leftText='No, go back'
                     rightAction={() => this.deleteUser()} rightText='Yes, delete'
                     type='danger' title="Caution!" body={<b>Are you sure you want to delete you account? This action will be irreversible.</b>}
                     />

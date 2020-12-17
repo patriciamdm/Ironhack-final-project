@@ -35,9 +35,9 @@ class UserCard extends Component {
                         <Card className="user-card" >
                             <img src={this.state.user.image} alt={this.state.user.username}/>
                             <article >
-                                <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
-                                <Card.Text className="admin-card-text">Rating: {this.state.avgRating}</Card.Text>
-                                <Button variant="secondary" size="sm" style={{marginTop: '10px'}}>See more</Button>
+                                <Card.Title className="user-card-title" >{this.state.user.username}</Card.Title>
+                                <Card.Text style={{fontSize: '.9rem'}}>Rating: {this.state.avgRating}</Card.Text>
+                                <Button variant="secondary" size="sm" style={{marginTop: '0px'}}>See more</Button>
                             </article>
                         </Card>
                     </Link>
@@ -45,8 +45,9 @@ class UserCard extends Component {
                     <Link to={`/profile/${this.state.user._id}`}>
                         <Card className="user-card">
                             <img src={this.state.user.image} alt={this.state.user.username}/>
-                            <article style={{}}>
-                                <Card.Title style={{ fontSize: '1.2rem' }}>{this.state.user.username}</Card.Title>
+                            <article >
+                                <Card.Title className="user-card-title" >{this.state.user.username}</Card.Title>
+                                <Card.Text style={{fontSize: '.9rem'}}>Rating: {this.state.avgRating}</Card.Text>
                                 <Button variant="secondary" size="sm" style={{margin: '0px'}}>See more</Button>
                             </article>
                         </Card>

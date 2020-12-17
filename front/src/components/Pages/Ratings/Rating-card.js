@@ -27,9 +27,9 @@ class RatingCard extends Component {
             .catch(err => new Error('ERROR GETTING RATER', err))
     }
 
-    showModal = target => {
+    showModal = (target, text) => {
         this.props.defineTarget(this.props.rating._id)
-        this.props.showModal(target)
+        this.props.showModal(target, text)
     }
 
     render() {
@@ -52,8 +52,8 @@ class RatingCard extends Component {
                         {this.state.raterId === this.props.theUser._id
                             &&
                             <div style={{display: 'flex', flexDirection: 'column'}}>
-                                <Button onClick={() => this.showModal('editRatingModal')} variant="secondary" size="sm" style={{margin: '5px 10px'}}>Edit</Button>
-                                <Button onClick={() => this.showModal('delRatingModal')} variant="danger" size="sm" style={{margin: '5px 10px'}}>Delete</Button>
+                                <Button onClick={() => this.showModal('showModal', 'edit rate')} variant="secondary" size="sm" style={{margin: '5px 10px'}}>Edit</Button>
+                                <Button onClick={() => this.showModal('showModalConfirm')} variant="danger" size="sm" style={{margin: '5px 10px'}}>Delete</Button>
                             </div>
                         }
                     </Card>
