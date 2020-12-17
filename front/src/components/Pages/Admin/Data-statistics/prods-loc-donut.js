@@ -24,7 +24,7 @@ class ProdsLocationDonut extends Component {
         this.locationService
             .getAllLocations()
             .then(allLocs => this.setState({ locations: allLocs.data }, () => this.prodsByLocation()))
-            .catch(err => console.log(err))
+            .catch(err => new Error(err))
     }
 
     prodsByLocation = () => {
@@ -33,9 +33,9 @@ class ProdsLocationDonut extends Component {
                 .getProductsByLocation(elm.name.toLowerCase())
                 .then(locProds => {
                     const newArr = [...this.state.prodsByLocation, {id: elm.name, value: locProds.data }]
-                    this.setState({ prodsByLocation: newArr }, () => console.log(this.state.prodsByLocation))
+                    this.setState({ prodsByLocation: newArr })
                 })
-                .catch(err => console.log(err))
+                .catch(err => new Error(err))
         })
     }
 

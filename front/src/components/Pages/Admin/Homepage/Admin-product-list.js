@@ -20,7 +20,7 @@ class AdminProductsList extends Component {
         this.productService
             .getLast6Products()
             .then(prods => this.setState({ products: prods.data }))
-            .catch(err => console.log('ERROR GET 5 PRODS', err)) 
+            .catch(err => new Error('ERROR GET 5 PRODS', err)) 
     }
 
     render() {

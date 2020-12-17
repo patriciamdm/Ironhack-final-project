@@ -38,7 +38,7 @@ class AdminProducts extends Component {
         this.productsService
             .getAllProducts()
             .then(allProds => this.setState({ products: allProds.data, filteredProds: allProds.data }))
-            .catch(err => console.log('ERROR GET ALL PRODS', err))
+            .catch(err => new Error('ERROR GET ALL PRODS', err))
     }
 
     searchBy = value => {
@@ -80,7 +80,7 @@ class AdminProducts extends Component {
                 this.handlePopups('showToast', true, 'Product deleted successfully.')
                 this.loadProducts()
             })
-            .catch(err => console.log('ERROR DELETING PRODUCT', err))
+            .catch(err => new Error('ERROR DELETING PRODUCT', err))
     }
 
     render() {

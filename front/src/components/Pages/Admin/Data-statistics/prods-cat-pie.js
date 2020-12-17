@@ -24,7 +24,7 @@ class ProdsCategoryPie extends Component {
         this.categoryService
             .getAllCategories()
             .then(allCats => this.setState({ categories: allCats.data }, () => this.prodsByCategory()))
-            .catch(err => console.log(err))
+            .catch(err => new Error(err))
     }
 
     prodsByCategory = () => {
@@ -33,9 +33,9 @@ class ProdsCategoryPie extends Component {
                 .getProductsByCategory(elm.name)
                 .then(catProds => {
                     const newArr = [...this.state.prodsByCategory, {id: elm.name, value: catProds.data }]
-                    this.setState({ prodsByCategory: newArr }, () => console.log(this.state.prodsByCategory))
+                    this.setState({ prodsByCategory: newArr })
                 })
-                .catch(err => console.log(err))
+                .catch(err => new Error(err))
         })
     }
 

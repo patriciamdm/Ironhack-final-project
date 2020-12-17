@@ -32,7 +32,7 @@ class AdminUsers extends Component {
         this.userService
             .getAllUsers()
             .then(allUsers => this.setState({ users: allUsers.data, filteredUsers: allUsers.data }))
-            .catch(err => console.log('ERROR GET ALL USERS', err))
+            .catch(err => new Error('ERROR GET ALL USERS', err))
     }
 
     filterBy = (value, filter) => {
@@ -56,7 +56,7 @@ class AdminUsers extends Component {
                 this.handlePopups('delUserToast', true)
                 this.loadUsers()
             })
-            .catch(err => console.log('ERROR DELETING USER', err))
+            .catch(err => new Error('ERROR DELETING USER', err))
     }
 
     render() {

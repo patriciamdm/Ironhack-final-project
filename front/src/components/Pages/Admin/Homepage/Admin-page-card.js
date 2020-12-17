@@ -17,7 +17,7 @@ const AdminPageCard = ({ name, image, status, id }) => {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
                 isNaN(parseFloat(avgRate.toFixed(2))) ? setState({ avgRating: 'No rating'}) : setState({ avgRating: `${parseFloat(avgRate.toFixed(2))} / 5`})
             })
-            .catch(err => console.log('ERROR GETTING AVG RATES', err))
+            .catch(err => new Error('ERROR GETTING AVG RATES', err))
     }
 
 

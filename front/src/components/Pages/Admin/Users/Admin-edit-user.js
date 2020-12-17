@@ -26,7 +26,7 @@ class AdminEditUser extends Component {
         this.userService
             .getOneUser(this.props.userId)
             .then(res => this.setState({ _id: res.data._id, username: res.data.username, image: res.data.image, email: res.data.email, phone: res.data.phone, role: res.data.role}))
-            .catch(err => console.log('ERROR FINDING USER', err))
+            .catch(err => new Error('ERROR FINDING USER', err))
     }
 
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -42,7 +42,7 @@ class AdminEditUser extends Component {
                 this.props.loadUsers()
                 this.props.handleToast(true)
             })
-            .catch(err => console.log('ERROR IN EDIT', err))
+            .catch(err => new Error('ERROR IN EDIT', err))
     }
 
     handleImageUpload = e => {
@@ -55,7 +55,7 @@ class AdminEditUser extends Component {
         this.filesService
             .uploadImage(uploadData)
             .then(response => this.setState({ image: response.data.secure_url, uploadingActive: false }))
-            .catch(err => console.log('ERRORRR!', err))
+            .catch(err => new Error('ERRORRR!', err))
     }
 
     render() {

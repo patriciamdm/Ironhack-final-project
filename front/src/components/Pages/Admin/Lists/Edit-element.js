@@ -18,11 +18,11 @@ class EditElm extends Component {
     componentDidMount = () => {
         this.props.type === 'category' && this.categoryService.getOneCategory(this.props.elm)
             .then(category => this.setState({ name: category.data.name }))
-            .catch(err => console.log('ERROR GETTING CATEGORY', err))
+            .catch(err => new Error('ERROR GETTING CATEGORY', err))
         
         this.props.type === 'location' && this.locationService.getOneLocation(this.props.elm)
             .then(location => this.setState({ name: location.data.name }))
-            .catch(err => console.log('ERROR GETTING LOCATION', err))
+            .catch(err => new Error('ERROR GETTING LOCATION', err))
     }
     
     handleInput = e => this.setState({ [e.target.name]: e.target.value })
@@ -36,7 +36,7 @@ class EditElm extends Component {
                 this.props.hideModal()
                 this.props.handleToast()
             })
-            .catch(err => console.log('ERROR EDITING CATEGORY', err))
+            .catch(err => new Error('ERROR EDITING CATEGORY', err))
         
         this.props.type === 'location' && this.locationService.editLocation(this.props.elm, { name: this.state.name })
             .then(() => {
@@ -44,7 +44,7 @@ class EditElm extends Component {
                 this.props.hideModal()
                 this.props.handleToast()
             })
-            .catch(err => console.log('ERROR EDITING LOCATION', err))
+            .catch(err => new Error('ERROR EDITING LOCATION', err))
     }
     
     render() {

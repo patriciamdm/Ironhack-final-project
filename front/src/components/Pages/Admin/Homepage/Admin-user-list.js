@@ -20,7 +20,7 @@ class AdminUserList extends Component {
         this.userService
             .getLast6Users()
             .then(users => this.setState({ users: users.data }))
-            .catch(err => console.log('ERROR GET 5 USERS', err))
+            .catch(err => new Error('ERROR GET 5 USERS', err))
     }
 
     render() {

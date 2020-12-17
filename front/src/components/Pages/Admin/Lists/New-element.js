@@ -26,7 +26,7 @@ class NewElm extends Component {
                 this.props.hideModal()
                 this.props.handleToast()
             })
-            .catch(err => console.log('ERROR EDITING CATEGORY', err))
+            .catch(err => new Error('ERROR EDITING CATEGORY', err))
         
         this.props.type === 'location' && this.locationService.newLocation(this.state)
             .then(() => {
@@ -34,7 +34,7 @@ class NewElm extends Component {
                 this.props.hideModal()
                 this.props.handleToast()
             })
-            .catch(err => console.log('ERROR EDITING LOCATION', err))
+            .catch(err => new Error('ERROR EDITING LOCATION', err))
     }
     
     render() {

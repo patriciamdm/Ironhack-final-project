@@ -26,7 +26,7 @@ class AdminUserCard extends Component {
                 const avgRate = (rates.data.reduce((acc, elm) => acc + elm.value.valueOf(), 0)) / (rates.data.length)
                 this.setState({ avgRating: isNaN(parseFloat(avgRate.toFixed(2))) ? 'No ratings' : `${parseFloat(avgRate.toFixed(2))} / 5` })
             })
-            .catch(err => console.log('ERROR GETTING AVG RATES', err))
+            .catch(err => new Error('ERROR GETTING AVG RATES', err))
     }
 
     render() {
