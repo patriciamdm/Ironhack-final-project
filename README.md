@@ -2,6 +2,9 @@
 
 <img src="./Dealz_.jpg" alt="Dealz_ Home">
 
+
+Visit the webpage at http://dealz-app.herokuapp.com/
+
 ## Introduction
 
 Dealz_ is a Single Page Application to buy and sell products, inspired in the Spanish company Wallapop.
